@@ -1,10 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import image_couple from '../assets/img/image_couple.jpg';
 import logo from '../assets/img/logo.png';
 import Input from '../components/Input';
 import Image from '../components/Image';
 import Title from '../components/Title';
 function Inscription() {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState({ text: '', type: '' });
+
+  const [formData, setFormData] = useState({
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    password: '',
+    confirmPassword: '',
+    dateMariage: '',
+    lieuMariage: '',
+    couleurSite: '',
+    themeMariage: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Données envoyées au backend :', formData);
+
+    try {
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      if (response.ok) {
+
+        // setErrorMessage({ text: data.message, type: data.type });
+          
+        navigate('/login-page');
+            
+      } else {
+        setErrorMessage({ text: data.message, type: data.type });
+      }
+    } catch (error) {
+      console.error('Erreur réseau :', error);
+      setErrorMessage({ text: 'Impossible de contacter le serveur.', type: data.type });
+    }
+  };
+
+
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="w-full md:w-1/2 h-96 md:h-full">
@@ -31,8 +82,17 @@ function Inscription() {
           </Title>
         </div>
 
+
+  {/* Affichage du message d'erreur ou de succès */}
+  {errorMessage.text && (
+          <div className={`my-4 text-center ${errorMessage.type === 'danger' ? 'text-red-500' : 'text-green-500'}`}>
+            {errorMessage.text}
+          </div>
+        )}
+
+
         <div className="mt-4 md:mt-6 mx-auto w-full max-w-sm">
-          <form action="#" method="POST" className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <Input
                 width="w-full"
@@ -40,6 +100,8 @@ function Inscription() {
                 name="nom"
                 placeholder="Nom"
                 required={true}
+                value={formData.nom}
+                onChange={handleChange}
               />
               <Input
                 width="w-full"
@@ -47,6 +109,8 @@ function Inscription() {
                 name="prenom"
                 placeholder="Prénom"
                 required={true}
+                value={formData.prenom}
+                onChange={handleChange}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -56,6 +120,8 @@ function Inscription() {
                 name="email"
                 placeholder="Email"
                 required={true}
+                value={formData.email}
+                onChange={handleChange}
               />
               <Input
                 width="w-full"
@@ -63,6 +129,8 @@ function Inscription() {
                 name="telephone"
                 placeholder="Numéro de téléphone"
                 required={true}
+                value={formData.telephone}
+                onChange={handleChange}
               />
             </div>
 
@@ -73,6 +141,8 @@ function Inscription() {
                 name="password"
                 placeholder="Mot de passe"
                 required={true}
+                value={formData.password}
+                onChange={handleChange}
               />
               <Input
                 width="w-full"
@@ -80,6 +150,8 @@ function Inscription() {
                 name="confirmPassword"
                 placeholder="Confirmer mot de passe"
                 required={true}
+                value={formData.confirmPassword}
+                onChange={handleChange}
               />
             </div>
 
@@ -87,16 +159,20 @@ function Inscription() {
               <Input
                 width="w-full"
                 type="date"
-                name="dateMarriage"
+                name="dateMariage"
                 placeholder="Date de mariage"
                 required={true}
+                value={formData.dateMariage}
+                onChange={handleChange}
               />
               <Input
                 width="w-full"
                 type="text"
-                name="lieuMarriage"
+                name="lieuMariage"
                 placeholder="Lieu de mariage"
                 required={true}
+                value={formData.lieuMariage}
+                onChange={handleChange}
               />
             </div>
 
@@ -108,6 +184,8 @@ function Inscription() {
                   name="couleurSite"
                   placeholder="Couleur du site"
                   required={true}
+                  value={formData.couleurSite}
+                  onChange={handleChange}
                   className="p-1 h-10 w-20 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700"
                 />
                 <span className="text-sm">Couleur du site</span>
@@ -118,6 +196,8 @@ function Inscription() {
                 name="themeMariage"
                 placeholder="Thème du mariage"
                 required={true}
+                value={formData.themeMariage}
+                onChange={handleChange}
               />
             </div>
 
@@ -134,7 +214,7 @@ function Inscription() {
           <p className="mt-4 md:mt-6 text-center text-sm text-black">
             Avez vous déjà un compte ?
             <a
-              href="#"
+              href="/login-page"
               className="font-semibold ml-1 text-[#016CEC] opacity-80 hover:opacity-100"
             >
               Connectez vous
