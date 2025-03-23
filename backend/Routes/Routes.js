@@ -8,8 +8,7 @@ const { register, login } = require("../Controllers/Controllers");
 
 // Configuration CORS explicite
 const corsOptions = {
-  origin: 'http://localhost:5173', // Origine autorisée (frontend)
-  methods: ['POST', 'GET'], // Méthodes autorisées
+  origin: ['https://wedd-mocha-beta.vercel.app', 'http://localhost:5173'], // Origines autorisées (frontend)  methods: ['POST', 'GET'], // Méthodes autorisées
   allowedHeaders: ['Content-Type'] // En-têtes autorisés
 };
 
