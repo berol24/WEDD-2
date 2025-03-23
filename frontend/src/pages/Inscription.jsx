@@ -8,6 +8,8 @@ import Title from '../components/Title';
 function Inscription() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState({ text: '', type: '' });
+  const apiUrl = import.meta.env.VITE_API_URL;
+
 
   const [formData, setFormData] = useState({
     nom: '',
@@ -31,7 +33,7 @@ function Inscription() {
     console.log('Données envoyées au backend :', formData);
 
     try {
-      const response = await fetch('http://localhost:5000/register', {
+      const response = await fetch(`${apiUrl}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

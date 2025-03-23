@@ -8,7 +8,7 @@ const { register, login } = require("../Controllers/Controllers");
 
 // Configuration CORS explicite
 const corsOptions = {
-    origin: 'http://localhost:5173', // Origine autorisée (frontend)
+  origin: 'http://localhost:5173', // Origine autorisée (frontend)
   methods: ['POST', 'GET'], // Méthodes autorisées
   allowedHeaders: ['Content-Type'] // En-têtes autorisés
 };
