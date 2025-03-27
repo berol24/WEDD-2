@@ -1,5 +1,7 @@
 import React from "react";
 import Table from "../components/Table";
+import Notification from "../components/Notification";
+import Graphe from "../components/Graphe";
 // import NavLink from "../components/NavLink";
 // import Inscription from "./Inscription";
 // import Subtitle from "../components/Subtitle";
@@ -10,7 +12,7 @@ import Table from "../components/Table";
 // import logo from "../assets/img/logo.png";
 // import Connexion from './Connexion';
 
-function Home() {
+function Accueil() {
 
 return (
     <>
@@ -22,11 +24,14 @@ return (
 
 {/* <NavLink/> */}
 
-<Table />
+{/* <Table /> */}
 
+{/* <Notification/> */}
+
+<Graphe />
 
     </>
   )
 }
 
-export default Home
+export default Accueil
