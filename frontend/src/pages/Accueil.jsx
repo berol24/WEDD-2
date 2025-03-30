@@ -2,6 +2,8 @@ import React from "react";
 import Table from "../components/Table";
 import Notification from "../components/Notification";
 import Graphe from "../components/Graphe";
+import Informations from "./Informations";
+
 // import NavLink from "../components/NavLink";
 // import Inscription from "./Inscription";
 // import Subtitle from "../components/Subtitle";
@@ -28,7 +30,9 @@ return (
 
 {/* <Notification/> */}
 
-<Graphe />
+{/* <Graphe /> */}
+
+<Informations/>
 
     </>
   )
