@@ -13,6 +13,8 @@ import Informations from "./Informations";
 // import Bouton from "../components/Bouton";
 // import logo from "../assets/img/logo.png";
 // import Connexion from './Connexion';
+import Dashboard from './Dashboard';
+import MesReunions from "./MesReunions";
 
 function Accueil() {
 
@@ -31,9 +33,11 @@ return (
 {/* <Notification/> */}
 
 {/* <Graphe /> */}
+{/* <Dashboard/> */}
 
-<Informations/>
+{/* <Informations/> */}
 
+<MesReunions/>
     </>
   )
 }
