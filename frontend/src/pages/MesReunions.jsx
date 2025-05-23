@@ -57,7 +57,7 @@ const [reunions, setReunions] = useState([
         </table>
       </div>
        <div className="flex justify-center mt-6">
-        <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-blue-500  text-white font-bold py-2 px-4 rounded">
           Ajouter une réunion
         </button>
       </div>

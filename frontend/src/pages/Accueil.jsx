@@ -15,6 +15,8 @@ import Informations from "./Informations";
 // import Connexion from './Connexion';
 import Dashboard from './Dashboard';
 import MesReunions from "./MesReunions";
+import AjoutReunion from "./AjoutReunion";
+import ModifierReunion from "./ModifierReunion";
 
 function Accueil() {
 
@@ -37,7 +39,10 @@ return (
 
 {/* <Informations/> */}
 
-<MesReunions/>
+{/* <MesReunions/> */}
+
+{/* <AjoutReunion/> */}
+<ModifierReunion />
     </>
   )
 }
