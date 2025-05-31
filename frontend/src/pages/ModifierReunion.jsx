@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function ModifierReunion() {
+    const [titre, setTitre] = useState('Titre réunion');
+  const [lieu, setLieu] = useState('Lieu');
+  const [date, setDate] = useState('');
    return (
       <div className="h-screen flex justify-center items-center bg-[#717171]">
         <div className="p-8 bg-white rounded-lg shadow-md text-center">
@@ -9,17 +12,20 @@ function ModifierReunion() {
           <div className="flex flex-col gap-4 mb-6">
             <input 
               type="text" 
-              value='Titre réunion'
+              value={titre}
+              onChange={(e) => setTitre(e.target.value)}
               className="w-[300px] p-2 text-base border border-[#C6C6C6] rounded-2xl"
             />
             <input 
-              type="date" 
-              value=""
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               className="w-[300px] p-2 text-base border border-[#C6C6C6] rounded-2xl"
             />
             <input 
               type="text" 
-              value='Lieu'
+              value={lieu}
+              onChange={(e) => setLieu(e.target.value)}
               className="w-[300px] p-2 text-base border border-[#C6C6C6] rounded-2xl"
             />
           </div>

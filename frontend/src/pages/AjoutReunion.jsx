@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function AjoutReunion() {
+        const [titre, setTitre] = useState('Titre réunion');
+      const [lieu, setLieu] = useState('Lieu');
+      const [date, setDate] = useState('2015-10-01');
     return (
       <div className="h-screen flex justify-center items-center bg-[#717171]">
         <div className="p-8 bg-white rounded-lg shadow-md text-center">
@@ -9,17 +12,16 @@ function AjoutReunion() {
           <div className="flex flex-col gap-4 mb-6">
             <input 
               type="text" 
-              placeholder='Titre réunion'
+              placeholder={titre}
               className="w-[300px] p-2 text-base border border-[#C6C6C6] rounded-2xl"
             />
             <input 
               type="date" 
-              placeholder='Date réunion'
               className="w-[300px] p-2 text-base border border-[#C6C6C6] rounded-2xl"
             />
             <input 
               type="text" 
-              placeholder='Lieu'
+              placeholder={lieu}
               className="w-[300px] p-2 text-base border border-[#C6C6C6] rounded-2xl"
             />
           </div>

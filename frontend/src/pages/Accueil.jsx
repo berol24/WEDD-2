@@ -17,6 +17,8 @@ import Dashboard from './Dashboard';
 import MesReunions from "./MesReunions";
 import AjoutReunion from "./AjoutReunion";
 import ModifierReunion from "./ModifierReunion";
+import AjoutInvite from "./AjoutInvite";
+import ModifierInvite from "./ModifierInvite";
 
 function Accueil() {
 
@@ -42,7 +44,10 @@ return (
 {/* <MesReunions/> */}
 
 {/* <AjoutReunion/> */}
-<ModifierReunion />
+{/* <ModifierReunion /> */}
+
+{/* <AjoutInvite/> */}
+<ModifierInvite />
     </>
   )
 }
