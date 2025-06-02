@@ -7,6 +7,9 @@ import Inscription from './pages/Inscription.jsx'
 import PageNotFound from './pages/PageNotFound.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Accueil from './pages/Accueil.jsx'
+import Informations from './pages/Informations.jsx'
+import AjoutInvite from './pages/AjoutInvite.jsx'
+import MesReunions from './pages/MesReunions.jsx'
 
 const router = createBrowserRouter (
   createRoutesFromElements (
@@ -15,8 +18,11 @@ const router = createBrowserRouter (
         <Route path="/login-page" element={<Connexion />} />
         <Route path="/register-page" element={<Inscription />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile-page" element={< Informations/>}/>
+        <Route path="/ajout-invite" element={< AjoutInvite />}/>
+        <Route path="/liste-reunions" element={< MesReunions />}/>
         <Route path="*" element={<PageNotFound/>} />
-        
+
       </>
   )
 )

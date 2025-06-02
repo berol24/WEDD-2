@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
+import close from "../assets/icons/close-circle.svg"
 
-function ModifierReunion() {
+function ModifierReunion({onClose}) {
     const [titre, setTitre] = useState('Titre réunion');
   const [lieu, setLieu] = useState('Lieu');
   const [date, setDate] = useState('');
    return (
-      <div className="h-screen flex justify-center items-center bg-[#717171]">
-        <div className="p-8 bg-white rounded-lg shadow-md text-center">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="p-8 bg-white rounded-lg shadow-md text-center relative">
+          <button
+                    onClick={onClose}
+                    className="absolute top-2 right-2"
+                  >
+                    <img className='w-6 h-6' src={close} alt="close-circle" />
+                  </button>
           <h2 className="text-black mb-5 font-bold text-lg">Modifier une reunion</h2>
 
           <div className="flex flex-col gap-4 mb-6">

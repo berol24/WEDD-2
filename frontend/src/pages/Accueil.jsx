@@ -39,7 +39,7 @@ return (
 {/* <Graphe /> */}
 {/* <Dashboard/> */}
 
-{/* <Informations/> */}
+<Informations/>
 
 {/* <MesReunions/> */}
 
@@ -47,7 +47,9 @@ return (
 {/* <ModifierReunion /> */}
 
 {/* <AjoutInvite/> */}
-<ModifierInvite />
+{/* <ModifierInvite /> */}
+
+{/* <MesReunions/> */}
     </>
   )
 }

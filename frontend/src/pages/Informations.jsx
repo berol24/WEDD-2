@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Input from '../components/Input'
+import NavLink from '../components/NavLink'
+import Notification from '../components/Notification'
 
 function Informations() {
       const [isEditing, setIsEditing] = useState(false)
@@ -36,7 +38,10 @@ function Informations() {
       }
 
       return (
+        <div className='flex'> 
+        <NavLink/>
         <div className="flex flex-col items-center justify-center min-h-screen max-w-4xl mx-auto py-4 px-4">
+          
           <h1 className="text-2xl font-bold mb-6">Mes informations personnels</h1>
           <div className="flex w-full mb-4">
             <div className="w-1/2 pr-4">
@@ -234,6 +239,9 @@ function Informations() {
               </div>
             </div>
           </div>
+        </div>
+        
+        <Notification/>
         </div>
       )
 
