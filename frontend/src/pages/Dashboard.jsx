@@ -1,7 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import { Link } from 'react-router-dom';
 import NavLink from './../components/NavLink';
-import Notification from '../components/Notification';
 import Table from '../components/Table';
 import myImage from '../assets/img/logo.png';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import Graphe from '../components/Graphe';
 import Bouton from '../components/Bouton';
 import tri from '../assets/icons/tri.svg';
 import NextMeeting from '../components/NextMeeting';
+import BlogRight from '../components/BlogRight';
 
 function Dashboard() {
   const mesInvites = [
@@ -122,17 +122,16 @@ function Dashboard() {
         <div className="flex justify-between items-center p-4">
           <div>
             Salut <b>Marie Pierre</b>
-            <p> Un mariage inoubliable vous attend 🎉​🎉​🎉​🎉​🎉​🎉​🎉​🎉</p> ​
+            <p> Un mariage inoubliable vous attend  🎉​🎉​🎉​🎉​🎉​🎉​🎉​🎉</p>
           </div>
 
-          <Bouton
+          <Link to="/ajout-invite"><Bouton
             width="w-64"
             bg="bg-[#016CEC]"
             color="text-[#fff]"
             fontSize="text-[18px]"
-          >
-            Ajouté un invité
-          </Bouton>
+          > Ajouté un invité
+          </Bouton></Link> 
         </div>
         <div className="flex justify-between items-center">
            <NextMeeting />
@@ -154,17 +153,17 @@ function Dashboard() {
         </div>
         <Table invites={invites} setInvites={setInvites} />
         <div className='text-center my-6'>
-          <Bouton
+          <Link to="/ajout-invite"><Bouton
             width="w-64"
             bg="bg-[#016CEC]"
             color="text-[#fff]"
             fontSize="text-[18px]"
           >
             Ajouté un invité
-          </Bouton>
+          </Bouton></Link>
         </div>
       </div>
-      <Notification />
+      <BlogRight />
     </div>
   );
 }

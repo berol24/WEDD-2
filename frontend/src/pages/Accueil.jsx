@@ -20,6 +20,9 @@ import ModifierReunion from "./ModifierReunion";
 import AjoutInvite from "./AjoutInvite";
 import ModifierInvite from "./ModifierInvite";
 import NextMeeting from "../components/NextMeeting";
+import InfoProfile from "../components/InfoProfile";
+import BlogRight from "../components/BlogRight";
+import RechercheInvite from "./RechercheInvite";
 
 function Accueil() {
 
@@ -38,7 +41,7 @@ return (
 {/* <Notification/> */}
 
 {/* <Graphe /> */}
-<Dashboard/>
+{/* <Dashboard/> */}
 
 {/* <Informations/> */}
 
@@ -57,6 +60,13 @@ return (
 {/* <Graphe /> */}
 
 {/* <NextMeeting/> */}
+
+
+{/* <InfoProfile/> */}
+
+{/* <BlogRight/> */}
+
+<RechercheInvite/>
     </>
   )
 }

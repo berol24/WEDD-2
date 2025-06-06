@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Input from '../components/Input'
 import NavLink from '../components/NavLink'
-import Notification from '../components/Notification'
+import BlogRight from '../components/BlogRight'
 
 function Informations() {
       const [isEditing, setIsEditing] = useState(false)
@@ -241,7 +241,7 @@ function Informations() {
           </div>
         </div>
         
-        <Notification/>
+        <BlogRight/>
         </div>
       )
 

@@ -25,7 +25,7 @@ function Table({ invites }) {
                 <td className="px-6 py-4">{invite.inviteId}</td>
                 <td className="px-6 py-4">{invite.nom} {invite.prenom}</td>
                 <td className="px-6 py-4">+{invite.telephone}</td>
-                <td className="px-6 py-4">{invite.table}</td>
+                <td className="px-6 py-4">{invite.nomTable}</td>
                 <td className="px-6 py-4">
                     <div className="flex items-center">
                         <div className={`h-2.5 w-2.5 rounded-full ${invite.status === 'P' ? 'bg-green-500' : 'bg-red-500'} me-2`}></div> {invite.status}

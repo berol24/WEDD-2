@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NavLink from '../components/NavLink';
-import Notification from '../components/Notification';
+import BlogRight from '../components/BlogRight';
 
 function AjoutInvite() {
   const [nom, setNom] = useState('Nom');
@@ -55,7 +55,7 @@ function AjoutInvite() {
         </div>
       </div>
 
-      <Notification />
+      <BlogRight/>
     </div>
   );
 }

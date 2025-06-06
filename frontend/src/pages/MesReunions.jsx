@@ -5,7 +5,7 @@
   import tri from '../assets/icons/tri.svg';
   import ModifierReunion from './ModifierReunion';
   import NavLink from '../components/NavLink';
-  import Notification from '../components/Notification';
+import BlogRight from '../components/BlogRight';
 
   function MesReunions() {
     const [reunions, setReunions] = useState([
@@ -79,7 +79,7 @@
         {showPopupUpdateReunion && <ModifierReunion onClose={() => setShowPopupUpdateReunion(false)} />}
 
       </div> 
-        <Notification/>
+        <BlogRight/>
       </div>
     );
   }

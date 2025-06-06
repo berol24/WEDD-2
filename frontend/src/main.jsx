@@ -10,6 +10,7 @@ import Accueil from './pages/Accueil.jsx'
 import Informations from './pages/Informations.jsx'
 import AjoutInvite from './pages/AjoutInvite.jsx'
 import MesReunions from './pages/MesReunions.jsx'
+import RechercheInvite from './pages/RechercheInvite.jsx'
 
 const router = createBrowserRouter (
   createRoutesFromElements (
@@ -21,6 +22,7 @@ const router = createBrowserRouter (
         <Route path="/profile-page" element={< Informations/>}/>
         <Route path="/ajout-invite" element={< AjoutInvite />}/>
         <Route path="/liste-reunions" element={< MesReunions />}/>
+        <Route path="/recherche-invite" element={<RechercheInvite />} />
         <Route path="*" element={<PageNotFound/>} />
 
       </>

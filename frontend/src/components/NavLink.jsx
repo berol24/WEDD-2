@@ -4,11 +4,12 @@ import home from '../assets/icons/home.svg'
 import edit from '../assets/icons/edit.svg'
 import invite from '../assets/icons/invite.svg'
 import reunion from '../assets/icons/reunion.svg'
-import { Link, Links } from 'react-router-dom'
-import AjoutInvite from '../pages/AjoutInvite'
+import help from '../assets/img/help.svg'
+import search from '../assets/icons/search.png'
+import { Link } from 'react-router-dom'
+import Image from './Image'
 function NavLink() {
   const [activeLink, setActiveLink] = useState('dashboard')
-    const [showPopupAjoutInvite, setShowPopupAjoutInvite] = useState(false);
 
   return (
     <div className="w-64 flex flex-col gap-4 border border-gray-300">
@@ -51,6 +52,20 @@ function NavLink() {
         <Link to="/profile-page" className={`${activeLink === 'profil' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('profil')}>
           Profil
         </Link>
+      </div>
+
+      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
+        <span className="text-gray-500 mr-6 w-10 h-10">
+          <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} />
+        </span>
+        <Link to="/recherche-invite" className={`${activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('recherche-invite')}>
+          Recherche invité
+        </Link>
+      </div>
+
+      <div className='d-flex flex-col m-8 items-center'>
+        <Image src={help} className=" w-56" />
+        <a href="/help-page" className=' underline underline-offset-8 '>Avez vous besoin d'aide ?</a>
       </div>
 
     </div>
