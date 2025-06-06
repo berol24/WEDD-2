@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Children } from 'react'
 
-function Bouton(props) {
+function Bouton({width, bg, color, fontSize,children}) {
   return (
-    <button className={`${props.width} ${props.bg} ${props.color} ${props.fontSize}  px-4 py-4 rounded-md`}>Se connecter</button>
+    <button className={`${width} ${bg} ${color} ${fontSize}  px-4 py-4 rounded-md`}>{children}</button>
   )
 }
 

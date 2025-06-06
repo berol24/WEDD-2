@@ -19,6 +19,7 @@ import AjoutReunion from "./AjoutReunion";
 import ModifierReunion from "./ModifierReunion";
 import AjoutInvite from "./AjoutInvite";
 import ModifierInvite from "./ModifierInvite";
+import NextMeeting from "../components/NextMeeting";
 
 function Accueil() {
 
@@ -37,9 +38,9 @@ return (
 {/* <Notification/> */}
 
 {/* <Graphe /> */}
-{/* <Dashboard/> */}
+<Dashboard/>
 
-<Informations/>
+{/* <Informations/> */}
 
 {/* <MesReunions/> */}
 
@@ -50,6 +51,12 @@ return (
 {/* <ModifierInvite /> */}
 
 {/* <MesReunions/> */}
+
+{/* <Table /> */}
+
+{/* <Graphe /> */}
+
+{/* <NextMeeting/> */}
     </>
   )
 }

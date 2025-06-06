@@ -2,12 +2,13 @@ import React from 'react'
 import ReactApexChart from 'react-apexcharts';
 
 
-function Graphe() {
+function Graphe({invites=[]}) {
+    const presents = invites.filter(invite => invite.status === 'P').length; // Count of presents
+    const absents = invites.filter(invite => invite.status === 'A').length; // Count of absent
     
-    const a = 250
-    const b = 50
+
     const [state, setState] = React.useState({
-        series: [a, b],
+        series: [presents, absents],
         options: {
           chart: {
             type: 'donut',
@@ -20,14 +21,14 @@ function Graphe() {
                 }
               }
           },
-          labels: ['Presents ', 'Absents'],         
+          labels: [`Presents (<b>${presents}</b>)`, `Absents (<b>${absents}</b>)`],         
           colors: [
             "#11B141",
             "#FF0000",
           ],
           legend: {
             position: 'bottom',
-            fontSize: '18px',
+            fontSize: '15px',
             itemMargin: {
                 horizontal: 20,
                 vertical: 0
@@ -48,7 +49,7 @@ function Graphe() {
                     show: true,
                     showAlways: true,
                     label: 'Total',
-                    fontSize: '22px',
+                    fontSize: '20px',
                     fontWeight: 600,
                     color: '#373d3f',
                     formatter: function (w) {
@@ -84,7 +85,7 @@ function Graphe() {
   return (
 
     <div className="p-4">
-      <div id="chart" className='w-[400px] h-[400px] border-2'>
+      <div id="chart" className='w-[300px] h-[300px] border-2'>
         <ReactApexChart options={state.options} series={state.series} type="donut" />
       </div>
       <div id="html-dist"></div>
