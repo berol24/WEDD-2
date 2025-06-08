@@ -2,6 +2,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import  User from "../Models/User.js";
+import Reunion from '../Models/Reunion.js';
+import Invite from '../Models/Invite.js';
+
 
 
 const register = async (req, res) => {
@@ -47,7 +50,6 @@ const register = async (req, res) => {
         });
     }
 }
-
 
 const login = async (req, res) => {
     const { email, password } = req.body; // Ne prendre que l'email et le mot de passe ici
@@ -105,7 +107,122 @@ const login = async (req, res) => {
     }
 }
 
+const addReunion = async (req, res) => {
+    const { titre, dateHeure, lieu } = req.body;
+
+    try {
+        // Vérification des données
+        if (!titre || !dateHeure || !lieu) {
+            return res.status(400).json({
+                message: "Tous les champs sont requis",
+                type: "danger"
+            });
+        }
+
+        // Création de la réunion
+        const newReunion = new Reunion({
+            titre,
+            dateHeure,
+            lieu,
+            userId: req.user._id // Assurez-vous que l'utilisateur est authentifié et que req.user est défini
+            
+        })
+
+
+        await newReunion.save();
+        console.log("Réunion enregistrée :", newReunion);
+        res.status(201).json({
+            message: "Réunion créée avec succès!",
+            type: "success",
+            reunion: newReunion
+        });
+
+}catch (err) {
+        console.error("Erreur lors de l'enregistrement :", err);
+        res.status(400).json({
+            message: err.message,
+            type: "danger"
+        });
+    }
+}
+
+const allReunion = async (req, res) => {
+    try {
+        const reunions = await Reunion.find({ userId: req.user._id }); // Récupérer les réunions de l'utilisateur connecté
+        res.status(200).json({
+            message: "Réunions récupérées avec succès",
+            type: "success",
+            reunions
+        });
+    } catch (err) {
+        console.error("Erreur lors de la récupération des réunions :", err);
+        res.status(500).json({
+            message: "Erreur lors de la récupération des réunions",
+            type: "danger"
+        });
+    }
+}
+
+
+const addInvite = async (req, res) => {
+    const { nom, prenom, telephone, nomTable, status } = req.body;
+    console.log("Données de l'invité :", req.body);
+    try {
+        if (!nom || !prenom || !telephone) {
+            return res.status(400).json({
+                message: "Tous les champs sont requis",
+                type: "danger"
+            });
+        }
+
+        const newInvite = new Invite({
+            nom,
+            prenom,
+            telephone,
+            nomTable,
+            status,
+            image: req.file ? req.file.filename : null,
+            userId: req.user._id
+        });
+
+        await newInvite.save();
+        res.status(201).json({
+            message: "Invité ajouté avec succès!",
+            type: "success",
+            invite: newInvite
+        });
+
+    } catch (err) {
+        console.error("Erreur lors de l'enregistrement :", err);
+        res.status(400).json({
+            message: err.message,
+            type: "danger"
+        });
+    }
+};
+       
+const allInvite = async (req, res) => {
+    try {
+        const invites = await Invite.find({ userId: req.user._id }); // Récupérer les invités de l'utilisateur connecté
+        res.status(200).json({
+            message: "Invités récupérés avec succès",
+            type: "success",
+            invites
+        });
+    } catch (err) {
+        console.error("Erreur lors de la récupération des invités :", err);
+        res.status(500).json({
+            message: "Erreur lors de la récupération des invités",
+            type: "danger"
+        });
+    }
+}
+
 export {
     register,
-    login
+    login,
+    addReunion,
+    allReunion,
+    addInvite,
+    allInvite
 };

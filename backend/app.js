@@ -8,7 +8,7 @@ const routes = require("./Routes/Routes");
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 //database connection 
 
 // Connexion à la base de données
@@ -23,6 +23,7 @@ mongoose.connect(process.env.DB_URI,{
 // route prefix 
 
 app.use("/",routes)
+app.use('/uploads', express.static('uploads'));
 
 
 app.listen(PORT, function () {

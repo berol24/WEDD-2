@@ -9,111 +9,51 @@ import Bouton from '../components/Bouton';
 import tri from '../assets/icons/tri.svg';
 import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
+import { useEffect } from 'react';
 
 function Dashboard() {
-  const mesInvites = [
-    {
-      id: 1,
-      image: myImage,
-      inviteId: 456987,
-      nom: 'Amina',
-      prenom: 'Daniel',
-      telephone: '612589635',
-      nomTable: 'Matthieu',
-      status: 'A',
-    },
-    {
-      id: 2,
-      image: myImage,
-      inviteId: 456988,
-      nom: 'Jean',
-      prenom: 'Paul',
-      telephone: '612589636',
-      nomTable: 'Marc',
-      status: 'A',
-    },
-    {
-      id: 3,
-      image: myImage,
-      inviteId: 456989,
-      nom: 'Sophie',
-      prenom: 'Laurent',
-      telephone: '612589637',
-      nomTable: 'Luc',
-      status: 'P',
-    },
-    {
-      id: 4,
-      image: myImage,
-      inviteId: 456990,
-      nom: 'Karim',
-      prenom: 'Nadia',
-      telephone: '612589638',
-      nomTable: 'Jean',
-      status: 'A',
-    },
-    {
-      id: 5,
-      image: myImage,
-      inviteId: 456991,
-      nom: 'Fatima',
-      prenom: 'Omar',
-      telephone: '612589639',
-      nomTable: 'Pierre',
-      status: 'P',
-    },
-    {
-      id: 6,
-      image: myImage,
-      inviteId: 456992,
-      nom: 'Elise',
-      prenom: 'David',
-      telephone: '612589640',
-      nomTable: 'Jacques',
-      status: 'A',
-    },
-    {
-      id: 7,
-      image: myImage,
-      inviteId: 456993,
-      nom: 'Lucie',
-      prenom: 'Bernard',
-      telephone: '612589641',
-      nomTable: 'Thomas',
-      status: 'P',
-    },
-    {
-      id: 8,
-      image: myImage,
-      inviteId: 456994,
-      nom: 'Bruno',
-      prenom: 'Claire',
-      telephone: '612589642',
-      nomTable: 'Philippe',
-      status: 'A',
-    },
-    {
-      id: 9,
-      image: myImage,
-      inviteId: 456995,
-      nom: 'Nora',
-      prenom: 'Samuel',
-      telephone: '612589643',
-      nomTable: 'André',
-      status: 'P',
-    },
-    {
-      id: 10,
-      image: myImage,
-      inviteId: 456996,
-      nom: 'Julie',
-      prenom: 'Martin',
-      telephone: '612589644',
-      nomTable: 'Simon',
-      status: 'A',
-    },
-  ];
-  const [invites, setInvites] = useState(mesInvites);
+ 
+    const [invitesList, setInvitesList] = useState([]);
+
+const apiUrl = import.meta.env.VITE_API_URL;
+    
+
+const invites = async () => {
+  try {
+    const token = localStorage.getItem("token"); // ou sessionStorage
+    const response = await fetch(`${apiUrl}/invites`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include' // si besoin
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur réseau');
+    }
+
+    const invites = await response.json();
+    const data = invites.invites || []; // Assurez-vous que la structure de la réponse est correcte
+    console.log('Invités récupérées:', data);
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la récupération des Invités:', error);
+    return [];
+  }
+};
+
+
+
+
+useEffect(() => {
+  const fetchInvites = async () => {
+    const data = await invites(); // <- la fonction définie plus haut
+    setInvitesList(data);
+  };
+
+  fetchInvites();
+}, []);
 
   return (
     <div className="flex justify-between w-full">
@@ -135,7 +75,7 @@ function Dashboard() {
         </div>
         <div className="flex justify-between items-center">
            <NextMeeting />
-           <Graphe invites={invites} setInvites={setInvites} />
+           <Graphe invites={invitesList} />
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between mb-8 mt-8">
           <button className="p-2 mb-4 sm:mb-0">
@@ -151,7 +91,7 @@ function Dashboard() {
             </button>
           </div>
         </div>
-        <Table invites={invites} setInvites={setInvites} />
+        <Table invites={invitesList} apiUrl={apiUrl} />
         <div className='text-center my-6'>
           <Link to="/ajout-invite"><Bouton
             width="w-64"

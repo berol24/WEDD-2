@@ -4,13 +4,19 @@ const User = require("../Models/User");
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { register, login } = require("../Controllers/Controllers");
+const { register, login, addReunion, allReunion, addInvite, allInvite } = require("../Controllers/Controllers");
+const upload= require("../Routes/UploadImage.js"); // Importation du middleware multer pour l'upload d'images
+const authenticate = require("../Routes/AuthMiddleware.js").default;
 
 // Configuration CORS explicite
 const corsOptions = {
 origin: 'http://localhost:5173', // Origine autorisée (frontend)
   methods: ['POST', 'GET'], // Méthodes autorisées
-  allowedHeaders: ['Content-Type'] // En-têtes autorisés
+  //allowedHeaders: ['Content-Type'] // En-têtes autorisés
+  allowedHeaders: ['Content-Type', 'Authorization'], // <- très important ici
+  credentials: true
+
+
 };
 
 router.use(cors(corsOptions));
@@ -20,7 +26,12 @@ router.use(express.json());
 
 router.post("/register", register);
 router.post("/login", login);
+router.post("/reunion", authenticate , addReunion)
+router.get("/reunions", authenticate, allReunion);
 
+
+router.post("/invite", authenticate, upload.single('image'), addInvite);
+router.get("/invites", authenticate,allInvite);
 
 // Route de déconnexion
 router.post('/logout', (req, res) => {

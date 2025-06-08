@@ -1,4 +1,4 @@
-  import React, { useState } from 'react';
+  import React, { useEffect , useState } from 'react';
   import AjoutReunion from './AjoutReunion'; // chemin à ajuster si nécessaire
   import deleteIcon from '../assets/icons/deleteIcon.svg';
   import edit from '../assets/icons/edit.svg';
@@ -8,14 +8,45 @@
 import BlogRight from '../components/BlogRight';
 
   function MesReunions() {
-    const [reunions, setReunions] = useState([
-      { id: 1, titre_reunion: 'Réunion 1', date: '2023-10-01', heure: '10:00', lieu: 'Salle A' },
-      { id: 2, titre_reunion: 'Réunion 2', date: '2023-10-02', heure: '11:00', lieu: 'Salle B' },
-      { id: 3, titre_reunion: 'Réunion 3', date: '2023-10-03', heure: '12:00', lieu: 'Salle C' },
-    ]);
-  
+    const [reunionsList, setReunionsList] = useState([]);
     const [showPopupAjoutReunion, setShowPopupAjoutReunion] = useState(false);
     const [showPopupUpdateReunion, setShowPopupUpdateReunion] = useState(false);
+    const apiUrl = import.meta.env.VITE_API_URL;
+    
+
+const reunions = async () => {
+  try {
+    const token = localStorage.getItem("token"); // ou sessionStorage
+    const response = await fetch(`${apiUrl}/reunions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include' // si besoin
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur réseau');
+    }
+
+    const reunions = await response.json();
+    const data = reunions.reunions || []; // Assurez-vous que la structure de la réponse est correcte
+    console.log('Réunions récupérées:', data);
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la récupération des réunions:', error);
+    return [];
+  }
+};
+
+useEffect(() => {
+  const fetchReunions = async () => {
+    const data = await reunions(); // <- la fonction définie plus haut
+    setReunionsList(data);
+  };
+
+  fetchReunions();
+}, []);
 
     return (   
      <div className='flex w-full min-h-screen'> 
@@ -49,23 +80,33 @@ import BlogRight from '../components/BlogRight';
               </tr>
             </thead>
             <tbody>
-              {reunions.map((reunion) => (
-                <tr key={reunion.id}>
-                  <td className="px-4 py-2 border-b text-center">{reunion.titre_reunion}</td>
-                  <td className="px-4 py-2 border-b text-center">{reunion.date}</td>
-                  <td className="px-4 py-2 border-b text-center">{reunion.heure}</td>
-                  <td className="px-4 py-2 border-b text-center">{reunion.lieu}</td>
-                  <td className="px-4 py-2 border-b text-center">
-                    <button  onClick={() => setShowPopupUpdateReunion(true)} className="px-2"><img src={edit} alt="Editer" className="w-5 h-5" /></button>
-                    <button className="px-2"><img src={deleteIcon} alt="Supprimer" className="w-5 h-5" /></button>
+              {reunionsList && reunionsList.length > 0 ? (
+                reunionsList.map((reunion) => (
+                  <tr key={reunion._id}>
+                    <td className="px-4 py-2 border-b text-center">{reunion.titre}</td>
+                    <td className="px-4 py-2 border-b text-center">{new Date(reunion.dateHeure).toLocaleDateString()}</td>
+                    <td className="px-4 py-2 border-b text-center">{new Date(reunion.dateHeure).toLocaleTimeString()}</td>
+                    <td className="px-4 py-2 border-b text-center">{reunion.lieu}</td> 
+                    <td className="px-4 py-2 border-b text-center">
+                      <button onClick={() => setShowPopupUpdateReunion(true)} className="px-2">
+                        <img src={edit} alt="Editer" className="w-5 h-5" />
+                      </button>
+                      <button className="px-2">
+                        <img src={deleteIcon} alt="Supprimer" className="w-5 h-5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-4 py-2 border-b text-center">
+                    Aucune réunion trouvée
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
-        </div>
-
-        <div className="flex justify-center mt-6">
+        </div>        <div className="flex justify-center mt-6">
           <button
             onClick={() => setShowPopupAjoutReunion(true)}
             className="bg-blue-500 text-white font-bold py-2 px-4 rounded"

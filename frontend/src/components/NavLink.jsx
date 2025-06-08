@@ -63,6 +63,25 @@ function NavLink() {
         </Link>
       </div>
 
+
+<div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
+        <span className="text-gray-500 mr-6 w-10 h-10">
+          {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
+        </span>
+        <Link to="/login-page" className={`${activeLink === 'login-page' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('login-page')}>
+          Connexion
+        </Link>
+      </div>
+
+      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
+        <span className="text-gray-500 mr-6 w-10 h-10">
+          {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
+        </span>
+        <Link to="/register-page" className={`${activeLink === 'register-page' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('register-page')}>
+          Inscription
+        </Link>
+      </div>
+
       <div className='d-flex flex-col m-8 items-center'>
         <Image src={help} className=" w-56" />
         <a href="/help-page" className=' underline underline-offset-8 '>Avez vous besoin d'aide ?</a>
