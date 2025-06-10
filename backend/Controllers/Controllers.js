@@ -219,11 +219,37 @@ const allInvite = async (req, res) => {
     }
 }
 
+const oneInvite = async (req, res) => {
+    const { inviteId } = req.params;
+
+    try {
+        const invite = await Invite.findOne({ inviteId: inviteId });
+        if (!invite) {
+            return res.status(404).json({
+                message: "Invité non trouvé",
+                type: "danger"
+            });
+        }
+        res.status(200).json({
+            message: "Invité récupéré avec succès",
+            type: "success",
+            invite
+        });
+    } catch (err) {
+        console.error("Erreur lors de la récupération de l'invité :", err);
+        res.status(500).json({
+            message: "Erreur lors de la récupération de l'invité",
+            type: "danger"
+        });
+    }
+}
+
 export {
     register,
     login,
     addReunion,
     allReunion,
     addInvite,
-    allInvite
+    allInvite,
+    oneInvite
 };

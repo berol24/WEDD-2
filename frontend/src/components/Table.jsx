@@ -3,6 +3,8 @@ import myImage from '../assets/img/logo.png';
 
 function Table({ invites ,apiUrl }) {
 
+
+
   return (
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead className="text-xs uppercase bg-blue-600 text-white">
@@ -31,7 +33,8 @@ function Table({ invites ,apiUrl }) {
         </tr>
       </thead>
       <tbody>
-        {invites.map((invite) => (
+         {invites && invites.length > 0 ? (
+        invites.map((invite) => (
           <tr className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td className="px-6 py-4">
               <img
@@ -44,7 +47,7 @@ function Table({ invites ,apiUrl }) {
             <td className="px-6 py-4">
               {invite.nom} {invite.prenom}
             </td>
-            <td className="px-6 py-4">+{invite.telephone}</td>
+            <td className="px-6 py-4">+237 {invite.telephone}</td>
             <td className="px-6 py-4">{invite.nomTable}</td>
             <td className="px-6 py-4">
               <div className="flex items-center">
@@ -88,7 +91,13 @@ function Table({ invites ,apiUrl }) {
               </div>
             </td>
           </tr>
-        ))}
+        ))): (
+                <tr>
+                  <td colSpan="5" className="px-4 py-2 border-b text-center">
+                    Aucune réunion trouvée
+                  </td>
+                </tr>
+              )}
       </tbody>
     </table>
   );

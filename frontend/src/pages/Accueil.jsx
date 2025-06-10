@@ -23,6 +23,7 @@ import NextMeeting from "../components/NextMeeting";
 import InfoProfile from "../components/InfoProfile";
 import BlogRight from "../components/BlogRight";
 import RechercheInvite from "./RechercheInvite";
+import ShowInvite from "./ShowInvite";
 
 function Accueil() {
 
@@ -66,6 +67,7 @@ return (
 
 {/* <BlogRight/> */}
 
+{/* <RechercheInvite/> */}
 <RechercheInvite/>
     </>
   )
