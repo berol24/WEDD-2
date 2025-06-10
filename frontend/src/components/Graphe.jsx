@@ -16,7 +16,7 @@ function Graphe({ invites }) {
     chart: {
       type: 'donut',
     },
-    labels: [`Presents <b>(${presents})</b>`, `Absents <b>(${absents})</b>`],
+    labels: [`Presents (${presents})`, `Absents (${absents})`],
     colors: ['#11B141', '#FF0000'],
     legend: {
       position: 'bottom',

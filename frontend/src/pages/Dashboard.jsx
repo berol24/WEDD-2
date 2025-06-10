@@ -14,10 +14,11 @@ import { useEffect } from 'react';
 function Dashboard() {
  
     const [invitesList, setInvitesList] = useState([]);
-
+    const [reunionsList, setReunionsList] = useState([]);
+    const [nom, setNom] = useState('');
 const apiUrl = import.meta.env.VITE_API_URL;
     
-
+// gestions des invitatés
 const invites = async () => {
   try {
     const token = localStorage.getItem("token"); // ou sessionStorage
@@ -43,9 +44,6 @@ const invites = async () => {
   }
 };
 
-
-
-
 useEffect(() => {
   const fetchInvites = async () => {
     const data = await invites(); // <- la fonction définie plus haut
@@ -55,13 +53,63 @@ useEffect(() => {
   fetchInvites();
 }, []);
 
+
+// gestion des réunions 
+
+const reunions = async () => {
+  try {
+    const token = localStorage.getItem("token"); // ou sessionStorage
+    const response = await fetch(`${apiUrl}/reunions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include' // si besoin
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur réseau');
+    }
+
+    const reunions = await response.json();
+    const data = reunions.reunions || []; // Assurez-vous que la structure de la réponse est correcte
+    console.log('Réunions récupérées:', data);
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la récupération des réunions:', error);
+    return [];
+  }
+};
+
+useEffect(() => {
+  const fetchReunions = async () => {
+    const data = await reunions(); // <- la fonction définie plus haut
+    setReunionsList(data);
+  };
+
+  fetchReunions();
+}, []);
+
+
+// utilisateur connecté 
+
+
+  useEffect(() => {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      setNom(user.nom);
+    }
+  }, []);
+
+
   return (
     <div className="flex justify-between w-full">
       <NavLink />
       <div>
         <div className="flex justify-between items-center p-4">
           <div>
-            Salut <b>Marie Pierre</b>
+            Salut <b>{nom}</b>
             <p> Un mariage inoubliable vous attend  🎉​🎉​🎉​🎉​🎉​🎉​🎉​🎉</p>
           </div>
 
@@ -74,7 +122,7 @@ useEffect(() => {
           </Bouton></Link> 
         </div>
         <div className="flex justify-between items-center">
-           <NextMeeting />
+           <NextMeeting lastMeeting = {reunionsList} />
            <Graphe invites={invitesList} />
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between mb-8 mt-8">

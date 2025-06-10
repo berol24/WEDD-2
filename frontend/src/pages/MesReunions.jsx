@@ -9,6 +9,8 @@ import BlogRight from '../components/BlogRight';
 
   function MesReunions() {
     const [reunionsList, setReunionsList] = useState([]);
+    const [filteredReunions, setFilteredReunions] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [showPopupAjoutReunion, setShowPopupAjoutReunion] = useState(false);
     const [showPopupUpdateReunion, setShowPopupUpdateReunion] = useState(false);
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -43,11 +45,23 @@ useEffect(() => {
   const fetchReunions = async () => {
     const data = await reunions(); // <- la fonction définie plus haut
     setReunionsList(data);
+    setFilteredReunions(data); // Initialiser la liste filtrée avec toutes les réunions
   };
 
   fetchReunions();
 }, []);
 
+// Fonction pour gérer la recherche
+
+const handleSearch = () => {
+    const filtered = reunionsList.filter(reunion =>
+      reunion.titre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reunion.lieu.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredReunions(filtered);
+  };
+
+  
     return (   
      <div className='flex w-full min-h-screen'> 
           <NavLink/>
@@ -61,8 +75,17 @@ useEffect(() => {
             <img src={tri} alt="Trier" className="w-6 h-6" />
           </button>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <input type="text" className="border border-gray-200 rounded px-4 py-2 w-full sm:w-auto" />
-            <button className="text-blue-500 font-bold border border-blue-500 rounded px-4 py-2 w-full sm:w-auto">
+          <input
+              type="text"
+              className="border border-gray-200 rounded px-4 py-2 w-full sm:w-auto"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Rechercher par titre"
+            />
+            <button
+              className="text-blue-500 font-bold border border-blue-500 rounded px-4 py-2 w-full sm:w-auto"
+              onClick={handleSearch}
+            >
               Rechercher
             </button>
           </div>
@@ -80,8 +103,8 @@ useEffect(() => {
               </tr>
             </thead>
             <tbody>
-              {reunionsList && reunionsList.length > 0 ? (
-                reunionsList.map((reunion) => (
+              {filteredReunions && filteredReunions.length > 0 ? (
+                filteredReunions.map((reunion) => (
                   <tr key={reunion._id}>
                     <td className="px-4 py-2 border-b text-center">{reunion.titre}</td>
                     <td className="px-4 py-2 border-b text-center">{new Date(reunion.dateHeure).toLocaleDateString()}</td>

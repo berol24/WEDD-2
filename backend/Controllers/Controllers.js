@@ -77,7 +77,7 @@ const login = async (req, res) => {
         const token = jwt.sign(
             { userId: user._id },
             process.env.JWT_SECRET,
-            { expiresIn: '24h'} // Le token expire après 10 secondes
+            { expiresIn: '24h'} // Le token expire après 24h 
         );
        console.log("Token généré :", token);
         // Envoi du token et des informations utilisateur
@@ -148,7 +148,8 @@ const addReunion = async (req, res) => {
 
 const allReunion = async (req, res) => {
     try {
-        const reunions = await Reunion.find({ userId: req.user._id }); // Récupérer les réunions de l'utilisateur connecté
+
+        const reunions = await Reunion.find({ userId: req.user._id }).sort({ dateHeure: 1 }); // Récupérer les réunions de l'utilisateur connecté
         res.status(200).json({
             message: "Réunions récupérées avec succès",
             type: "success",
