@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import myImage from '../assets/img/logo.png';
+import deleteIcon from '../assets/icons/deleteIcon.svg';
+import edit from '../assets/icons/edit.svg';
+import ModifierInvite from '../pages/ModifierInvite';
 
-function Table({ invites ,apiUrl }) {
+function Table({ invites ,apiUrl , onEditInvite ,handleDeleteInvite}) {
 
+  const [inviteToDelete, setInviteToDelete] = useState(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  // const [showPopupAjoutReunion, setShowPopupAjoutReunion] = useState(false);
+  const [showPopupUpdateReunion, setShowPopupUpdateReunion] = useState(false);
+  const [selectedReunion, setSelectedReunion] = useState(null);
 
 
   return (
+    <>
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead className="text-xs uppercase bg-blue-600 text-white">
         <tr>
@@ -35,7 +44,7 @@ function Table({ invites ,apiUrl }) {
       <tbody>
          {invites && invites.length > 0 ? (
         invites.map((invite) => (
-          <tr className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <tr key={invite._id} className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td className="px-6 py-4">
               <img
                 className="w-10 h-10 rounded-full"
@@ -59,7 +68,16 @@ function Table({ invites ,apiUrl }) {
             </td>
             <td className="px-6 py-4">
               <div className="flex space-x-2">
-                <a href="/edit" className="text-blue-600 hover:text-blue-900">
+                <button
+  onClick={() => onEditInvite(invite)}
+  className="px-2"
+>
+  <img src={edit} alt="Editer" className="w-5 h-5" />
+</button>
+
+
+
+                {/* <a href="/edit" className="text-blue-600 hover:text-blue-900">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -73,8 +91,16 @@ function Table({ invites ,apiUrl }) {
                       clipRule="evenodd"
                     />
                   </svg>
-                </a>
-                <a href="/delete" className="text-red-600 hover:text-red-900">
+                </a> */}
+                <button
+  onClick={() => handleDeleteInvite(invite._id)}
+  className="px-2"
+>
+  <img src={deleteIcon} alt="Supprimer" className="w-5 h-5" />
+</button>
+
+                
+                {/* <a href="/delete" className="text-red-600 hover:text-red-900">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -87,7 +113,7 @@ function Table({ invites ,apiUrl }) {
                       clipRule="evenodd"
                     />
                   </svg>
-                </a>
+                </a> */}
               </div>
             </td>
           </tr>
@@ -100,6 +126,8 @@ function Table({ invites ,apiUrl }) {
               )}
       </tbody>
     </table>
+      
+    </>
   );
 }
 

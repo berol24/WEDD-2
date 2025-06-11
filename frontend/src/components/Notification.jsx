@@ -44,7 +44,7 @@ function Notification() {
       <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto  w-[300px]  ">
         {reunionsList &&
           reunionsList.map((reunion) => (
-            <a
+            <a key={reunion._id}
               href="#"
               className="flex justify-between items-center gap-4 border-2 border-gray-300 p-4 rounded-lg w-[300px]"
             >

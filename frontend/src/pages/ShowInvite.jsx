@@ -8,6 +8,7 @@ function ShowInvite() {
     const { inviteId } = useParams();
     const [invite, setInvite] = useState([]);
     const [nom, setNom] = useState('');
+    const [prenom, setPrenom] = useState('');
     const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -52,6 +53,7 @@ function ShowInvite() {
         if (userString) {
             const user = JSON.parse(userString);
             setNom(user.nom);
+            setPrenom(user.prenom);
         }
     }, []);
 
@@ -66,7 +68,7 @@ function ShowInvite() {
    <div className="flex-1 bg-[#717171] flex items-center justify-center p-8 -mt-40">
       <div className="bg-white shadow-2xl p-10 rounded-2xl w-full max-w-md flex flex-col items-center text-center border border-pink-100">
         <h1 className="text-3xl font-serif font-bold mb-3 text-pink-700 tracking-wide">
-          Bienvenue au Mariage de {nom}
+          Bienvenue au Mariage de {nom} {prenom}
         </h1>
         <h2 className="text-xl font-medium mb-5 text-gray-700">{invite.inviteId}</h2>
         <img

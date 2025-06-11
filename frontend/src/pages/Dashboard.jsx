@@ -8,6 +8,7 @@ import Bouton from '../components/Bouton';
 import tri from '../assets/icons/tri.svg';
 import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
+import ModifierInvite from './ModifierInvite';
 
 function Dashboard() {
     const [invitesList, setInvitesList] = useState([]);
@@ -16,8 +17,17 @@ function Dashboard() {
     const [searchTerm, setSearchTerm] = useState('');
     const [nom, setNom] = useState('');
      const [prenom, setPrenom] = useState('');
-    const apiUrl = import.meta.env.VITE_API_URL;
+      const [successMessage, setSuccessMessage] = useState('');
     
+     const apiUrl = import.meta.env.VITE_API_URL;
+    
+// States à ajouter tout en haut du composant Dashboard
+const [showPopupUpdateInvite, setShowPopupUpdateInvite] = useState(false);
+const [selectedInvite, setSelectedInvite] = useState(null);
+const [inviteToDelete, setInviteToDelete] = useState(null);
+const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+
+
     // gestions des invités
     const invites = async () => {
         try {
@@ -70,14 +80,17 @@ function Dashboard() {
         }
     };
 
-    useEffect(() => {
+    // Définir en haut du composant
         const fetchInvites = async () => {
             const data = await invites();
             setInvitesList(data);
             setFilteredInvites(data);
         };
+   
+    // Lancer une fois au chargement
+      useEffect(() => {
         fetchInvites();
-    }, []);
+      }, []);
 
     useEffect(() => {
         const fetchReunions = async () => {
@@ -109,7 +122,35 @@ function Dashboard() {
         setFilteredInvites(filtered);
     };
 
-    return (
+
+
+    ///////////////////////////////
+      const handleDeleteInvite = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiUrl}/delete-invite/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        await fetchInvites(); // Recharge la liste après suppression
+        setSuccessMessage('Invité supprimée avec succès');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 2000);
+      } else {
+        alert('Erreur suppression');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Erreur suppression');
+    }
+  };
+
+    return (<>
         <div className="flex justify-between w-full">
             <NavLink />
             <div>
@@ -152,7 +193,25 @@ function Dashboard() {
                         </button>
                     </div>
                 </div>
-                <Table invites={filteredInvites} apiUrl={apiUrl} />
+                 {successMessage && (
+              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 text-center">
+                {successMessage}
+              </div>
+            )}
+                {/* <Table handleDeleteInvite={handleDeleteInvite} invites={filteredInvites} apiUrl={apiUrl} /> */}
+                <Table
+  handleDeleteInvite={(id) => {
+    setInviteToDelete(id);
+    setShowConfirmDelete(true);
+  }}
+  invites={filteredInvites}
+  apiUrl={apiUrl}
+  onEditInvite={(invite) => {
+    setSelectedInvite(invite);
+    setShowPopupUpdateInvite(true);
+  }}
+/>
+
                 <div className='text-center my-6'>
                     <Link to="/ajout-invite">
                         <Bouton
@@ -168,6 +227,47 @@ function Dashboard() {
             </div>
             <BlogRight />
         </div>
+        
+        {showPopupUpdateInvite && selectedInvite && (
+  <ModifierInvite
+    invite={selectedInvite}
+    onClose={() => {
+      setShowPopupUpdateInvite(false);
+      setSelectedInvite(null);
+      fetchInvites(); // pour rafraîchir les données après modification
+    }}
+  />
+)}
+
+{showConfirmDelete && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded shadow-lg w-80 text-center">
+      <h2 className="text-lg font-bold mb-4">Confirmer la suppression</h2>
+      <p className="mb-6">
+        Es-tu sûr de vouloir supprimer cet invité ?
+      </p>
+      <div className="flex justify-around">
+        <button
+          onClick={() => {
+            handleDeleteInvite(inviteToDelete);
+            setShowConfirmDelete(false);
+          }}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Oui, supprimer
+        </button>
+        <button
+          onClick={() => setShowConfirmDelete(false)}
+          className="bg-gray-300 px-4 py-2 rounded"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+</>
     );
 }
 

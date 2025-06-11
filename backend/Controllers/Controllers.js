@@ -164,6 +164,76 @@ const allReunion = async (req, res) => {
     }
 }
 
+const editReunion = async (req, res) => {
+    const { reunionId } = req.params;
+    const { titre, dateHeure, lieu } = req.body;
+
+    try {
+        // Vérification des données
+        if (!titre || !dateHeure || !lieu) {
+            return res.status(400).json({
+                message: "Tous les champs sont requis",
+                type: "danger"
+            });
+        }
+
+        // Mise à jour de la réunion
+        const updatedReunion = await Reunion.findByIdAndUpdate(
+            reunionId,
+            { titre, dateHeure, lieu },
+            { new: true }
+        );
+
+        if (!updatedReunion) {
+            return res.status(404).json({
+                message: "Réunion non trouvée",
+                type: "danger"
+            });
+        }
+
+        res.status(200).json({
+            message: "Réunion mise à jour avec succès!",
+            type: "success",
+            reunion: updatedReunion
+        });
+
+    } catch (err) {
+        console.error("Erreur lors de la mise à jour de la réunion :", err);
+        res.status(400).json({
+            message: err.message,
+            type: "danger"
+        });
+    }
+}
+
+
+const deleteReunion = async (req, res) => {
+  const { reunionId } = req.params;
+
+  try {
+    const deleted = await Reunion.findByIdAndDelete(reunionId);
+
+    if (!deleted) {
+      return res.status(404).json({
+        message: 'Réunion non trouvée',
+        type: 'danger',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Réunion supprimée avec succès',
+      type: 'success',
+    });
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la réunion:', error);
+    res.status(500).json({
+      message: 'Erreur serveur lors de la suppression',
+      type: 'danger',
+    });
+  }
+};
+
+
 
 const addInvite = async (req, res) => {
     const { nom, prenom, telephone, nomTable, status } = req.body;
@@ -244,6 +314,86 @@ const oneInvite = async (req, res) => {
     }
 }
 
+const editInvite = async (req, res) => {
+
+  const { id } = req.params; 
+  const { nom, prenom, telephone, nomTable, status } = req.body;
+
+  try {
+    if (!nom || !prenom || !telephone) {
+      return res.status(400).json({
+        message: "Nom, prénom et téléphone sont requis",
+        type: "danger",
+      });
+    }
+
+    const updatedFields = {
+      nom,
+      prenom,
+      telephone,
+      nomTable,
+      status,
+    };
+
+    if (req.file) {
+      updatedFields.image = req.file.filename;
+    }
+
+    const updatedInvite = await Invite.findByIdAndUpdate(
+        id, 
+        updatedFields,
+         {
+      new: true,
+    });
+
+    if (!updatedInvite) {
+      return res.status(404).json({
+        message: "Invité non trouvé",
+        type: "danger",
+      });
+    }
+
+    res.status(200).json({
+      message: "Invité mis à jour avec succès !",
+      type: "success",
+      invite: updatedInvite,
+    });
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour de l'invité :", err);
+    res.status(500).json({
+      message: "Une erreur est survenue lors de la mise à jour",
+      type: "danger",
+    });
+  }
+};
+
+const deleteInvite = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deleted = await Invite.findByIdAndDelete(id);
+
+        if (!deleted) {
+            return res.status(404).json({
+                message: 'Invité non trouvé',
+                type: 'danger',
+            });
+        }
+
+        res.status(200).json({
+            message: 'Invité supprimé avec succès',
+            type: 'success',
+        });
+    } catch (error) {
+        console.error('Erreur lors de la suppression de l\'invité:', error);
+        res.status(500).json({
+            message: 'Erreur serveur lors de la suppression',
+            type: 'danger',
+        });
+    }
+}
+
+
 export {
     register,
     login,
@@ -251,5 +401,9 @@ export {
     allReunion,
     addInvite,
     allInvite,
-    oneInvite
+    oneInvite,
+    editInvite,
+    deleteInvite,
+    editReunion,
+    deleteReunion
 };
