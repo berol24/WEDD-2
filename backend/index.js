@@ -10,9 +10,12 @@ const routes = require("./Routes/Routes");
 
 // ✅ Configuration CORS
 const corsOptions = {
-  // origin: 'http://localhost:5173', // l'URL du frontend
-  origin: "*", // Autoriser toutes les origines (à utiliser avec précaution en production)
-   
+ // origin: 'http://localhost:5173', // l'URL du frontend
+  origin: [
+  "https://wedd-frontend.vercel.app", // <-- URL de ton frontend Vercel
+  "http://localhost:5173"
+],
+
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -42,6 +45,8 @@ app.use("/",routes)
 app.use('/uploads', express.static('uploads'));
 
 
-app.listen(PORT, function () {
-    console.log("Serveur à l'écoute sur le port ", PORT);
-});
+// app.listen(PORT, function () {
+//     console.log("Serveur à l'écoute sur le port ", PORT);
+// });
+
+module.exports = app;
