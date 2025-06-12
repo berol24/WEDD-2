@@ -11,11 +11,12 @@ const routes = require("./Routes/Routes");
 // ✅ Configuration CORS
 const corsOptions = {
   // origin: 'http://localhost:5173', // l'URL du frontend
-  origin: [
-    "https://wedd-jade.vercel.app",
-    "https://wedd-cig6cv6o8-landingpages-projects-4b46ccec.vercel.app",
-    "https://wedd-landingpages-projects-4b46ccec.vercel.app"
-  ],
+  origin: "*", // Autoriser toutes les origines (à utiliser avec précaution en production)
+  // origin: [
+  //   "https://wedd-jade.vercel.app",
+  //   "https://wedd-cig6cv6o8-landingpages-projects-4b46ccec.vercel.app",
+  //   "https://wedd-landingpages-projects-4b46ccec.vercel.app"
+  // ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
