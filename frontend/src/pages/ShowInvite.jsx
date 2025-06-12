@@ -10,7 +10,7 @@ function ShowInvite() {
     const [nom, setNom] = useState('');
     const [prenom, setPrenom] = useState('');
     const navigate = useNavigate();
-    const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = import.meta.env.VITE_API_URL ;
 
     const getInvite = async () => {
         try {
