@@ -12,8 +12,8 @@ const routes = require("./Routes/Routes");
 const corsOptions = {
  // origin: 'http://localhost:5173', // l'URL du frontend
   origin: [
-  "https://wedd-sigma.vercel.app", // <-- URL de ton frontend Vercel
-  "http://localhost:5173"
+  process.env.FRONTEND_URL, // <-- URL de ton frontend Vercel
+  // "http://localhost:5173"
 ],
 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
