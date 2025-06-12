@@ -107,6 +107,170 @@ const login = async (req, res) => {
     }
 }
 
+const user = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password");
+        if (!user) {
+            return res.status(404).json({
+                message: "Utilisateur non trouvé",
+                type: "danger"
+            });
+        }
+        res.status(200).json({
+            message: "Informations utilisateur récupérées avec succès",
+            type: "success",
+            user: {
+                id: user._id,
+                nom: user.nom,
+                prenom: user.prenom,
+                email: user.email,
+                telephone: user.telephone,
+                dateMariage: user.dateMariage,
+                lieuMariage: user.lieuMariage,
+                couleurSite: user.couleurSite,
+                themeMariage: user.themeMariage
+            }
+        });
+    } catch (err) {
+        console.error("Erreur lors de la récupération de l'utilisateur :", err);
+        res.status(500).json({
+            message: "Erreur serveur",
+            type: "danger"
+        });
+    }
+}
+
+// const editProfil = async (req, res) => {
+//     const { nom, prenom, email, telephone, dateMariage, lieuMariage, couleurSite, themeMariage } = req.body;
+
+//     try {
+//         // Vérification des données
+//         if (!nom || !prenom || !email || !telephone) {
+//             return res.status(400).json({
+//                 message: "Tous les champs sont requis",
+//                 type: "danger"
+//             });
+//         }
+
+//         // Mise à jour de l'utilisateur
+//         const updatedUser = await User.findByIdAndUpdate(
+//             req.user._id,
+//             { nom, prenom, email, telephone, dateMariage, lieuMariage, couleurSite, themeMariage },
+//             { new: true }
+//         );
+
+//         if (!updatedUser) {
+//             return res.status(404).json({
+//                 message: "Utilisateur non trouvé",
+//                 type: "danger"
+//             });
+//         }
+
+//         res.status(200).json({
+//             message: "Profil mis à jour avec succès!",
+//             type: "success",
+//             user: updatedUser
+//         });
+
+//     } catch (err) {
+//         console.error("Erreur lors de la mise à jour du profil :", err);
+//         res.status(400).json({
+//             message: err.message,
+//             type: "danger"
+//         });
+//     }
+// }
+
+const editProfil = async (req, res) => {
+    const { nom, prenom, email, telephone, dateMariage, lieuMariage, couleurSite, themeMariage } = req.body;
+
+    try {
+        // Vérification des données
+        if (!nom || !prenom || !email || !telephone) {
+            return res.status(400).json({
+                message: "Tous les champs sont requis",
+                type: "danger"
+            });
+        }
+
+        // Mise à jour de l'utilisateur
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            { nom, prenom, email, telephone, dateMariage, lieuMariage, couleurSite, themeMariage },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                message: "Utilisateur non trouvé",
+                type: "danger"
+            });
+        }
+
+        res.status(200).json({
+            message: "Profil mis à jour avec succès!",
+            type: "success",
+            user: updatedUser
+        });
+
+    } catch (err) {
+        console.error("Erreur lors de la mise à jour du profil :", err);
+        res.status(400).json({
+            message: err.message,
+            type: "danger"
+        });
+    }
+}
+
+const editPassword = async (req, res) => {
+  const { newPassword, confirmNewPassword } = req.body;
+
+  try {
+    // Vérification des données reçues
+    if (!newPassword || !confirmNewPassword) {
+      return res.status(400).json({
+        message: "Tous les champs sont requis",
+        type: "danger",
+      });
+    }
+
+    // Vérification de la confirmation
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({
+        message: "Les nouveaux mots de passe ne correspondent pas",
+        type: "danger",
+      });
+    }
+
+    // Récupération de l'utilisateur connecté
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        message: "Utilisateur non trouvé",
+        type: "danger",
+      });
+    }
+
+    // Hashage et mise à jour
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    return res.status(200).json({
+      message: "Mot de passe mis à jour avec succès!",
+      type: "success",
+    });
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour du mot de passe :", err);
+    return res.status(500).json({
+      message: "Erreur serveur",
+      type: "danger",
+    });
+  }
+};
+
+
 const addReunion = async (req, res) => {
     const { titre, dateHeure, lieu } = req.body;
 
@@ -397,6 +561,9 @@ const deleteInvite = async (req, res) => {
 export {
     register,
     login,
+    user,
+    editProfil,
+    editPassword,
     addReunion,
     allReunion,
     addInvite,

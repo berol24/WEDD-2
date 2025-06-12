@@ -28,7 +28,7 @@ function ShowInvite() {
             }
 
             const invite = await response.json();
-             const data = invite.invite || [];
+            const data = invite.invite || [];
             console.log('Invité récupéré:', data);
             return data;
         } catch (error) {

@@ -21,14 +21,11 @@ const router = createBrowserRouter (
         <Route path="/login-page" element={<Connexion />} />
         <Route path="/register-page" element={<Inscription />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile-page" element={< Informations/>}/>
+        <Route path="/profil" element={< Informations/>}/>
         <Route path="/ajout-invite" element={< AjoutInvite />}/>
         <Route path="/liste-reunions" element={< MesReunions />}/>
         <Route path="/recherche-invite" element={<RechercheInvite />} />
         <Route path="/invites/:inviteId" element={<ShowInvite />} /> 
-        {/* <Route path="/edit-reunion/:reunionId" element={<ModifierReunion />} /> */}
-        
-        {/* Catch-all route for 404 Not Found */}
         <Route path="*" element={<PageNotFound/>} />
 
       </>

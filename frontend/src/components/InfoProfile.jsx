@@ -26,7 +26,7 @@ function InfoProfile() {
       </div>
       <div className="flex flex-col items-center justify-center p-4">
         <h1 className="text-2xl font-bold">{nom + " " + prenom}</h1>
-        <Link to="/profile-page" className='mt-4'>
+        <Link to="/profil" className='mt-4'>
           <Bouton  width="w-20" height="h-16" bg="bg-[#016CEC]" color="text-[#fff]"  >Profile</Bouton>
         </Link>      </div>
     </div>
