@@ -5,23 +5,23 @@ const mongoose  = require('mongoose');
 
 
 const app  = express()
-const PORT = process.env.PORT || 4000 ;
+const PORT = process.env.PORT || 5000 ;
 const routes = require("./Routes/Routes");
 
 // ✅ Configuration CORS
-const corsOptions = {
-  // origin: 'http://localhost:5173', // l'URL du frontend
-  origin: [
-    "https://wedd-jade.vercel.app",
-    "https://wedd-cig6cv6o8-landingpages-projects-4b46ccec.vercel.app",
-    "https://wedd-landingpages-projects-4b46ccec.vercel.app"
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
-
-app.use("*", cors(corsOptions));
+// const corsOptions = {
+//   // origin: 'http://localhost:5173', // l'URL du frontend
+//   origin: [
+//     "https://wedd-jade.vercel.app",
+//     "https://wedd-cig6cv6o8-landingpages-projects-4b46ccec.vercel.app",
+//     "https://wedd-landingpages-projects-4b46ccec.vercel.app"
+//   ],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true,
+// };
+// corsOptions
+app.use(cors());
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
