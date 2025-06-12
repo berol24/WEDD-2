@@ -162,7 +162,9 @@ function Informations() {
   return (
     <div className="flex">
       <NavLink />
-      <div className="flex flex-col items-center justify-center min-h-screen max-w-4xl mx-auto py-4 px-4">
+
+
+      <div className="flex flex-col items-center  min-h-screen max-w-4xl mx-auto py-4 px-4 mt-20">
         <h1 className="text-2xl font-bold mb-6">Mes informations personnelles</h1>
        
                {isEditSuccess && (

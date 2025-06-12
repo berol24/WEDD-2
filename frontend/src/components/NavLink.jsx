@@ -49,7 +49,7 @@ function NavLink() {
         <span className="text-gray-500 mr-6">
           <img src={edit} alt="profil" className={activeLink === 'profil' ? 'text-gray-900' : 'text-gray-500'} />
         </span>
-        <Link to="/profile-page" className={`${activeLink === 'profil' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('profil')}>
+        <Link to="/profil" className={`${activeLink === 'profil' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('profil')}>
           Profil
         </Link>
       </div>
