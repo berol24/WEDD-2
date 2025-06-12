@@ -9,17 +9,17 @@ const upload= require("../Routes/UploadImage.js"); // Importation du middleware 
 const authenticate = require("../Routes/AuthMiddleware.js").default;
 
 // Configuration CORS explicite
-const corsOptions = {
-origin: 'http://localhost:5173', // Origine autorisée (frontend)
-  methods: ['POST', 'GET'], // Méthodes autorisées
-  //allowedHeaders: ['Content-Type'] // En-têtes autorisés
-  allowedHeaders: ['Content-Type', 'Authorization'], // <- très important ici
-  credentials: true
+// const corsOptions = {
+// origin: 'http://localhost:5173', // Origine autorisée (frontend)
+//   methods: ['POST', 'GET'], // Méthodes autorisées
+//   //allowedHeaders: ['Content-Type'] // En-têtes autorisés
+//   allowedHeaders: ['Content-Type', 'Authorization'], // <- très important ici
+//   credentials: true
 
 
-};
+// };
 
-router.use(cors(corsOptions));
+// router.use(cors(corsOptions));
 router.use(express.json());
 
 // Routes
