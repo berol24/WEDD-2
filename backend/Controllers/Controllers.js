@@ -53,7 +53,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body; // Ne prendre que l'email et le mot de passe ici
-
+    console.log("Body:", req.body); 
     try {
         // Vérification si l'utilisateur existe
         const user = await User.findOne({ email });
