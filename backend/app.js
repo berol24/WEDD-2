@@ -10,7 +10,8 @@ const routes = require("./Routes/Routes");
 
 // ✅ Configuration CORS
 const corsOptions = {
-  origin: 'http://localhost:5173', // l'URL du frontend
+  // origin: 'http://localhost:5173', // l'URL du frontend
+  origin: "https://wedd-jade.vercel.app",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
