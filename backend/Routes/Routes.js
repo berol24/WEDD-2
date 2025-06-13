@@ -10,8 +10,7 @@ const authenticate = require("./AuthMiddleware.js").default;
 
 // Liste des origines autorisées
 const allowedOrigins = [
-  process.env.FRONTEND_URL || "https://wedd-five.vercel.app",
-  "https://wedd-five.vercel.app",
+  process.env.FRONTEND_URL 
   // "http://localhost:5173", // si tu testes en local
 ];
 

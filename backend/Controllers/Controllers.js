@@ -52,8 +52,7 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://wedd-five.vercel.app');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
     const { email, password } = req.body; // Ne prendre que l'email et le mot de passe ici
     console.log("Body:", req.body); 
     try {
