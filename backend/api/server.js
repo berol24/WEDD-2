@@ -94,7 +94,18 @@ const corsOptionsDelegate = function (req, callback) {
 };
 
 app.use(cors(corsOptionsDelegate));
+
 app.options('*', cors(corsOptionsDelegate)); // Pour les préflight OPTIONS
+
+///////////////////
+// Pour gérer toutes les requêtes OPTIONS (préflight CORS)
+app.options('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://wedd-five.vercel.app');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  return res.status(200).end();
+});
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
