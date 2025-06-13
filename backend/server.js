@@ -70,7 +70,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const routes = require("../Routes/Routes");
+const routes = require("./Routes/Routes");
 
 // Liste des origines autorisées
 const allowedOrigins = [
