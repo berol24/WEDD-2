@@ -10,7 +10,7 @@ const routes = require("./Routes/Routes");
 
 
 const allowedOrigins = [
-   process.env.FRONTEND_URL, // mets ici l’URL Vercel de ton frontend
+   process.env.FRONTEND_URL || "https://wedd-five.vercel.app", // mets ici l’URL Vercel de ton frontend
   // "http://localhost:5173"
 ];
 
