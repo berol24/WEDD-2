@@ -8,7 +8,7 @@ function Notification() {
   const reunions = async () => {
     try {
       const token = localStorage.getItem('token'); // ou sessionStorage
-      const response = await fetch(`${apiUrl}/reunions`, {
+      const response = await fetch(`${apiUrl}/api/reunions`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

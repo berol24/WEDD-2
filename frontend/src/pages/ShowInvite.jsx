@@ -15,7 +15,7 @@ function ShowInvite() {
     const getInvite = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${apiUrl}/invites/${inviteId}`, {
+            const response = await fetch(`${apiUrl}/api/invites/${inviteId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'

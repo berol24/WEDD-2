@@ -31,7 +31,7 @@ function Informations() {
     } else {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${apiUrl}/profil`, {
+        const response = await fetch(`${apiUrl}/api/profil`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ function Informations() {
 
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${apiUrl}/profil-password`, {
+        const response = await fetch(`${apiUrl}/api/profil-password`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ function Informations() {
   const getUser = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}/profil`, {
+      const response = await fetch(`${apiUrl}/api/profil`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

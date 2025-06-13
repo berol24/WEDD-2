@@ -34,7 +34,7 @@ function ModifierInvite({ invite, onClose }) {
         formData.append('image', image);
       }
 
-      const response = await fetch(`${apiUrl}/edit-invite/${invite._id}`, {
+      const response = await fetch(`${apiUrl}/api/edit-invite/${invite._id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

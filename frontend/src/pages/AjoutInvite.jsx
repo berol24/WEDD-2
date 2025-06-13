@@ -28,7 +28,7 @@ function AjoutInvite({ onClose }) {
         formData.append('image', image);
       }
 
-      const response = await fetch(`${apiUrl}/invite`, {
+      const response = await fetch(`${apiUrl}/api/invite`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

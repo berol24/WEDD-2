@@ -32,7 +32,7 @@ const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const invites = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${apiUrl}/invites`, {
+            const response = await fetch(`${apiUrl}/api/invites`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const reunions = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${apiUrl}/reunions`, {
+            const response = await fetch(`${apiUrl}/api/reunions`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ const [showConfirmDelete, setShowConfirmDelete] = useState(false);
       const handleDeleteInvite = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${apiUrl}/delete-invite/${id}`, {
+      const res = await fetch(`${apiUrl}/api/delete-invite/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -52,7 +52,7 @@ mongoose.connect(process.env.DB_URI,{
 
 // route prefix 
 
-app.use("",routes)
+app.use("/api",routes)
 app.use('/uploads', express.static('uploads'));
 
 

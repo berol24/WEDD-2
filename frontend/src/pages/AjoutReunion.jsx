@@ -13,7 +13,7 @@ function AjoutReunion({ onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${apiUrl}/reunion`, {
+      const response = await fetch(`${apiUrl}/api/reunion`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

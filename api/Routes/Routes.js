@@ -9,17 +9,29 @@ const upload= require("./UploadImage.js"); // Importation du middleware multer p
 const authenticate = require("./AuthMiddleware.js").default;
 
 // Configuration CORS explicite
+const allowedOrigins = [
+   process.env.FRONTEND_URL, // mets ici l’URL Vercel de ton frontend
+  // "http://localhost:5173"
+];
+
 const corsOptions = {
-origin: 'http://localhost:5173', // Origine autorisée (frontend)
-  methods: ['POST', 'GET'], // Méthodes autorisées
-  //allowedHeaders: ['Content-Type'] // En-têtes autorisés
-  allowedHeaders: ['Content-Type', 'Authorization'], // <- très important ici
-  credentials: true
-
-
+  origin: function (origin, callback) {
+    // autoriser les requêtes sans origin (comme curl ou Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 };
 
 router.use(cors(corsOptions));
+router.options('*', cors(corsOptions)); // obligatoire pour gérer les requêtes OPTIONS
+
+
 router.use(express.json());
 
 // Routes

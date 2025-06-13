@@ -23,7 +23,7 @@ function ModifierReunion({ onClose, reunion }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${apiUrl}/edit-reunion/${reunionId}`, {
+      const response = await fetch(`${apiUrl}/api/edit-reunion/${reunionId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

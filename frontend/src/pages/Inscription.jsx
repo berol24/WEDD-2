@@ -33,7 +33,7 @@ function Inscription() {
     console.log('Données envoyées au backend :', formData);
 
     try {
-      const response = await fetch(`${apiUrl}/register`, {
+      const response = await fetch(`${apiUrl}/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

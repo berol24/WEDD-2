@@ -14,7 +14,7 @@ const RechercheInvite = () => {
     const invites = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${apiUrl}/invites`, {
+            const response = await fetch(`${apiUrl}/api/invites`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
