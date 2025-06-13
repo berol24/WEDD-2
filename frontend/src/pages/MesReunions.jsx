@@ -30,7 +30,6 @@ function MesReunions() {
           'Content-Type': 'application/json',
         },
         credentials: 'include', // si besoin
-        mode: 'no-cors'  // cors, same-origin, or no-cors.
         
       });
 

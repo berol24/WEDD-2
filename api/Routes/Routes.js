@@ -8,29 +8,29 @@ const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite
 const upload= require("./UploadImage.js"); // Importation du middleware multer pour l'upload d'images
 const authenticate = require("./AuthMiddleware.js").default;
 
-// Configuration CORS explicite
+// Liste des origines autorisées
 const allowedOrigins = [
-   process.env.FRONTEND_URL || "https://wedd-five.vercel.app/*", // mets ici l’URL Vercel de ton frontend
-   "https://wedd-five.vercel.app"
-   // "http://localhost:5173"
+  process.env.FRONTEND_URL || "https://wedd-five.vercel.app",
+  "https://wedd-five.vercel.app",
+  // "http://localhost:5173", // si tu testes en local
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    // autoriser les requêtes sans origin (comme curl ou Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+const corsOptionsDelegate = function (req, callback) {
+  const origin = req.header('Origin');
+  if (!origin || allowedOrigins.includes(origin)) {
+    callback(null, {
+      origin: origin, // Répond exactement avec l'origine demandée
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization']
+    });
+  } else {
+    callback(new Error("Not allowed by CORS"));
+  }
 };
 
-router.use(cors(corsOptions));
-router.options('*', cors(corsOptions)); // obligatoire pour gérer les requêtes OPTIONS
+router.use(cors(corsOptionsDelegate));
+router.options('*', cors(corsOptionsDelegate)); // Pour les préflight OPTIONS
 
 
 router.use(express.json());
