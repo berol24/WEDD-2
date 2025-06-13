@@ -1,25 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../Models/User");
+const User = require("../Models/User.js");
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite, editReunion, deleteReunion, editInvite, deleteInvite, user, editProfil, editPassword } = require("../Controllers/Controllers");
-const upload= require("../Routes/UploadImage.js"); // Importation du middleware multer pour l'upload d'images
-const authenticate = require("../Routes/AuthMiddleware.js").default;
+const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite, editReunion, deleteReunion, editInvite, deleteInvite, user, editProfil, editPassword } = require("../Controllers/Controllers.js");
+const upload= require("./UploadImage.js"); // Importation du middleware multer pour l'upload d'images
+const authenticate = require("./AuthMiddleware.js").default;
 
 // Configuration CORS explicite
-// const corsOptions = {
-// origin: 'http://localhost:5173', // Origine autorisée (frontend)
-//   methods: ['POST', 'GET'], // Méthodes autorisées
-//   //allowedHeaders: ['Content-Type'] // En-têtes autorisés
-//   allowedHeaders: ['Content-Type', 'Authorization'], // <- très important ici
-//   credentials: true
+const corsOptions = {
+origin: 'http://localhost:5173', // Origine autorisée (frontend)
+  methods: ['POST', 'GET'], // Méthodes autorisées
+  //allowedHeaders: ['Content-Type'] // En-têtes autorisés
+  allowedHeaders: ['Content-Type', 'Authorization'], // <- très important ici
+  credentials: true
 
 
-// };
+};
 
-// router.use(cors(corsOptions));
+router.use(cors(corsOptions));
 router.use(express.json());
 
 // Routes

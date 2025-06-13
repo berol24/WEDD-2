@@ -8,26 +8,10 @@ const app  = express()
 const PORT = process.env.PORT || 5000 ;
 const routes = require("./Routes/Routes");
 
-// ✅ Configuration CORS
-// const corsOptions = {
-//  // origin: 'http://localhost:5173', // l'URL du frontend
-//   origin: [
-//   process.env.FRONTEND_URL, // <-- URL de ton frontend Vercel
-//   // "http://localhost:5173"
-// ],
-
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // ⚠ inclure DELETE
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true,
-// };
-
-// app.use(cors(corsOptions));
-
-
 
 const allowedOrigins = [
    process.env.FRONTEND_URL, // mets ici l’URL Vercel de ton frontend
-  "http://localhost:5173"
+  // "http://localhost:5173"
 ];
 
 const corsOptions = {
@@ -49,6 +33,7 @@ app.options('*', cors(corsOptions)); // obligatoire pour gérer les requêtes OP
 
 
 
+
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,7 +52,7 @@ mongoose.connect(process.env.DB_URI,{
 
 // route prefix 
 
-app.use("/",routes)
+app.use("",routes)
 app.use('/uploads', express.static('uploads'));
 
 
