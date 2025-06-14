@@ -92,6 +92,9 @@ app.use("/api", routes);
 app.use('/uploads', express.static('uploads'));
 
 // Lancement du serveur
-app.listen(PORT, () => {
-  console.log("Serveur à l'écoute sur le port", PORT);
-});
+// app.listen(PORT, () => {
+//   console.log("Serveur à l'écoute sur le port", PORT);
+// });
+
+
+module.exports = app;
