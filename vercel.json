@@ -4,12 +4,19 @@
     {
       "src": "backend/server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "frontend/vite.config.js",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/dist"
+      }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/server.js"
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
     }
   ],
   "headers": [
@@ -34,5 +41,6 @@
         }
       ]
     }
-  ]
+  ],
+  "routes": []
 }
