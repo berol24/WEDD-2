@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import axios from 'axios';
 function ModifierInvite({ invite, onClose }) {
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
@@ -20,37 +20,70 @@ function ModifierInvite({ invite, onClose }) {
     }
   }, [invite]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      const formData = new FormData();
-      formData.append('nom', nom);
-      formData.append('prenom', prenom);
-      formData.append('telephone', telephone);
-      formData.append('nomTable', nomTable);
-      formData.append('status', status);
-      if (image) {
-        formData.append('image', image);
-      }
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const formData = new FormData();
+  //     formData.append('nom', nom);
+  //     formData.append('prenom', prenom);
+  //     formData.append('telephone', telephone);
+  //     formData.append('nomTable', nomTable);
+  //     formData.append('status', status);
+  //     if (image) {
+  //       formData.append('image', image);
+  //     }
 
-      const response = await fetch(`${apiUrl}/api/edit-invite/${invite._id}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+  //     const response = await fetch(`${apiUrl}/api/edit-invite/${invite._id}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: formData,
+  //     });
 
-      if (response.ok) {
-        onClose(); // Ferme la popup si succès
-      } else {
-        alert('Erreur lors de la modification');
-      }
-    } catch (error) {
-      console.error('Erreur modification:', error);
+  //     if (response.ok) {
+  //       onClose(); // Ferme la popup si succès
+  //     } else {
+  //       alert('Erreur lors de la modification');
+  //     }
+  //   } catch (error) {
+  //     console.error('Erreur modification:', error);
+  //   }
+  // };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('nom', nom);
+    formData.append('prenom', prenom);
+    formData.append('telephone', telephone);
+    formData.append('nomTable', nomTable);
+    formData.append('status', status);
+    if (image) {
+      formData.append('image', image);
     }
-  };
+
+    const response = await axios.put(`${apiUrl}/api/edit-invite/${invite._id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    if (response.status === 200) {
+      onClose(); // Ferme la popup si succès
+    } else {
+      alert('Erreur lors de la modification');
+    }
+  } catch (error) {
+    console.error('Erreur modification:', error);
+    alert('Erreur lors de la modification');
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

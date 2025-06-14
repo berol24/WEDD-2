@@ -5,13 +5,60 @@ import logo from '../assets/img/logo.png';
 import Input from '../components/Input';
 import Image from '../components/Image';
 import Title from '../components/Title';
+import axios from 'axios';
 function Inscription() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState({ text: '', type: '' });
   const apiUrl = import.meta.env.VITE_API_URL;
 
+  // const [formData, setFormData] = useState({
+  //   nom: '',
+  //   prenom: '',
+  //   email: '',
+  //   telephone: '',
+  //   password: '',
+  //   confirmPassword: '',
+  //   dateMariage: '',
+  //   lieuMariage: '',
+  //   couleurSite: '',
+  //   themeMariage: '',
+  // });
 
-  const [formData, setFormData] = useState({
+  // const handleChange = (e) => {
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log('Données envoyées au backend :', formData);
+
+  //   try {
+  //     const response = await fetch(`${apiUrl}/api/register`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //       // setErrorMessage({ text: data.message, type: data.type });
+
+  //       navigate('/login-page');
+  //     } else {
+  //       setErrorMessage({ text: data.message, type: data.type });
+  //     }
+  //   } catch (error) {
+  //     console.error('Erreur réseau :', error);
+  //     setErrorMessage({
+  //       text: 'Impossible de contacter le serveur.',
+  //       type: data.type,
+  //     });
+  //   }
+  // };
+
+
+const [formData, setFormData] = useState({
     nom: '',
     prenom: '',
     email: '',
@@ -21,7 +68,7 @@ function Inscription() {
     dateMariage: '',
     lieuMariage: '',
     couleurSite: '',
-    themeMariage: ''
+    themeMariage: '',
   });
 
   const handleChange = (e) => {
@@ -33,29 +80,24 @@ function Inscription() {
     console.log('Données envoyées au backend :', formData);
 
     try {
-      const response = await fetch(`${apiUrl}/api/register`, {
-        method: 'POST',
+      const response = await axios.post(`${apiUrl}/api/register`, formData, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
       });
-      const data = await response.json();
-      if (response.ok) {
 
-        // setErrorMessage({ text: data.message, type: data.type });
-          
+      // Redirection si succès
+      if (response.status === 200 || response.status === 201) {
         navigate('/login-page');
-            
-      } else {
-        setErrorMessage({ text: data.message, type: data.type });
       }
     } catch (error) {
-      console.error('Erreur réseau :', error);
-      setErrorMessage({ text: 'Impossible de contacter le serveur.', type: data.type });
+      console.error('Erreur lors de l’inscription :', error);
+      setErrorMessage({
+        text: error.response?.data?.message || 'Une erreur est survenue.',
+        type: error.response?.data?.type || 'error',
+      });
     }
   };
-
 
 
   return (
@@ -84,14 +126,14 @@ function Inscription() {
           </Title>
         </div>
 
-
-  {/* Affichage du message d'erreur ou de succès */}
-  {errorMessage.text && (
-          <div className={`my-4 text-center ${errorMessage.type === 'danger' ? 'text-red-500' : 'text-green-500'}`}>
+        {/* Affichage du message d'erreur ou de succès */}
+        {errorMessage.text && (
+          <div
+            className={`my-4 text-center ${errorMessage.type === 'danger' ? 'text-red-500' : 'text-green-500'}`}
+          >
             {errorMessage.text}
           </div>
         )}
-
 
         <div className="mt-4 md:mt-6 mx-auto w-full max-w-sm">
           <form onSubmit={handleSubmit} className="space-y-4">

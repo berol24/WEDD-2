@@ -5,7 +5,7 @@ import Input from '../components/Input';
 import Image from '../components/Image';
 import Title from '../components/Title';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 function Connexion() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,50 +13,90 @@ function Connexion() {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+
+  //   try {
+  //     const response = await fetch(`${apiUrl}/api/login`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         password,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       const expiration = new Date().getTime() + data.expiresIn;
+
+  //       localStorage.setItem('token', data.token);
+  //       localStorage.setItem('tokenExpiration', expiration.toString());
+  //       localStorage.setItem('user', JSON.stringify(data.user));
+
+  //       navigate('/dashboard');
+
+  //       // Optionnel : Définir un timer pour déconnecter l'utilisateur après expiration
+  //       setTimeout(() => {
+  //         localStorage.removeItem('token');
+  //         localStorage.removeItem('tokenExpiration');
+  //         localStorage.removeItem('user');
+  //         navigate('/login-page');
+  //       }, data.expiresIn);
+  //     } else {
+  //       setError(data.message || 'Identifiants incorrects');
+  //     }
+  //   } catch (err) {
+  //     setError('Une erreur est survenue lors de la connexion');
+  //   }
+  // };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-  
-    try {
-      const response = await fetch(`${apiUrl}/api/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        const expiration = new Date().getTime() + data.expiresIn;
-  
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('tokenExpiration', expiration.toString());
-        localStorage.setItem('user', JSON.stringify(data.user));
-  
-        navigate('/dashboard');
-  
-        // Optionnel : Définir un timer pour déconnecter l'utilisateur après expiration
-        setTimeout(() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('tokenExpiration');
-          localStorage.removeItem('user');
-          navigate('/login-page');
-        }, data.expiresIn);
-      } else {
-        setError(data.message || 'Identifiants incorrects');
-      }
-    } catch (err) {
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+
+  try {
+    const response = await axios.post(`${apiUrl}/api/login`, {
+      email,
+      password,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = response.data;
+    const expiration = new Date().getTime() + data.expiresIn;
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('tokenExpiration', expiration.toString());
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    navigate('/dashboard');
+
+    // Optionnel : Déconnexion après expiration
+    setTimeout(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenExpiration');
+      localStorage.removeItem('user');
+      navigate('/login-page');
+    }, data.expiresIn);
+
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      setError(err.response.data.message);
+    } else {
       setError('Une erreur est survenue lors de la connexion');
     }
-  };
-  
+  }
+};
+
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="w-full md:w-1/2 h-96 md:h-full">
@@ -83,7 +123,11 @@ function Connexion() {
         </div>
 
         <div className="mt-8 md:mt-10 mx-auto w-full max-w-sm">
-          {error && <div className="text-red-500 text-center mb-4 p-2 bg-red-100 rounded-md">{error}</div>}
+          {error && (
+            <div className="text-red-500 text-center mb-4 p-2 bg-red-100 rounded-md">
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               width="w-full"

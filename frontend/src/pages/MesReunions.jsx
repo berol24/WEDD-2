@@ -6,8 +6,7 @@ import tri from '../assets/icons/tri.svg';
 import ModifierReunion from './ModifierReunion';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
-
-
+import axios from 'axios';
 function MesReunions() {
   const [reunionsList, setReunionsList] = useState([]);
   const [filteredReunions, setFilteredReunions] = useState([]);
@@ -21,33 +20,54 @@ function MesReunions() {
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const reunions = async () => {
-    try {
-      const token = localStorage.getItem('token'); // ou sessionStorage
-      const response = await fetch(`${apiUrl}/api/reunions`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // si besoin
-        
-      });
+  // const reunions = async () => {
+  //   try {
+  //     const token = localStorage.getItem('token'); // ou sessionStorage
+  //     const response = await fetch(`${apiUrl}/api/reunions`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       credentials: 'include', // si besoin
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Erreur réseau');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Erreur réseau');
+  //     }
 
-      const reunions = await response.json();
-      const data = reunions.reunions || [];
-      console.log('Réunions récupérées:', data);
-      return data;
-    } catch (error) {
-      console.error('Erreur lors de la récupération des réunions:', error);
-      return [];
-    }
-  };
+  //     const reunions = await response.json();
+  //     const data = reunions.reunions || [];
+  //     console.log('Réunions récupérées:', data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Erreur lors de la récupération des réunions:', error);
+  //     return [];
+  //   }
+  // };
 
   // Définir en haut du composant
+  
+  const reunions = async () => {
+  try {
+    const token = localStorage.getItem('token'); // ou sessionStorage
+
+    const response = await axios.get(`${apiUrl}/api/reunions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true, // équivalent de credentials: 'include'
+    });
+
+    const data = response.data.reunions || [];
+    console.log('Réunions récupérées:', data);
+    return data;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des réunions:', error);
+    return [];
+  }
+};
+  
   const fetchReunions = async () => {
     const data = await reunions();
     setReunionsList(data);
@@ -70,30 +90,55 @@ function MesReunions() {
     setFilteredReunions(filtered);
   };
 
-  const handleDeleteReunion = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${apiUrl}/api/delete-reunion/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // const handleDeleteReunion = async (id) => {
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const res = await fetch(`${apiUrl}/api/delete-reunion/${id}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      if (res.ok) {
-        await fetchReunions(); // Recharge la liste après suppression
-        setSuccessMessage('Réunion supprimée avec succès');
-        setTimeout(() => {
-          setSuccessMessage('');
-        }, 2000);
-      } else {
-        alert('Erreur suppression');
-      }
-    } catch (err) {
-      console.error(err);
+  //     if (res.ok) {
+  //       await fetchReunions(); // Recharge la liste après suppression
+  //       setSuccessMessage('Réunion supprimée avec succès');
+  //       setTimeout(() => {
+  //         setSuccessMessage('');
+  //       }, 2000);
+  //     } else {
+  //       alert('Erreur suppression');
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert('Erreur suppression');
+  //   }
+  // };
+
+
+const handleDeleteReunion = async (id) => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.delete(`${apiUrl}/api/delete-reunion/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      await fetchReunions(); // Recharge la liste après suppression
+      setSuccessMessage('Réunion supprimée avec succès');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 2000);
+    } else {
       alert('Erreur suppression');
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert('Erreur suppression');
+  }
+};
 
   return (
     <>
@@ -179,8 +224,6 @@ function MesReunions() {
                             className="w-5 h-5"
                           />
                         </button>
-
-                        
                       </td>
                     </tr>
                   ))

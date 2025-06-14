@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Input from '../components/Input';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
-
+import axios from 'axios';
 function Informations() {
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isEditSuccess, setIsEditSuccess] = useState(false);
-   const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
+  const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
   const [formData, setFormData] = useState({
     nom: '',
     prenom: '',
@@ -25,114 +25,226 @@ function Informations() {
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const handleEditClick = async () => {
-    if (!isEditing) {
-      setIsEditing(true);
-    } else {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${apiUrl}/api/profil`, {
-          method: 'PUT',
+  // const handleEditClick = async () => {
+  //   if (!isEditing) {
+  //     setIsEditing(true);
+  //   } else {
+  //     try {
+  //       const token = localStorage.getItem('token');
+  //       const response = await fetch(`${apiUrl}/api/profil`, {
+  //         method: 'PUT',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(formData),
+  //       });
+
+  //       if (!response.ok) throw new Error('Échec de la mise à jour');
+
+  //       const updatedUser = await response.json();
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         ...updatedUser.user,
+  //       }));
+  //       setIsEditing(false);
+  //       setIsEditSuccess('Profil mis à jour avec succès');
+  //     } catch (error) {
+  //       console.error('Erreur lors de la mise à jour du profil:', error);
+  //     }
+  //   }
+  // };
+
+const handleEditClick = async () => {
+  if (!isEditing) {
+    setIsEditing(true);
+  } else {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.put(
+        `${apiUrl}/api/profil`,
+        formData,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
-        });
+        }
+      );
 
-        if (!response.ok) throw new Error('Échec de la mise à jour');
+      const updatedUser = response.data;
 
-        const updatedUser = await response.json();
-        setFormData(prev => ({
-          ...prev,
-          ...updatedUser.user,
-        }));
-        setIsEditing(false);
-        setIsEditSuccess('Profil mis à jour avec succès');
-      } catch (error) {
-        console.error('Erreur lors de la mise à jour du profil:', error);
-      }
+      setFormData((prev) => ({
+        ...prev,
+        ...updatedUser.user,
+      }));
+      setIsEditing(false);
+      setIsEditSuccess('Profil mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du profil:', error);
     }
-  };
+  }
+};
 
-  const handleEditPasswordClick = async () => {
-    if (!isEditingPassword) {
-      setIsEditingPassword(true);
-    } else {
-      const { newPassword, confirmPassword } = formData;
 
-      if (!newPassword || !confirmPassword) {
-        alert("Tous les champs sont requis.");
-        return;
-      }
+  // const handleEditPasswordClick = async () => {
+  //   if (!isEditingPassword) {
+  //     setIsEditingPassword(true);
+  //   } else {
+  //     const { newPassword, confirmPassword } = formData;
 
-      if (newPassword !== confirmPassword) {
-        alert("Les mots de passe ne correspondent pas.");
-        return;
-      }
+  //     if (!newPassword || !confirmPassword) {
+  //       alert('Tous les champs sont requis.');
+  //       return;
+  //     }
 
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${apiUrl}/api/profil-password`, {
-          method: 'PUT',
+  //     if (newPassword !== confirmPassword) {
+  //       alert('Les mots de passe ne correspondent pas.');
+  //       return;
+  //     }
+
+  //     try {
+  //       const token = localStorage.getItem('token');
+  //       const response = await fetch(`${apiUrl}/api/profil-password`, {
+  //         method: 'PUT',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           newPassword,
+  //           confirmNewPassword: confirmPassword,
+  //         }),
+  //       });
+
+  //       const result = await response.json();
+
+  //       if (!response.ok)
+  //         throw new Error(
+  //           result.message || 'Échec de la mise à jour du mot de passe',
+  //         );
+
+  //       setIsPasswordSuccess(
+  //         result.message || 'Mot de passe mis à jour avec succès',
+  //       );
+  //       setIsEditingPassword(false);
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         newPassword: '',
+  //         confirmPassword: '',
+  //       }));
+  //     } catch (error) {
+  //       console.error('Erreur lors de la mise à jour du mot de passe:', error);
+  //       alert(error.message);
+  //     }
+  //   }
+  // };
+
+const handleEditPasswordClick = async () => {
+  if (!isEditingPassword) {
+    setIsEditingPassword(true);
+  } else {
+    const { newPassword, confirmPassword } = formData;
+
+    if (!newPassword || !confirmPassword) {
+      alert('Tous les champs sont requis.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert('Les mots de passe ne correspondent pas.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.put(
+        `${apiUrl}/api/profil-password`,
+        {
+          newPassword,
+          confirmNewPassword: confirmPassword,
+        },
+        {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            newPassword,
-            confirmNewPassword: confirmPassword,
-          }),
-        });
+        }
+      );
 
-        const result = await response.json();
+      const result = response.data;
 
-        if (!response.ok) throw new Error(result.message || 'Échec de la mise à jour du mot de passe');
-
-        setIsPasswordSuccess(result.message || 'Mot de passe mis à jour avec succès');
-        setIsEditingPassword(false);
-        setFormData(prev => ({
-          ...prev,
-          newPassword: '',
-          confirmPassword: '',
-        }));
-      } catch (error) {
-        console.error('Erreur lors de la mise à jour du mot de passe:', error);
-        alert(error.message);
-      }
+      setIsPasswordSuccess(result.message || 'Mot de passe mis à jour avec succès');
+      setIsEditingPassword(false);
+      setFormData((prev) => ({
+        ...prev,
+        newPassword: '',
+        confirmPassword: '',
+      }));
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du mot de passe:', error);
+      alert(error.response?.data?.message || 'Erreur serveur inconnue');
     }
-  };
+  }
+};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const getUser = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}/api/profil`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) throw new Error('Erreur réseau');
-      const user = await response.json();
-      return user.user || {};
-    } catch (error) {
-      console.error('Erreur lors de la récupération des infos utilisateur :', error);
-      return {};
-    }
-  };
+  // const getUser = async () => {
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const response = await fetch(`${apiUrl}/api/profil`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     if (!response.ok) throw new Error('Erreur réseau');
+  //     const user = await response.json();
+  //     return user.user || {};
+  //   } catch (error) {
+  //     console.error(
+  //       'Erreur lors de la récupération des infos utilisateur :',
+  //       error,
+  //     );
+  //     return {};
+  //   }
+  // };
+
+const getUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get(`${apiUrl}/api/profil`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data.user || {};
+  } catch (error) {
+    console.error(
+      'Erreur lors de la récupération des infos utilisateur :',
+      error
+    );
+    return {};
+  }
+};
 
   useEffect(() => {
     const fetchUser = async () => {
       const data = await getUser();
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         ...data,
       }));
@@ -140,39 +252,42 @@ function Informations() {
     fetchUser();
   }, []);
 
-  
-    useEffect(() => {
-      if (isEditSuccess) {
-        const timer = setTimeout(() => {
-          setIsEditSuccess(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-      }
-    }, [isEditSuccess]);
+  useEffect(() => {
+    if (isEditSuccess) {
+      const timer = setTimeout(() => {
+        setIsEditSuccess(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isEditSuccess]);
 
-   useEffect(() => {
-      if (isPasswordSuccess) {
-        const timer = setTimeout(() => {
-          setIsPasswordSuccess(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-      }
-    }, [isPasswordSuccess]);
+  useEffect(() => {
+    if (isPasswordSuccess) {
+      const timer = setTimeout(() => {
+        setIsPasswordSuccess(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isPasswordSuccess]);
 
   return (
     <div className="flex">
       <NavLink />
 
-
       <div className="flex flex-col items-center  min-h-screen max-w-4xl mx-auto py-4 px-4 mt-20">
-        <h1 className="text-2xl font-bold mb-6">Mes informations personnelles</h1>
-       
-               {isEditSuccess && (
-                 <div className="w-full text-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                   <span className="block sm:inline">Profil modifié avec succès!</span>
-                 </div>
-               )}
-       
+        <h1 className="text-2xl font-bold mb-6">
+          Mes informations personnelles
+        </h1>
+
+        {isEditSuccess && (
+          <div
+            className="w-full text-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+            role="alert"
+          >
+            <span className="block sm:inline">Profil modifié avec succès!</span>
+          </div>
+        )}
+
         <div className="flex w-full mb-4">
           <div className="w-1/2 pr-4">
             <label>Nom</label>
@@ -237,7 +352,11 @@ function Informations() {
               type="date"
               name="dateMariage"
               required={true}
-              value={formData.dateMariage ? new Date(formData.dateMariage).toISOString().split('T')[0] : ''}
+              value={
+                formData.dateMariage
+                  ? new Date(formData.dateMariage).toISOString().split('T')[0]
+                  : ''
+              }
               onChange={handleInputChange}
               disabled={!isEditing}
             />
@@ -292,14 +411,18 @@ function Informations() {
               {isEditing ? 'Enregistrer' : 'Modifier mon profil'}
             </button>
           </div>
-         
-          <div className="mt-4">
 
+          <div className="mt-4">
             {isPasswordSuccess && (
-                 <div className="w-full text-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                   <span className="block sm:inline">Mot de passe modifié avec succès!</span>
-                 </div>
-               )}
+              <div
+                className="w-full text-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                role="alert"
+              >
+                <span className="block sm:inline">
+                  Mot de passe modifié avec succès!
+                </span>
+              </div>
+            )}
             <div className="flex w-full mb-4">
               <div className="w-1/2 pr-4">
                 <label>Nouveau mot de passe</label>
@@ -320,13 +443,39 @@ function Informations() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                        />
                       </svg>
                     ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
                       </svg>
                     )}
                   </button>
@@ -351,13 +500,39 @@ function Informations() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                        />
                       </svg>
                     ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
                       </svg>
                     )}
                   </button>

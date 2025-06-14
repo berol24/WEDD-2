@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BlogRight from "../components/BlogRight";
 import NavLink from "../components/NavLink";
-
+import axios from "axios";
 const RechercheInvite = () => {
   const [invitesList, setInvitesList] = useState([]);
   const [inputId, setInputId] = useState("");
@@ -11,31 +11,49 @@ const RechercheInvite = () => {
   const navigate = useNavigate();
 
 // gestions des invités
-    const invites = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${apiUrl}/api/invites`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-            });
+    // const invites = async () => {
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const response = await fetch(`${apiUrl}/api/invites`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             credentials: 'include'
+    //         });
 
-            if (!response.ok) {
-                throw new Error('Erreur réseau');
-            }
+    //         if (!response.ok) {
+    //             throw new Error('Erreur réseau');
+    //         }
 
-            const invites = await response.json();
-            const data = invites.invites || [];
-            console.log('Invités récupérées:', data);
-            return data;
-        } catch (error) {
-            console.error('Erreur lors de la récupération des Invités:', error);
-            return [];
-        }
-    };
-   
+    //         const invites = await response.json();
+    //         const data = invites.invites || [];
+    //         console.log('Invités récupérées:', data);
+    //         return data;
+    //     } catch (error) {
+    //         console.error('Erreur lors de la récupération des Invités:', error);
+    //         return [];
+    //     }
+    // };
+   const invites = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiUrl}/api/invites`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
+
+    const data = response.data.invites || [];
+    console.log('Invités récupérées:', data);
+    return data;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des Invités:', error);
+    return [];
+  }
+};
 
   useEffect(() => {
         const fetchInvites = async () => {

@@ -73,30 +73,7 @@ const PORT = process.env.PORT || 5000;
 const routes = require("./Routes/Routes");
 
 // Liste des origines autorisées
-const allowedOrigins = [
-  process.env.FRONTEND_URL 
-  // "http://localhost:5173", // si tu testes en local
-];
-
-const corsOptionsDelegate = function (req, callback) {
-  const origin = req.header('Origin');
-  if (!origin || allowedOrigins.includes(origin)) {
-    callback(null, {
-      origin: origin, // Répond exactement avec l'origine demandée
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization']
-    });
-  } else {
-    callback(new Error("Not allowed by CORS"));
-  }
-};
-
-app.use(cors(corsOptionsDelegate));
-
-app.options('*', cors(corsOptionsDelegate)); // Pour les préflight OPTIONS
-
-
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173', credentials: true }));
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());

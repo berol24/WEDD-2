@@ -8,29 +8,7 @@ const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite
 const upload= require("./UploadImage.js"); // Importation du middleware multer pour l'upload d'images
 const authenticate = require("./AuthMiddleware.js").default;
 
-// Liste des origines autorisées
-const allowedOrigins = [
-  process.env.FRONTEND_URL 
-  // "http://localhost:5173", // si tu testes en local
-];
-
-const corsOptionsDelegate = function (req, callback) {
-  const origin = req.header('Origin');
-  if (!origin || allowedOrigins.includes(origin)) {
-    callback(null, {
-      origin: origin, // Répond exactement avec l'origine demandée
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization']
-    });
-  } else {
-    callback(new Error("Not allowed by CORS"));
-  }
-};
-
-router.use(cors(corsOptionsDelegate));
-router.options('*', cors(corsOptionsDelegate)); // Pour les préflight OPTIONS
-
+router.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 router.use(express.json());
 

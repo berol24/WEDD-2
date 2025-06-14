@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
-
+import axios from 'axios';
 function AjoutInvite({ onClose }) {
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
@@ -14,42 +14,81 @@ function AjoutInvite({ onClose }) {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
+  // const handleSubmitInvite = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('nom', nom);
+  //     formData.append('prenom', prenom);
+  //     formData.append('telephone', telephone);
+  //     formData.append('nomTable', nomTable);
+  //     formData.append('status', status);
+  //     if (image) {
+  //       formData.append('image', image);
+  //     }
+
+  //     const response = await fetch(`${apiUrl}/api/invite`, {
+  //       method: 'POST',
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //       },
+  //       body: formData,
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       console.log('Invité ajouté avec succès:', data);
+  //       navigate('/dashboard');
+  //       window.location.reload();
+  //       if (onClose) onClose();
+  //     } else {
+  //       console.error('Erreur lors de l’ajout de l’invité:', data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Erreur réseau ou autre:', error);
+  //   }
+  // };
+
+
   const handleSubmitInvite = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append('nom', nom);
-      formData.append('prenom', prenom);
-      formData.append('telephone', telephone);
-      formData.append('nomTable', nomTable);
-      formData.append('status', status);
-      if (image) {
-        formData.append('image', image);
-      }
-
-      const response = await fetch(`${apiUrl}/api/invite`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Invité ajouté avec succès:', data);
-        navigate('/dashboard');
-        window.location.reload();
-        if (onClose) onClose();
-      } else {
-        console.error('Erreur lors de l’ajout de l’invité:', data.message);
-      }
-    } catch (error) {
-      console.error('Erreur réseau ou autre:', error);
+  try {
+    const formData = new FormData();
+    formData.append('nom', nom);
+    formData.append('prenom', prenom);
+    formData.append('telephone', telephone);
+    formData.append('nomTable', nomTable);
+    formData.append('status', status);
+    if (image) {
+      formData.append('image', image);
     }
-  };
+
+    const token = localStorage.getItem('token');
+
+    const response = await axios.post(`${apiUrl}/api/invite`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+      withCredentials: true
+    });
+
+    console.log('Invité ajouté avec succès:', response.data);
+    navigate('/dashboard');
+    window.location.reload();
+    if (onClose) onClose();
+
+  } catch (error) {
+    if (error.response) {
+      console.error('Erreur lors de l’ajout de l’invité:', error.response.data.message);
+    } else {
+      console.error('Erreur réseau ou autre:', error.message);
+    }
+  }
+};
 
   return (
     <div className="flex h-screen w-full">
