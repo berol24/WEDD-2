@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../Models/User.js");
-const cors = require('cors');
+// const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite, editReunion, deleteReunion, editInvite, deleteInvite, user, editProfil, editPassword } = require("../Controllers/Controllers.js");
 const upload= require("./UploadImage.js"); // Importation du middleware multer pour l'upload d'images
 const authenticate = require("./AuthMiddleware.js").default;
 
-router.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+// router.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 router.use(express.json());
 
