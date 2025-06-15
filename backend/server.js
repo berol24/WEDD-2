@@ -75,7 +75,7 @@ const routes = require("./Routes/Routes");
 // Liste des origines autorisées
 
 const allowedOrigins = [
-  "https://wedd-sooty.vercel.app", // ton front-end actuel
+  "https://wedd-i8ls.onrender.com", // ton front-end actuel
   "http://localhost:5173" // pour le dev local
 ];
 const corsOptions = {
