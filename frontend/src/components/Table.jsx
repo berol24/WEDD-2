@@ -7,7 +7,6 @@ import edit from '../assets/icons/edit.svg';
 
 
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
-    const apiUrl = import.meta.env.VITE_API_URL;
 
   // const generatePdf = async (invite) => {
   //   const doc = new jsPDF();
