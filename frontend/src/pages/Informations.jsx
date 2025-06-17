@@ -3,6 +3,7 @@ import Input from '../components/Input';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 function Informations() {
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -10,6 +11,7 @@ function Informations() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isEditSuccess, setIsEditSuccess] = useState(false);
   const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     nom: '',
     prenom: '',
@@ -24,36 +26,6 @@ function Informations() {
   });
 
   const apiUrl = import.meta.env.VITE_API_URL;
-
-  // const handleEditClick = async () => {
-  //   if (!isEditing) {
-  //     setIsEditing(true);
-  //   } else {
-  //     try {
-  //       const token = localStorage.getItem('token');
-  //       const response = await fetch(`${apiUrl}/api/profil`, {
-  //         method: 'PUT',
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify(formData),
-  //       });
-
-  //       if (!response.ok) throw new Error('Échec de la mise à jour');
-
-  //       const updatedUser = await response.json();
-  //       setFormData((prev) => ({
-  //         ...prev,
-  //         ...updatedUser.user,
-  //       }));
-  //       setIsEditing(false);
-  //       setIsEditSuccess('Profil mis à jour avec succès');
-  //     } catch (error) {
-  //       console.error('Erreur lors de la mise à jour du profil:', error);
-  //     }
-  //   }
-  // };
 
 const handleEditClick = async () => {
   if (!isEditing) {
@@ -88,58 +60,6 @@ const handleEditClick = async () => {
 };
 
 
-  // const handleEditPasswordClick = async () => {
-  //   if (!isEditingPassword) {
-  //     setIsEditingPassword(true);
-  //   } else {
-  //     const { newPassword, confirmPassword } = formData;
-
-  //     if (!newPassword || !confirmPassword) {
-  //       alert('Tous les champs sont requis.');
-  //       return;
-  //     }
-
-  //     if (newPassword !== confirmPassword) {
-  //       alert('Les mots de passe ne correspondent pas.');
-  //       return;
-  //     }
-
-  //     try {
-  //       const token = localStorage.getItem('token');
-  //       const response = await fetch(`${apiUrl}/api/profil-password`, {
-  //         method: 'PUT',
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           newPassword,
-  //           confirmNewPassword: confirmPassword,
-  //         }),
-  //       });
-
-  //       const result = await response.json();
-
-  //       if (!response.ok)
-  //         throw new Error(
-  //           result.message || 'Échec de la mise à jour du mot de passe',
-  //         );
-
-  //       setIsPasswordSuccess(
-  //         result.message || 'Mot de passe mis à jour avec succès',
-  //       );
-  //       setIsEditingPassword(false);
-  //       setFormData((prev) => ({
-  //         ...prev,
-  //         newPassword: '',
-  //         confirmPassword: '',
-  //       }));
-  //     } catch (error) {
-  //       console.error('Erreur lors de la mise à jour du mot de passe:', error);
-  //       alert(error.message);
-  //     }
-  //   }
-  // };
 
 const handleEditPasswordClick = async () => {
   if (!isEditingPassword) {
@@ -199,26 +119,7 @@ const handleEditPasswordClick = async () => {
     }));
   };
 
-  // const getUser = async () => {
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const response = await fetch(`${apiUrl}/api/profil`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     if (!response.ok) throw new Error('Erreur réseau');
-  //     const user = await response.json();
-  //     return user.user || {};
-  //   } catch (error) {
-  //     console.error(
-  //       'Erreur lors de la récupération des infos utilisateur :',
-  //       error,
-  //     );
-  //     return {};
-  //   }
-  // };
+
 
 const getUser = async () => {
   try {
@@ -271,8 +172,32 @@ const getUser = async () => {
   }, [isPasswordSuccess]);
 
   return (
-    <div className="flex">
-      <NavLink />
+  <div className="flex flex-col md:flex-row min-h-screen">
+      
+        <div className="hidden md:block md:w-64">
+        <NavLink />
+      </div>
+
+      {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
+        <h1 className="text-xl font-bold">Menu</h1>
+        <button
+          className="bg-gray-700 px-3 py-1 rounded"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+
+      {menuOpen && (
+        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Dashboard</Link>
+          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Réunions</Link>
+          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
+          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
+          <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+        </nav>
+      )}
 
       <div className="flex flex-col items-center  min-h-screen max-w-4xl mx-auto py-4 px-4 mt-20">
         <h1 className="text-2xl font-bold mb-6">
@@ -288,8 +213,8 @@ const getUser = async () => {
           </div>
         )}
 
-        <div className="flex w-full mb-4">
-          <div className="w-1/2 pr-4">
+        <div className="flex flex-col md:flex-row w-full mb-4">
+          <div className="w-full md:w-1/2 md:pr-4 mb-4 md:mb-0">
             <label>Nom</label>
             <Input
               width="w-full"
@@ -302,7 +227,7 @@ const getUser = async () => {
               disabled={!isEditing}
             />
           </div>
-          <div className="w-1/2 pl-4">
+          <div className="w-full md:w-1/2 md:pl-4">
             <label>Prénom</label>
             <Input
               width="w-full"
@@ -316,8 +241,8 @@ const getUser = async () => {
             />
           </div>
         </div>
-        <div className="flex w-full mb-4">
-          <div className="w-1/2 pr-4">
+        <div className="flex flex-col md:flex-row w-full mb-4">
+          <div className="w-full md:w-1/2 md:pr-4 mb-4 md:mb-0">
             <label>Email</label>
             <Input
               width="w-full"
@@ -330,7 +255,7 @@ const getUser = async () => {
               disabled={!isEditing}
             />
           </div>
-          <div className="w-1/2 pl-4">
+          <div className="w-full md:w-1/2 md:pl-4">
             <label>Numéro de téléphone</label>
             <Input
               width="w-full"
@@ -344,8 +269,8 @@ const getUser = async () => {
             />
           </div>
         </div>
-        <div className="flex w-full mb-4">
-          <div className="w-1/2 pr-4">
+        <div className="flex flex-col md:flex-row w-full mb-4">
+          <div className="w-full md:w-1/2 md:pr-4 mb-4 md:mb-0">
             <label>Date de mariage</label>
             <Input
               width="w-full"
@@ -361,7 +286,7 @@ const getUser = async () => {
               disabled={!isEditing}
             />
           </div>
-          <div className="w-1/2 pl-4">
+          <div className="w-full md:w-1/2 md:pl-4">
             <label>Lieu de mariage</label>
             <Input
               width="w-full"
@@ -375,8 +300,8 @@ const getUser = async () => {
             />
           </div>
         </div>
-        <div className="flex w-full mb-4">
-          <div className="w-1/2 pr-4">
+        <div className="flex flex-col md:flex-row w-full mb-4">
+          <div className="w-full md:w-1/2 md:pr-4 mb-4 md:mb-0">
             <label>Couleur du site</label>
             <Input
               width="w-full"
@@ -388,7 +313,7 @@ const getUser = async () => {
               disabled={!isEditing}
             />
           </div>
-          <div className="w-1/2 pl-4">
+          <div className="w-full md:w-1/2 md:pl-4">
             <label>Thème du mariage</label>
             <Input
               width="w-full"
@@ -423,8 +348,8 @@ const getUser = async () => {
                 </span>
               </div>
             )}
-            <div className="flex w-full mb-4">
-              <div className="w-1/2 pr-4">
+            <div className="flex flex-col md:flex-row w-full mb-4">
+              <div className="w-full md:w-1/2 md:pr-4 mb-4 md:mb-0">
                 <label>Nouveau mot de passe</label>
                 <div className="relative">
                   <Input
@@ -481,7 +406,7 @@ const getUser = async () => {
                   </button>
                 </div>
               </div>
-              <div className="w-1/2 pl-4">
+              <div className="w-full md:w-1/2 md:pl-4">
                 <label>Confirmer le mot de passe</label>
                 <div className="relative">
                   <Input
@@ -552,8 +477,10 @@ const getUser = async () => {
           </div>
         </div>
       </div>
-      <BlogRight />
-    </div>
+  {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
+      <div className="hidden md:block md:w-64">
+        <BlogRight />
+      </div>    </div>
   );
 }
 

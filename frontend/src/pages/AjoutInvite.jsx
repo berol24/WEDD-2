@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import axios from 'axios';
@@ -10,46 +10,11 @@ function AjoutInvite({ onClose }) {
   const [nomTable, setNomTable] = useState('');
   const [status, setStatus] = useState('A');
   const [image, setImage] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // const handleSubmitInvite = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('nom', nom);
-  //     formData.append('prenom', prenom);
-  //     formData.append('telephone', telephone);
-  //     formData.append('nomTable', nomTable);
-  //     formData.append('status', status);
-  //     if (image) {
-  //       formData.append('image', image);
-  //     }
-
-  //     const response = await fetch(`${apiUrl}/api/invite`, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //       },
-  //       body: formData,
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       console.log('Invité ajouté avec succès:', data);
-  //       navigate('/dashboard');
-  //       window.location.reload();
-  //       if (onClose) onClose();
-  //     } else {
-  //       console.error('Erreur lors de l’ajout de l’invité:', data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Erreur réseau ou autre:', error);
-  //   }
-  // };
 
 
   const handleSubmitInvite = async (e) => {
@@ -91,8 +56,33 @@ function AjoutInvite({ onClose }) {
 };
 
   return (
-    <div className="flex h-screen w-full">
-      <NavLink />
+  
+<div className="flex flex-col md:flex-row min-h-screen">
+      
+        <div className="hidden md:block md:w-64">
+        <NavLink />
+      </div>
+
+      {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
+        <h1 className="text-xl font-bold">Menu</h1>
+        <button
+          className="bg-gray-700 px-3 py-1 rounded"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+
+      {menuOpen && (
+        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Dashboard</Link>
+          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Réunions</Link>
+          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
+          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
+          <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+        </nav>
+      )}
 
       <div className="flex-1 bg-[#717171] flex items-center justify-center p-8">
         <form
@@ -160,7 +150,10 @@ function AjoutInvite({ onClose }) {
         </form>
       </div>
 
-      <BlogRight />
+      {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
+      <div className="hidden md:block md:w-64">
+        <BlogRight />
+      </div>
     </div>
   );
 }

@@ -62,25 +62,27 @@ function ShowInvite() {
 
   return (
     <div className="flex h-full w-full">
-      <NavLink />
-      <div className="flex-1 bg-[#717171] flex items-center justify-center p-8 -mt-40">
-        <div className="bg-white shadow-2xl p-10 rounded-2xl w-full max-w-md flex flex-col items-center text-center border border-pink-100">
-          <h1 className="text-3xl font-serif font-bold mb-3 text-pink-700 tracking-wide">
+      <div className="hidden md:block">
+        <NavLink />
+      </div>
+      <div className="flex-1 bg-[#717171] flex items-center justify-center p-4 md:p-8 mt-4 md:-mt-40">
+        <div className="bg-white shadow-2xl p-6 md:p-10 rounded-2xl w-full max-w-md flex flex-col items-center text-center border border-pink-100">
+          <h1 className="text-2xl md:text-3xl font-serif font-bold mb-3 text-pink-700 tracking-wide">
             Bienvenue au Mariage de {nom} {prenom}
           </h1>
-          <h2 className="text-xl font-medium mb-5 text-gray-700">
+          <h2 className="text-lg md:text-xl font-medium mb-5 text-gray-700">
             {invite.inviteId}
           </h2>
           <img
             src={`${apiUrl}/uploads/${invite.image}`}
             alt={invite.nom + ' ' + invite.prenom}
-            className="w-36 h-36 object-cover mb-6 rounded-full shadow-lg border-4 border-pink-100"
+            className="w-28 h-28 md:w-36 md:h-36 object-cover mb-6 rounded-full shadow-lg border-4 border-pink-100"
           />
           <div className="space-y-2">
-            <p className="text-gray-800 text-lg font-semibold">
+            <p className="text-gray-800 text-base md:text-lg font-semibold">
               {invite.nom} {invite.prenom}
             </p>
-            <p className="text-pink-700 text-lg font-bold">{invite.nomTable}</p>
+            <p className="text-pink-700 text-base md:text-lg font-bold">{invite.nomTable}</p>
           </div>
 
           <button
@@ -89,10 +91,9 @@ function ShowInvite() {
           >
             Retour à la recherche
           </button>
-          {/* Optionnel : motif floral ou icône de cœur en bas */}
           <div className="mt-6">
             <svg
-              className="mx-auto w-8 h-8 text-pink-200"
+              className="mx-auto w-6 h-6 md:w-8 md:h-8 text-pink-200"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -101,7 +102,9 @@ function ShowInvite() {
           </div>
         </div>
       </div>
-      <BlogRight />
+      <div className="hidden md:block">
+        <BlogRight />
+      </div>
     </div>
   );
 }

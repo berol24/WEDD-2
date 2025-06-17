@@ -18,7 +18,8 @@ function Dashboard() {
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
+  const [menuOpen, setMenuOpen] = useState(false);
+   
   const apiUrl = import.meta.env.VITE_API_URL;
 
   // States à ajouter tout en haut du composant Dashboard
@@ -139,17 +140,42 @@ function Dashboard() {
 
   return (
     <>
-      <div className="flex justify-between w-full">
+      <div className="flex flex-col md:flex-row min-h-screen">
+      
+        <div className="hidden md:block md:w-64">
         <NavLink />
+      </div>
+
+      {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
+        <h1 className="text-xl font-bold">Menu</h1>
+        <button
+          className="bg-gray-700 px-3 py-1 rounded"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+
+      {menuOpen && (
+        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Dashboard</Link>
+          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Réunions</Link>
+          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
+          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
+          <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+        </nav>
+      )}
+      
         <div>
-          <div className="flex justify-between items-center p-4">
-            <div>
+          <div className="flex flex-col md:flex-row justify-between items-center p-4 gap-4">
+            <div className="text-center md:text-left mb-4 md:mb-0">
               Salut <b>{nom + ' ' + prenom}</b>
               <p>Un mariage inoubliable vous attend 🎉​🎉​🎉​🎉​🎉​🎉​🎉​🎉</p>
             </div>
-            <Link to="/ajout-invite">
+            <Link to="/ajout-invite" className="w-full md:w-auto">
               <Bouton
-                width="w-64"
+                width="w-full md:w-64"
                 bg="bg-[#016CEC]"
                 color="text-[#fff]"
                 fontSize="text-[18px]"
@@ -158,23 +184,23 @@ function Dashboard() {
               </Bouton>
             </Link>
           </div>
-          <div className="flex justify-between items-center">
-            <NextMeeting lastMeeting={reunionsList} />
-            <Graphe invites={invitesList} />
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 p-4">
+            <NextMeeting lastMeeting={reunionsList} className="w-full md:w-1/2" />
+            <Graphe invites={invitesList} className="w-full md:w-1/2" />
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-8 mt-8">
-            <button className="p-2 mb-4 sm:mb-0">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-8 mt-8 p-4 gap-4">
+            <button className="p-2">
               <img src={tri} alt="Trier" className="w-6 h-6" />
             </button>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
               <input
                 type="text"
-                className="border border-gray-200 rounded px-4 py-2 w-full sm:w-auto"
+                className="border border-gray-200 rounded px-4 py-2 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button
-                className="text-blue-500 font-bold border border-blue-500 rounded px-4 py-2 w-full sm:w-auto"
+                className="text-blue-500 font-bold border border-blue-500 rounded px-4 py-2 w-full md:w-auto"
                 onClick={handleSearch}
               >
                 Rechercher
@@ -186,24 +212,25 @@ function Dashboard() {
               {successMessage}
             </div>
           )}
-          {/* <Table handleDeleteInvite={handleDeleteInvite} invites={filteredInvites} apiUrl={apiUrl} /> */}
-          <Table
-            handleDeleteInvite={(id) => {
-              setInviteToDelete(id);
-              setShowConfirmDelete(true);
-            }}
-            invites={filteredInvites}
-            apiUrl={apiUrl}
-            onEditInvite={(invite) => {
-              setSelectedInvite(invite);
-              setShowPopupUpdateInvite(true);
-            }}
-          />
+          <div className="p-4">
+            <Table
+              handleDeleteInvite={(id) => {
+                setInviteToDelete(id);
+                setShowConfirmDelete(true);
+              }}
+              invites={filteredInvites}
+              apiUrl={apiUrl}
+              onEditInvite={(invite) => {
+                setSelectedInvite(invite);
+                setShowPopupUpdateInvite(true);
+              }}
+            />
+          </div>
 
-          <div className="text-center my-6">
-            <Link to="/ajout-invite">
+          <div className="text-center my-6 p-4">
+            <Link to="/ajout-invite" className="w-full md:w-auto inline-block">
               <Bouton
-                width="w-64"
+                width="w-full md:w-64"
                 bg="bg-[#016CEC]"
                 color="text-[#fff]"
                 fontSize="text-[18px]"
@@ -213,8 +240,11 @@ function Dashboard() {
             </Link>
           </div>
         </div>
+          {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
+      <div className="hidden md:block md:w-64">
         <BlogRight />
       </div>
+    </div>
 
       {showPopupUpdateInvite && selectedInvite && (
         <ModifierInvite

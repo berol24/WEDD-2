@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BlogRight from "../components/BlogRight";
 import NavLink from "../components/NavLink";
 import axios from "axios";
@@ -10,6 +10,7 @@ const RechercheInvite = () => {
   const [inputId, setInputId] = useState("");
   const [error, setError] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -93,13 +94,92 @@ const startScanner = () => {
 
 
   return (
-    <div className="flex h-full w-full">
-      <NavLink />
-      <div className="flex-1 bg-[#717171] flex items-center justify-center p-8 min-h-screen">
-        <div className="bg-white shadow-lg p-8 rounded-2xl w-96 flex flex-col items-center text-center">
+    // <div className="flex h-full w-full">
+    //   <NavLink />
+    //   <div className="flex-1 bg-[#717171] flex items-center justify-center p-8 min-h-screen">
+    //     <div className="bg-white shadow-lg p-8 rounded-2xl w-96 flex flex-col items-center text-center">
+    //       <h2 className="text-xl font-bold mb-6 text-black">
+    //         Entrer l'identifiant de l'invité
+    //       </h2>
+    //       <form className="w-full" onSubmit={handleSubmit}>
+    //         <div className="flex flex-col gap-4 mb-4">
+    //           <input
+    //             type="text"
+    //             placeholder="Identifiant de l'invité"
+    //             className="w-full p-3 text-base border border-[#C6C6C6] rounded-lg"
+    //             value={inputId}
+    //             onChange={(e) => {
+    //               setInputId(e.target.value);
+    //               setError(null);
+    //             }}
+    //           />
+    //         </div>
+    //         <button
+    //           type="submit"
+    //           className="w-full bg-[#016CEC] font-bold text-white px-6 py-3 rounded-lg hover:bg-[#0156BC]"
+    //         >
+    //           CHERCHER
+    //         </button>
+    //       </form>
+
+    //       <button
+    //         type="button"
+    //         onClick={startScanner}
+    //         className="mt-4 w-full bg-green-600 font-bold text-white px-6 py-3 rounded-lg hover:bg-green-800"
+    //       >
+    //         📷 Scanner un QR Code
+    //       </button>
+
+    //       {error && (
+    //         <div className="mt-4">
+    //           <span className="text-red-600 font-bold">{error}</span>
+    //         </div>
+    //       )}
+
+    //       {isScanning && (
+    //         <div id="scanner" className="mt-6 w-full h-60 bg-gray-100 rounded-md shadow-inner" />
+    //       )}
+    //     </div>
+    //   </div>
+    //   <BlogRight />
+    // </div>
+
+  
+<div className="flex flex-col md:flex-row min-h-screen">
+
+      {/* ---- NAVLINK (gauche, desktop seulement) ---- */}
+      <div className="hidden md:block md:w-64">
+        <NavLink />
+      </div>
+
+      {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
+        <h1 className="text-xl font-bold">Menu</h1>
+        <button
+          className="bg-gray-700 px-3 py-1 rounded"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+
+      {menuOpen && (
+        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Dashboard</Link>
+          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Réunions</Link>
+          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
+          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
+          <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+        </nav>
+      )}
+
+      {/* ---- FORMULAIRE PRINCIPAL CENTRÉ ---- */}
+      <div className="flex-1 bg-[#717171] flex items-center justify-center p-4">
+        <div className="bg-white shadow-lg p-6 md:p-8 rounded-2xl w-full max-w-md flex flex-col items-center text-center">
           <h2 className="text-xl font-bold mb-6 text-black">
             Entrer l'identifiant de l'invité
           </h2>
+
           <form className="w-full" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 mb-4">
               <input
@@ -113,6 +193,7 @@ const startScanner = () => {
                 }}
               />
             </div>
+
             <button
               type="submit"
               className="w-full bg-[#016CEC] font-bold text-white px-6 py-3 rounded-lg hover:bg-[#0156BC]"
@@ -140,8 +221,13 @@ const startScanner = () => {
           )}
         </div>
       </div>
-      <BlogRight />
+
+      {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
+      <div className="hidden md:block md:w-64">
+        <BlogRight />
+      </div>
     </div>
+  
   );
 };
 

@@ -7,6 +7,7 @@ import ModifierReunion from './ModifierReunion';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 function MesReunions() {
   const [reunionsList, setReunionsList] = useState([]);
   const [filteredReunions, setFilteredReunions] = useState([]);
@@ -17,33 +18,9 @@ function MesReunions() {
   const [successMessage, setSuccessMessage] = useState('');
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [reunionToDelete, setReunionToDelete] = useState(null);
-
+  const [menuOpen, setMenuOpen] = useState(false);
+  
   const apiUrl = import.meta.env.VITE_API_URL;
-
-  // const reunions = async () => {
-  //   try {
-  //     const token = localStorage.getItem('token'); // ou sessionStorage
-  //     const response = await fetch(`${apiUrl}/api/reunions`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       credentials: 'include', // si besoin
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Erreur réseau');
-  //     }
-
-  //     const reunions = await response.json();
-  //     const data = reunions.reunions || [];
-  //     console.log('Réunions récupérées:', data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error('Erreur lors de la récupération des réunions:', error);
-  //     return [];
-  //   }
-  // };
 
   // Définir en haut du composant
   
@@ -142,8 +119,32 @@ const handleDeleteReunion = async (id) => {
 
   return (
     <>
-      <div className="flex w-full min-h-screen">
+      <div className="flex flex-col md:flex-row min-h-screen">
+      
+        <div className="hidden md:block md:w-64">
         <NavLink />
+      </div>
+
+      {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
+        <h1 className="text-xl font-bold">Menu</h1>
+        <button
+          className="bg-gray-700 px-3 py-1 rounded"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+
+      {menuOpen && (
+        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Dashboard</Link>
+          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Réunions</Link>
+          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
+          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
+          <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+        </nav>
+      )}
         <div className="flex-1 px-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl sm:text-3xl font-bold mt-10 sm:mt-20 mb-10 sm:mb-20 text-center">
             Gestion des différentes réunions
@@ -258,8 +259,11 @@ const handleDeleteReunion = async (id) => {
             />
           )}
         </div>
+        {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
+      <div className="hidden md:block md:w-64">
         <BlogRight />
       </div>
+    </div>
 
       {showConfirmDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
