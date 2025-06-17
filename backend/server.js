@@ -2,11 +2,11 @@ const cors = require('cors');
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const routes = require("./Routes/Routes");
-
+const uploadRoutes = require('./Routes/UploadPDF.js');
 // Liste des origines autorisées
 
 const allowedOrigins = [
@@ -46,6 +46,12 @@ mongoose.connect(process.env.DB_URI, {
 // Routes
 app.use("/api", routes);
 app.use('/uploads', express.static('uploads'));
+
+
+// Servir les fichiers PDF statiquement depuis le dossier uploadPDF
+app.use('/uploadPDF', express.static(path.join(__dirname, 'uploadPDF')));
+
+app.use('/api/uploadPDF', uploadRoutes);
 
 // Lancement du serveur
 app.listen(PORT, () => {

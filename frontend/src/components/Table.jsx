@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import QRCode from 'qrcode';
 import deleteIcon from '../assets/icons/deleteIcon.svg';
 import edit from '../assets/icons/edit.svg';
-
+import axios from 'axios';
 
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
@@ -31,17 +31,16 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
   //   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
   // };
 const generatePdf = async (invite) => {
-  // 🔁 Récupération propre de l'URL frontend depuis .env
-  const apiUrlFrontend = "https://wedd-i8ls.onrender.com"; // Assure-toi que cette variable est bien nommée VITE_
+  const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
 
   if (!apiUrlFrontend) {
-    console.error("⚠️ FRONTEND URL non définie dans .env");
-    return;
+    console.error("⚠️ FRONTEND URL non définie");
+    return null;
   }
 
   const doc = new jsPDF();
 
-  // 🖊️ Contenu texte
+  // 🖊️ Texte
   doc.setFontSize(16);
   doc.text("Fiche Invité", 20, 20);
   doc.setFontSize(12);
@@ -49,21 +48,55 @@ const generatePdf = async (invite) => {
   doc.text(`Prénom : ${invite.prenom}`, 20, 50);
   doc.text(`Téléphone : +237 ${invite.telephone}`, 20, 60);
   doc.text(`Table : ${invite.nomTable || 'Non attribuée'}`, 20, 70);
-  doc.text(`ID invité : ${invite.inviteId || 'Non attribuée'}`, 20, 80);
+  doc.text(`ID invité : ${invite.inviteId || 'Non attribué'}`, 20, 80);
   doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
 
-  // ✅ Génération du lien vers la page ShowInvite
+  // 🔗 Lien QR Code
   const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
-
   try {
     const qrImage = await QRCode.toDataURL(qrText);
-    doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR Code en haut à droite
+    doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // Ajout QR
   } catch (err) {
     console.error("❌ Erreur génération QR Code :", err);
   }
 
-  // 💾 Téléchargement du fichier
-  doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
+  // ✅ Retourner un Blob (et non sauvegarder directement)
+  const pdfBlob = doc.output('blob');
+  return pdfBlob;
+};
+
+const handleWhatsAppShare = async (invite) => {
+  try {
+    const pdfBlob = await generatePdf(invite);
+
+    if (!pdfBlob) {
+      alert("PDF non généré.");
+      return;
+    }
+
+    const file = new File([pdfBlob], `Invite-${invite.nom}-${invite.prenom}.pdf`, {
+      type: 'application/pdf',
+    });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/uploadPDF`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    const fileUrl = response.data.url;
+
+    const whatsappMessage = `Bonjour ${invite.prenom}, voici ton billet d'invitation 🎉 : ${fileUrl}`;
+    const whatsappUrl = `https://wa.me/237${invite.telephone}?text=${encodeURIComponent(whatsappMessage)}`;
+
+    window.open(whatsappUrl);
+  } catch (error) {
+    console.error("❌ Erreur lors du partage WhatsApp:", error);
+    alert("Une erreur est survenue lors du partage.");
+  }
 };
 
   return (
@@ -109,11 +142,27 @@ const generatePdf = async (invite) => {
               </td>
               <td className="px-6 py-4">
                 <button
-                  onClick={() => generatePdf(invite)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700"
-                >
-                  PDF
-                </button>
+                      onClick={async () => {
+                        const pdfBlob = await generatePdf(invite);
+                        if (pdfBlob) {
+                          const link = document.createElement("a");
+                          link.href = URL.createObjectURL(pdfBlob);
+                          link.download = `Invite-${invite.nom}-${invite.prenom}.pdf`;
+                          link.click();
+                        }
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700"
+                    >
+                      PDF
+                    </button>
+
+                <button
+                      onClick={() => handleWhatsAppShare(invite)}
+                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700"
+                    >
+                      WhatsApp
+                    </button>
+
               </td>
             </tr>
           ))
