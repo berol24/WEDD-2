@@ -30,13 +30,18 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
   //   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
   // };
-  const generatePdf = async (invite) => {
- const apiUrlFrontend = import.meta.env.FRONTEND_URL; // ✅ Utilisation de l'URL de l'API depuis les variables d'environnement
+const generatePdf = async (invite) => {
+  // 🔁 Récupération propre de l'URL frontend depuis .env
+  const apiUrlFrontend = import.meta.env.VITE_FRONTEND_URL; // Assure-toi que cette variable est bien nommée VITE_
 
-console.log(apiUrlFrontend); // ✅ Vérification de l'URL de l'API
+  if (!apiUrlFrontend) {
+    console.error("⚠️ FRONTEND URL non définie dans .env");
+    return;
+  }
 
   const doc = new jsPDF();
 
+  // 🖊️ Contenu texte
   doc.setFontSize(16);
   doc.text("Fiche Invité", 20, 20);
   doc.setFontSize(12);
@@ -47,12 +52,17 @@ console.log(apiUrlFrontend); // ✅ Vérification de l'URL de l'API
   doc.text(`ID invité : ${invite.inviteId || 'Non attribuée'}`, 20, 80);
   doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
 
-  // ✅ Génère le lien vers ShowInvite
+  // ✅ Génération du lien vers la page ShowInvite
   const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
 
-  const qrImage = await QRCode.toDataURL(qrText);
-  doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR en haut à droite
+  try {
+    const qrImage = await QRCode.toDataURL(qrText);
+    doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR Code en haut à droite
+  } catch (err) {
+    console.error("❌ Erreur génération QR Code :", err);
+  }
 
+  // 💾 Téléchargement du fichier
   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
 };
 

@@ -16,6 +16,7 @@
     "apexcharts": "^4.5.0",
     "axios": "^1.9.0",
     "daisyui": "^4.12.23",
+    "html5-qrcode": "^2.3.8",
     "jspdf": "^3.0.1",
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
