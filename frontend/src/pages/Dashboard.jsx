@@ -27,31 +27,7 @@ function Dashboard() {
   const [inviteToDelete, setInviteToDelete] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-  // gestions des invités
-  // const invites = async () => {
-  //     try {
-  //         const token = localStorage.getItem("token");
-  //         const response = await fetch(`${apiUrl}/api/invites`, {
-  //             headers: {
-  //                 Authorization: `Bearer ${token}`,
-  //                 'Content-Type': 'application/json'
-  //             },
-  //             credentials: 'include'
-  //         });
-
-  //         if (!response.ok) {
-  //             throw new Error('Erreur réseau');
-  //         }
-
-  //         const invites = await response.json();
-  //         const data = invites.invites || [];
-  //         console.log('Invités récupérées:', data);
-  //         return data;
-  //     } catch (error) {
-  //         console.error('Erreur lors de la récupération des Invités:', error);
-  //         return [];
-  //     }
-  // };
+  // gestion des invités
 
   const invites = async () => {
     try {
@@ -74,30 +50,6 @@ function Dashboard() {
   };
 
   // gestion des réunions
-  // const reunions = async () => {
-  //     try {
-  //         const token = localStorage.getItem("token");
-  //         const response = await fetch(`${apiUrl}/api/reunions`, {
-  //             headers: {
-  //                 Authorization: `Bearer ${token}`,
-  //                 'Content-Type': 'application/json'
-  //             },
-  //             credentials: 'include'
-  //         });
-
-  //         if (!response.ok) {
-  //             throw new Error('Erreur réseau');
-  //         }
-
-  //         const reunions = await response.json();
-  //         const data = reunions.reunions || [];
-  //         console.log('Réunions récupérées:', data);
-  //         return data;
-  //     } catch (error) {
-  //         console.error('Erreur lors de la récupération des réunions:', error);
-  //         return [];
-  //     }
-  // };
 
   const reunions = async () => {
     try {
@@ -161,31 +113,7 @@ function Dashboard() {
     setFilteredInvites(filtered);
   };
 
-  ///////////////////////////////
-  // const handleDeleteInvite = async (id) => {
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const res = await fetch(`${apiUrl}/api/delete-invite/${id}`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-
-  //     if (res.ok) {
-  //       await fetchInvites(); // Recharge la liste après suppression
-  //       setSuccessMessage('Invité supprimée avec succès');
-  //       setTimeout(() => {
-  //         setSuccessMessage('');
-  //       }, 2000);
-  //     } else {
-  //       alert('Erreur suppression');
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert('Erreur suppression');
-  //   }
-  // };
+// Fonction pour supprimer un invité
 
   const handleDeleteInvite = async (id) => {
   try {

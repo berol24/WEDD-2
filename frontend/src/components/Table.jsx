@@ -5,29 +5,54 @@ import QRCode from 'qrcode';
 import deleteIcon from '../assets/icons/deleteIcon.svg';
 import edit from '../assets/icons/edit.svg';
 
+
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
-  const generatePdf = async (invite) => {
-    const doc = new jsPDF();
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+  // const generatePdf = async (invite) => {
+  //   const doc = new jsPDF();
     
-    // Contenu texte
-    doc.setFontSize(16);
-    doc.text("Fiche Invité", 20, 20);
-    doc.setFontSize(12);
-    doc.text(`Nom : ${invite.nom}`, 20, 40);
-    doc.text(`Prénom : ${invite.prenom}`, 20, 50);
-    doc.text(`Téléphone : +237 ${invite.telephone}`, 20, 60);
-    doc.text(`Table : ${invite.nomTable || 'Non attribuée'}`, 20, 70);
-    doc.text(`ID invité : ${invite.inviteId || 'Non attribuée'}`, 20, 80);
-    doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
+  //   // Contenu texte
+  //   doc.setFontSize(16);
+  //   doc.text("Fiche Invité", 20, 20);
+  //   doc.setFontSize(12);
+  //   doc.text(`Nom : ${invite.nom}`, 20, 40);
+  //   doc.text(`Prénom : ${invite.prenom}`, 20, 50);
+  //   doc.text(`Téléphone : +237 ${invite.telephone}`, 20, 60);
+  //   doc.text(`Table : ${invite.nomTable || 'Non attribuée'}`, 20, 70);
+  //   doc.text(`ID invité : ${invite.inviteId || 'Non attribuée'}`, 20, 80);
+  //   doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
 
-    // QR Code : il redirige vers une page mobile ou affiche juste "Présent"
-    const qrText = "Présent";
-    const qrImage = await QRCode.toDataURL(qrText);
+  //   // QR Code : il redirige vers une page mobile ou affiche juste "Présent"
+  //   const qrText = "Présent";
+  //   const qrImage = await QRCode.toDataURL(qrText);
 
-    doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR en haut à droite
+  //   doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR en haut à droite
 
-    doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
-  };
+  //   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
+  // };
+
+  const generatePdf = async (invite) => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.text("Fiche Invité", 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Nom : ${invite.nom}`, 20, 40);
+  doc.text(`Prénom : ${invite.prenom}`, 20, 50);
+  doc.text(`Téléphone : +237 ${invite.telephone}`, 20, 60);
+  doc.text(`Table : ${invite.nomTable || 'Non attribuée'}`, 20, 70);
+  doc.text(`ID invité : ${invite.inviteId || 'Non attribuée'}`, 20, 80);
+  doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
+
+  // ✅ Génère le lien vers ShowInvite
+  const qrText = `${apiUrl}/invites/${invite.inviteId}`;
+
+  const qrImage = await QRCode.toDataURL(qrText);
+  doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR en haut à droite
+
+  doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
+};
 
   return (
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

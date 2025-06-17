@@ -13,31 +13,7 @@ function ShowInvite() {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // const getInvite = async () => {
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const response = await fetch(`${apiUrl}/api/invites/${inviteId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       credentials: 'include',
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Erreur réseau');
-  //     }
-
-  //     const invite = await response.json();
-  //     const data = invite.invite || [];
-  //     console.log('Invité récupéré:', data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Erreur lors de la récupération de l'invité:", error);
-  //     return null;
-  //   }
-  // };
-
+ 
 
   const getInvite = async () => {
   try {
