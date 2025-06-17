@@ -30,7 +30,7 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
   //   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
   // };
-
+ const apiUrlFrontend = import.meta.env.FRONTEND_URL; // ✅ Utilisation de l'URL de l'API depuis les variables d'environnement
   const generatePdf = async (invite) => {
   const doc = new jsPDF();
 
@@ -45,7 +45,7 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
   doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
 
   // ✅ Génère le lien vers ShowInvite
-  const qrText = `${apiUrl}/invites/${invite.inviteId}`;
+  const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
 
   const qrImage = await QRCode.toDataURL(qrText);
   doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR en haut à droite
