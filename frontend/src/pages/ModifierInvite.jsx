@@ -20,37 +20,7 @@ function ModifierInvite({ invite, onClose }) {
     }
   }, [invite]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const formData = new FormData();
-  //     formData.append('nom', nom);
-  //     formData.append('prenom', prenom);
-  //     formData.append('telephone', telephone);
-  //     formData.append('nomTable', nomTable);
-  //     formData.append('status', status);
-  //     if (image) {
-  //       formData.append('image', image);
-  //     }
-
-  //     const response = await fetch(`${apiUrl}/api/edit-invite/${invite._id}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: formData,
-  //     });
-
-  //     if (response.ok) {
-  //       onClose(); // Ferme la popup si succès
-  //     } else {
-  //       alert('Erreur lors de la modification');
-  //     }
-  //   } catch (error) {
-  //     console.error('Erreur modification:', error);
-  //   }
-  // };
+ 
 
 const handleSubmit = async (e) => {
   e.preventDefault();

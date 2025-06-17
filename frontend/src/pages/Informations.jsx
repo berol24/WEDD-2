@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Input from '../components/Input';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
+import logo from "../assets/img/logo.png"
+
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 function Informations() {
@@ -180,8 +182,7 @@ const getUser = async () => {
 
       {/* ---- MOBILE HEADER + NAVIGATION ---- */}
       <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <h1 className="text-xl font-bold">Menu</h1>
-        <button
+<h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>        <button
           className="bg-gray-700 px-3 py-1 rounded"
           onClick={() => setMenuOpen(!menuOpen)}
         >

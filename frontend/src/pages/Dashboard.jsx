@@ -9,6 +9,8 @@ import tri from '../assets/icons/tri.svg';
 import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
 import ModifierInvite from './ModifierInvite';
+import logo from "../assets/img/logo.png"
+
 import axios from 'axios';
 function Dashboard() {
   const [invitesList, setInvitesList] = useState([]);
@@ -148,8 +150,7 @@ function Dashboard() {
 
       {/* ---- MOBILE HEADER + NAVIGATION ---- */}
       <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <h1 className="text-xl font-bold">Menu</h1>
-        <button
+<h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>        <button
           className="bg-gray-700 px-3 py-1 rounded"
           onClick={() => setMenuOpen(!menuOpen)}
         >

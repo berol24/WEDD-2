@@ -6,6 +6,8 @@ import tri from '../assets/icons/tri.svg';
 import ModifierReunion from './ModifierReunion';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
+import logo from "../assets/img/logo.png"
+
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 function MesReunions() {
@@ -67,30 +69,7 @@ function MesReunions() {
     setFilteredReunions(filtered);
   };
 
-  // const handleDeleteReunion = async (id) => {
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const res = await fetch(`${apiUrl}/api/delete-reunion/${id}`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
 
-  //     if (res.ok) {
-  //       await fetchReunions(); // Recharge la liste après suppression
-  //       setSuccessMessage('Réunion supprimée avec succès');
-  //       setTimeout(() => {
-  //         setSuccessMessage('');
-  //       }, 2000);
-  //     } else {
-  //       alert('Erreur suppression');
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert('Erreur suppression');
-  //   }
-  // };
 
 
 const handleDeleteReunion = async (id) => {
@@ -127,8 +106,7 @@ const handleDeleteReunion = async (id) => {
 
       {/* ---- MOBILE HEADER + NAVIGATION ---- */}
       <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <h1 className="text-xl font-bold">Menu</h1>
-        <button
+<h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>        <button
           className="bg-gray-700 px-3 py-1 rounded"
           onClick={() => setMenuOpen(!menuOpen)}
         >

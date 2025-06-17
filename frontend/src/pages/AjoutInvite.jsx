@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
+import logo from "../assets/img/logo.png"
 import axios from 'axios';
 function AjoutInvite({ onClose }) {
   const [nom, setNom] = useState('');
@@ -65,12 +66,12 @@ function AjoutInvite({ onClose }) {
 
       {/* ---- MOBILE HEADER + NAVIGATION ---- */}
       <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <h1 className="text-xl font-bold">Menu</h1>
+        <h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>
         <button
           className="bg-gray-700 px-3 py-1 rounded"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          ☰
+          ☰ 
         </button>
       </div>
 

@@ -17,31 +17,7 @@ function ModifierReunion({ onClose, reunion }) {
     }
   }, [reunion]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const response = await fetch(`${apiUrl}/api/edit-reunion/${reunionId}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ titre, lieu, dateHeure: date }),
-  //     });
-
-  //     if (!response.ok) throw new Error('Erreur lors de la modification');
-  //     setSuccessMessage('Réunion modifiée avec succès');
-  //     setTimeout(() => {
-  //       setSuccessMessage('');
-  //       onClose(); // Fermer la modale après succès
-  //     }, 2000);
-  //     window.location.reload(); // Recharger la page pour mettre à jour la liste des réunions
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert('Erreur lors de la modification');
-  //   }
-  // };
+ 
 
 const handleSubmit = async (e) => {
   e.preventDefault();

@@ -10,32 +10,6 @@ function AjoutReunion({ onClose }) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch(`${apiUrl}/api/reunion`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //       },
-  //       body: JSON.stringify({ titre, dateHeure, lieu }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       console.log('Réunion créée avec succès:', data);
-  //       navigate('/liste-reunions');
-  //       window.location.reload();
-  //       onClose();
-  //     } else {
-  //       console.error('Erreur lors de la création:', data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Erreur réseau:', error);
-  //   }
-  // };
 
 
 const handleSubmit = async (e) => {
