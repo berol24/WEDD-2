@@ -30,8 +30,11 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
   //   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
   // };
- const apiUrlFrontend = import.meta.env.FRONTEND_URL; // ✅ Utilisation de l'URL de l'API depuis les variables d'environnement
   const generatePdf = async (invite) => {
+ const apiUrlFrontend = import.meta.env.FRONTEND_URL; // ✅ Utilisation de l'URL de l'API depuis les variables d'environnement
+
+console.log(apiUrlFrontend); // ✅ Vérification de l'URL de l'API
+
   const doc = new jsPDF();
 
   doc.setFontSize(16);
