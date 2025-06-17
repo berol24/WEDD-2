@@ -32,7 +32,7 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
   // };
 const generatePdf = async (invite) => {
   // 🔁 Récupération propre de l'URL frontend depuis .env
-  const apiUrlFrontend = import.meta.env.VITE_FRONTEND_URL; // Assure-toi que cette variable est bien nommée VITE_
+  const apiUrlFrontend = "https://wedd-i8ls.onrender.com"; // Assure-toi que cette variable est bien nommée VITE_
 
   if (!apiUrlFrontend) {
     console.error("⚠️ FRONTEND URL non définie dans .env");
