@@ -188,32 +188,42 @@ const RechercheInvite = () => {
     }
   };
 
-  const startScanner = () => {
-    setError(null);
-    setIsScanning(true);
+const startScanner = () => {
+  setError(null);
+  setIsScanning(true);
 
-    const html5QrCode = new Html5Qrcode("scanner");
+  const html5QrCode = new Html5Qrcode("scanner");
 
-    html5QrCode
-      .start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (decodedText) => {
-          console.log("QR Code détecté :", decodedText);
-          html5QrCode.stop().then(() => {
-            setIsScanning(false);
-            navigate(decodedText); // Le QR code contient un lien du type /invites/abc123
-          });
-        },
-        (errorMessage) => {
-          console.warn("Erreur scan :", errorMessage);
-        }
-      )
-      .catch((err) => {
-        console.error("Erreur démarrage scanner :", err);
-        setIsScanning(false);
-      });
-  };
+  html5QrCode
+    .start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      (decodedText) => {
+        console.log("QR Code détecté :", decodedText);
+
+        html5QrCode.stop().then(() => {
+          setIsScanning(false);
+
+          try {
+            const url = new URL(decodedText); // ✅ pour extraire le chemin seulement
+            const path = url.pathname;
+            navigate(path);
+          } catch (err) {
+            console.error("❌ URL invalide dans le QR Code :", decodedText);
+            setError("QR Code invalide");
+          }
+        });
+      },
+      (errorMessage) => {
+        console.warn("Erreur scan :", errorMessage);
+      }
+    )
+    .catch((err) => {
+      console.error("Erreur démarrage scanner :", err);
+      setIsScanning(false);
+    });
+};
+
 
   return (
     <div className="flex h-full w-full">
