@@ -74,7 +74,7 @@ return (
         <span className="text-gray-500 mr-6 w-10 h-10">
           {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
         </span>
-        <Link to="/login-page" className={` 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('login-page')}>
+        <Link to="/login-page" className={` 'text-gray-900' : 'text-gray-700'}`}>
           Connexion
         </Link>
       </div>
@@ -83,7 +83,7 @@ return (
         <span className="text-gray-500 mr-6 w-10 h-10">
           {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
         </span>
-        <Link to="/register-page" className={` 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('register-page')}>
+        <Link to="/register-page" className={` 'text-gray-900' : 'text-gray-700'}`}>
           Inscription
         </Link>
       </div>
