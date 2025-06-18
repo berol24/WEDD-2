@@ -18,6 +18,27 @@ const RechercheInvite = () => {
   const navigate = useNavigate();
   const scannerRef = useRef(null);
 
+
+
+  const handleLogout = async () => {
+    try {
+      // Supprimer le token (localStorage ou sessionStorage selon ton app)
+      localStorage.removeItem('token');
+
+      // Appel de l'API de déconnexion (pas strictement nécessaire, mais bon pour les logs côté serveur)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Redirection vers la page de connexion
+      navigate('/login-page');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      alert("Erreur lors de la déconnexion");
+    }
+  }
   // Récupération des invités
   const invites = async () => {
     try {
@@ -75,7 +96,7 @@ const startScanner = () => {
           setIsScanning(false);
 
           try {
-            const url = new URL(decodedText); // ✅ pour extraire le chemin seulement
+            const url = new URL(decodedText);
             const path = url.pathname;
             navigate(path);
           } catch (err) {
@@ -94,11 +115,8 @@ const startScanner = () => {
     });
 };
 
-
   return (
-     
-<div className="flex flex-col md:flex-row min-h-screen">
-
+    <div className="flex flex-col md:flex-row min-h-screen">
       {/* ---- NAVLINK (gauche, desktop seulement) ---- */}
       <div className="hidden md:block md:w-64">
         <NavLink />
@@ -106,7 +124,8 @@ const startScanner = () => {
 
       {/* ---- MOBILE HEADER + NAVIGATION ---- */}
       <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-<h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>        <button
+          <h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>
+          <button
           className="bg-gray-700 px-3 py-1 rounded"
           onClick={() => setMenuOpen(!menuOpen)}
         >
@@ -121,6 +140,8 @@ const startScanner = () => {
           <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
           <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
           <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+          <Link onClick={() =>{ setMenuOpen(false); handleLogout()}} className="text-red-400 hover:text-red-300">Déconnexion</Link>
+        
         </nav>
       )}
 
@@ -178,8 +199,6 @@ const startScanner = () => {
         <BlogRight />
       </div>
     </div>
-  
   );
 };
-
 export default RechercheInvite;

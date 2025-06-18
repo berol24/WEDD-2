@@ -16,7 +16,25 @@ function AjoutInvite({ onClose }) {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
+const handleLogout = async () => {
+    try {
+      // Supprimer le token (localStorage ou sessionStorage selon ton app)
+      localStorage.removeItem('token');
 
+      // Appel de l'API de déconnexion (pas strictement nécessaire, mais bon pour les logs côté serveur)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Redirection vers la page de connexion
+      navigate('/login-page');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      alert("Erreur lors de la déconnexion");
+    }
+  }
 
   const handleSubmitInvite = async (e) => {
   e.preventDefault();
@@ -54,6 +72,11 @@ function AjoutInvite({ onClose }) {
       console.error('Erreur réseau ou autre:', error.message);
     }
   }
+
+
+
+
+
 };
 
   return (
@@ -82,8 +105,8 @@ function AjoutInvite({ onClose }) {
           <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
           <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
           <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
-        </nav>
-      )}
+          <Link onClick={() =>{ setMenuOpen(false); handleLogout()}} className="text-red-400 hover:text-red-300">Déconnexion</Link>
+        </nav>      )}
 
       <div className="flex-1 bg-[#717171] flex items-center justify-center p-8">
         <form

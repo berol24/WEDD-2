@@ -6,10 +6,31 @@ import invite from '../assets/icons/invite.svg'
 import reunion from '../assets/icons/reunion.svg'
 import help from '../assets/img/help.svg'
 import search from '../assets/icons/search.png'
-import { Link } from 'react-router-dom'
+import axios  from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 import Image from './Image'
 function NavLink() {
   const [activeLink, setActiveLink] = useState('dashboard')
+  const navigate = useNavigate();
+const handleLogout = async () => {
+    try {
+      // Supprimer le token (localStorage ou sessionStorage selon ton app)
+      localStorage.removeItem('token');
+
+      // Appel de l'API de déconnexion (pas strictement nécessaire, mais bon pour les logs côté serveur)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Redirection vers la page de connexion
+      navigate('/login-page');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      alert("Erreur lors de la déconnexion");
+    }
+  }
 
   return (
     <div className="w-64 flex flex-col gap-4 border border-gray-300">
@@ -64,7 +85,7 @@ function NavLink() {
       </div>
 
 
-<div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
+      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
         <span className="text-gray-500 mr-6 w-10 h-10">
           {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
         </span>
@@ -80,6 +101,15 @@ function NavLink() {
         <Link to="/register-page" className={`${activeLink === 'register-page' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('register-page')}>
           Inscription
         </Link>
+      </div>
+
+      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'logout' ? 'opacity-50' : ''}`}>
+        <span className="text-gray-500 mr-6 w-10 h-10">
+          {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
+        </span>
+        <button  className={`${activeLink === 'logout' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => {setActiveLink('logout'); handleLogout()}}>
+          Deconnexion
+        </button>
       </div>
 
       <div className='d-flex flex-col m-8 items-center'>

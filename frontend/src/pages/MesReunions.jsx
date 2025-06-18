@@ -9,7 +9,7 @@ import BlogRight from '../components/BlogRight';
 import logo from "../assets/img/logo.png"
 
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function MesReunions() {
   const [reunionsList, setReunionsList] = useState([]);
   const [filteredReunions, setFilteredReunions] = useState([]);
@@ -21,7 +21,8 @@ function MesReunions() {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [reunionToDelete, setReunionToDelete] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  
+  const navigate = useNavigate();
+
   const apiUrl = import.meta.env.VITE_API_URL;
 
   // Définir en haut du composant
@@ -96,6 +97,28 @@ const handleDeleteReunion = async (id) => {
   }
 };
 
+
+const handleLogout = async () => {
+    try {
+      // Supprimer le token (localStorage ou sessionStorage selon ton app)
+      localStorage.removeItem('token');
+
+      // Appel de l'API de déconnexion (pas strictement nécessaire, mais bon pour les logs côté serveur)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Redirection vers la page de connexion
+      navigate('/login-page');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      alert("Erreur lors de la déconnexion");
+    }
+  }
+
+
   return (
     <>
       <div className="flex flex-col md:flex-row min-h-screen">
@@ -121,6 +144,8 @@ const handleDeleteReunion = async (id) => {
           <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
           <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
           <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+          <Link onClick={() =>{ setMenuOpen(false); handleLogout()}} className="text-red-400 hover:text-red-300">Déconnexion</Link>
+          
         </nav>
       )}
         <div className="flex-1 px-4 sm:px-6 lg:px-8">

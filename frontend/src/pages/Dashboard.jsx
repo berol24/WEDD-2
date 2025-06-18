@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavLink from './../components/NavLink';
 import Table from '../components/Table';
 import myImage from '../assets/img/logo.png';
@@ -21,8 +21,30 @@ function Dashboard() {
   const [prenom, setPrenom] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-   
+  const navigate = useNavigate();
+
   const apiUrl = import.meta.env.VITE_API_URL;
+
+
+const handleLogout = async () => {
+    try {
+      // Supprimer le token (localStorage ou sessionStorage selon ton app)
+      localStorage.removeItem('token');
+
+      // Appel de l'API de déconnexion (pas strictement nécessaire, mais bon pour les logs côté serveur)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Redirection vers la page de connexion
+      navigate('/login-page');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      alert("Erreur lors de la déconnexion");
+    }
+  }
 
   // States à ajouter tout en haut du composant Dashboard
   const [showPopupUpdateInvite, setShowPopupUpdateInvite] = useState(false);
@@ -165,6 +187,8 @@ function Dashboard() {
           <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
           <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
           <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
+          <Link onClick={() =>{ setMenuOpen(false); handleLogout()}} className="text-red-400 hover:text-red-300">Déconnexion</Link>
+        
         </nav>
       )}
       

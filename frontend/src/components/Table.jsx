@@ -9,25 +9,7 @@ import whatsapp from "../assets/icons/whatsapp.svg"
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
     
-  //   // Contenu texte
-  //   doc.setFontSize(16);
-  //   doc.text("Fiche Invité", 20, 20);
-  //   doc.setFontSize(12);
-  //   doc.text(`Nom : ${invite.nom}`, 20, 40);
-  //   doc.text(`Prénom : ${invite.prenom}`, 20, 50);
-  //   doc.text(`Téléphone : +237 ${invite.telephone}`, 20, 60);
-  //   doc.text(`Table : ${invite.nomTable || 'Non attribuée'}`, 20, 70);
-  //   doc.text(`ID invité : ${invite.inviteId || 'Non attribuée'}`, 20, 80);
-  //   doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
 
-  //   // QR Code : il redirige vers une page mobile ou affiche juste "Présent"
-  //   const qrText = "Présent";
-  //   const qrImage = await QRCode.toDataURL(qrText);
-
-  //   doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // QR en haut à droite
-
-  //   doc.save(`Invite-${invite.nom}-${invite.prenom}.pdf`);
-  // };
 const generatePdf = async (invite) => {
   const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
 
