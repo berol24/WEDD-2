@@ -36,10 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connexion à la base de données
-mongoose.connect(process.env.DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.DB_URI)
   .then(() => console.log("Connexion à la base de données réussie !"))
   .catch((error) => console.error("Erreur de connexion à la base de données :", error));
 
