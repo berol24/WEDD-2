@@ -7,7 +7,7 @@ import ModifierReunion from './ModifierReunion';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import logo from "../assets/img/logo.png"
-
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 function MesReunions() {
@@ -22,12 +22,16 @@ function MesReunions() {
   const [reunionToDelete, setReunionToDelete] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
   // Définir en haut du composant
   
   const reunions = async () => {
+
+
+
   try {
     const token = localStorage.getItem('token'); // ou sessionStorage
 
@@ -47,17 +51,22 @@ function MesReunions() {
     return [];
   }
 };
-  
-  const fetchReunions = async () => {
+
+
+ 
+    const fetchReunions = async () => {
     const data = await reunions();
     setReunionsList(data);
     setFilteredReunions(data);
   };
-
-  // Lancer une fois au chargement
+   // Lancer une fois au chargement
   useEffect(() => {
     fetchReunions();
-  }, []);
+  }, [[location.pathname]]);
+
+
+
+
 
   // Fonction pour gérer la recherche
 

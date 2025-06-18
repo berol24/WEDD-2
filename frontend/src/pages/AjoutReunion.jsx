@@ -31,8 +31,8 @@ const handleSubmit = async (e) => {
 
     console.log('Réunion créée avec succès:', response.data);
     navigate('/liste-reunions');
-    window.location.reload();
-    onClose();
+    // window.location.reload();
+    if (onClose) onClose();
   } catch (error) {
     if (error.response) {
       console.error('Erreur lors de la création:', error.response.data.message);

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavLink from './../components/NavLink';
 import Table from '../components/Table';
 import myImage from '../assets/img/logo.png';
@@ -22,7 +22,7 @@ function Dashboard() {
   const [successMessage, setSuccessMessage] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -106,7 +106,7 @@ const handleLogout = async () => {
   // Lancer une fois au chargement
   useEffect(() => {
     fetchInvites();
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     const fetchReunions = async () => {
@@ -114,7 +114,7 @@ const handleLogout = async () => {
       setReunionsList(data);
     };
     fetchReunions();
-  }, []);
+  }, [location.pathname]);
 
   // Récupération du nom de l'utilisateur depuis le localStorage
   useEffect(() => {

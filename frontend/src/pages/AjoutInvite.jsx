@@ -62,7 +62,7 @@ const handleLogout = async () => {
 
     console.log('Invité ajouté avec succès:', response.data);
     navigate('/dashboard');
-    window.location.reload();
+    // window.location.reload();
     if (onClose) onClose();
 
   } catch (error) {
@@ -72,10 +72,6 @@ const handleLogout = async () => {
       console.error('Erreur réseau ou autre:', error.message);
     }
   }
-
-
-
-
 
 };
 
