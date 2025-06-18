@@ -29,9 +29,6 @@ function MesReunions() {
   // Définir en haut du composant
   
   const reunions = async () => {
-
-
-
   try {
     const token = localStorage.getItem('token'); // ou sessionStorage
 
@@ -52,17 +49,15 @@ function MesReunions() {
   }
 };
 
-
- 
     const fetchReunions = async () => {
-    const data = await reunions();
-    setReunionsList(data);
-    setFilteredReunions(data);
-  };
-   // Lancer une fois au chargement
-  useEffect(() => {
-    fetchReunions();
-  }, [[location.pathname]]);
+      const data = await reunions();
+      setReunionsList(data);
+      setFilteredReunions(data);
+    };
+    // Lancer une fois au chargement
+    useEffect(() => {
+      fetchReunions();
+    }, [location.pathname]);
 
 
 

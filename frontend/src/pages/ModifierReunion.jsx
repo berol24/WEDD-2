@@ -44,7 +44,7 @@ const handleSubmit = async (e) => {
       setSuccessMessage('');
       onClose(); // Fermer la modale après succès
     }, 2000);
-    window.location.reload(); // Recharger la page pour mettre à jour la liste des réunions
+   // window.location.reload(); // Recharger la page pour mettre à jour la liste des réunions
   } catch (err) {
     console.error(err);
     alert('Erreur lors de la modification');
