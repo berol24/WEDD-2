@@ -4,7 +4,7 @@ import logo from '../assets/img/logo.png';
 import Input from '../components/Input';
 import Image from '../components/Image';
 import Title from '../components/Title';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function Connexion() {
   const [email, setEmail] = useState('');
@@ -12,49 +12,6 @@ function Connexion() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError('');
-
-  //   try {
-  //     const response = await fetch(`${apiUrl}/api/login`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         email,
-  //         password,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       const expiration = new Date().getTime() + data.expiresIn;
-
-  //       localStorage.setItem('token', data.token);
-  //       localStorage.setItem('tokenExpiration', expiration.toString());
-  //       localStorage.setItem('user', JSON.stringify(data.user));
-
-  //       navigate('/dashboard');
-
-  //       // Optionnel : Définir un timer pour déconnecter l'utilisateur après expiration
-  //       setTimeout(() => {
-  //         localStorage.removeItem('token');
-  //         localStorage.removeItem('tokenExpiration');
-  //         localStorage.removeItem('user');
-  //         navigate('/login-page');
-  //       }, data.expiresIn);
-  //     } else {
-  //       setError(data.message || 'Identifiants incorrects');
-  //     }
-  //   } catch (err) {
-  //     setError('Une erreur est survenue lors de la connexion');
-  //   }
-  // };
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -174,12 +131,12 @@ const handleSubmit = async (e) => {
 
           <p className="mt-8 md:mt-10 text-center text-sm text-black">
             Vous n'avez pas de compte ?
-            <a
-              href="/register-page"
+            <Link
+              to="/register-page"
               className="font-semibold ml-1 text-[#016CEC] opacity-80 hover:opacity-100"
             >
               Créer un compte
-            </a>
+            </Link>
           </p>
         </div>
       </div>

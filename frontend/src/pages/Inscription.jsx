@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import image_couple from '../assets/img/image_couple.jpg';
 import logo from '../assets/img/logo.png';
 import Input from '../components/Input';
@@ -11,51 +11,6 @@ function Inscription() {
   const [errorMessage, setErrorMessage] = useState({ text: '', type: '' });
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // const [formData, setFormData] = useState({
-  //   nom: '',
-  //   prenom: '',
-  //   email: '',
-  //   telephone: '',
-  //   password: '',
-  //   confirmPassword: '',
-  //   dateMariage: '',
-  //   lieuMariage: '',
-  //   couleurSite: '',
-  //   themeMariage: '',
-  // });
-
-  // const handleChange = (e) => {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log('Données envoyées au backend :', formData);
-
-  //   try {
-  //     const response = await fetch(`${apiUrl}/api/register`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
-  //     const data = await response.json();
-  //     if (response.ok) {
-  //       // setErrorMessage({ text: data.message, type: data.type });
-
-  //       navigate('/login-page');
-  //     } else {
-  //       setErrorMessage({ text: data.message, type: data.type });
-  //     }
-  //   } catch (error) {
-  //     console.error('Erreur réseau :', error);
-  //     setErrorMessage({
-  //       text: 'Impossible de contacter le serveur.',
-  //       type: data.type,
-  //     });
-  //   }
-  // };
 
 
 const [formData, setFormData] = useState({
@@ -257,12 +212,12 @@ const [formData, setFormData] = useState({
 
           <p className="mt-4 md:mt-6 text-center text-sm text-black">
             Avez vous déjà un compte ?
-            <a
-              href="/login-page"
+            <Link
+              to="/login-page"
               className="font-semibold ml-1 text-[#016CEC] opacity-80 hover:opacity-100"
             >
               Connectez vous
-            </a>
+            </Link>
           </p>
         </div>
       </div>
