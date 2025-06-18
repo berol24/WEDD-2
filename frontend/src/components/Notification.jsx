@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import alarm from '../assets/icons/alarm.svg';
-
+import { Link } from 'react-router-dom';
 function Notification() {
   const [reunionsList, setReunionsList] = useState([]);
   const apiUrl = import.meta.env.VITE_API_URL;
+
 
   const reunions = async () => {
     try {
@@ -44,7 +45,7 @@ function Notification() {
       <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto  w-[300px]  ">
         {reunionsList &&
           reunionsList.map((reunion) => (
-            <a key={reunion._id}
+            <Link key={reunion._id}
               href="#"
               className="flex justify-between items-center gap-4 border-2 border-gray-300 p-4 rounded-lg w-[300px]"
             >
@@ -53,7 +54,7 @@ function Notification() {
                 <p className="font-bold break-words">{reunion.titre}</p>
                 <p>{new Date(reunion.dateHeure).toLocaleDateString()}</p>
               </div>
-            </a>
+            </Link>
           ))}
       </div>
     </div>

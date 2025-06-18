@@ -109,12 +109,12 @@ const handleSubmit = async (e) => {
 
               <div className="mt-3 flex justify-end">
                 <div className="text-sm">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="font-semibold text-[#016CEC] hover:underline underline-offset-8"
                   >
                     Mot de passe oublié?
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

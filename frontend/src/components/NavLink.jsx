@@ -114,7 +114,7 @@ const handleLogout = async () => {
 
       <div className='d-flex flex-col m-8 items-center'>
         <Image src={help} className=" w-56" />
-        <a href="/help-page" className=' underline underline-offset-8 '>Avez vous besoin d'aide ?</a>
+        <Link href="/help-page" className=' underline underline-offset-8 '>Avez vous besoin d'aide ?</Link>
       </div>
 
     </div>
