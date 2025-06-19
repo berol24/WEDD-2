@@ -19,7 +19,7 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt'],
       manifest: {
         name: 'WEDD',
-        short_name: 'App',
+        short_name: 'WEDD',
         description: "Plateforme de gestion de mariage avec génération automatisée de billets numériques en PDF intégrant les données dynamiques de l’invité (nom, statut, numéro de table). Chaque billet contient un QR code unique permettant un scan rapide à l’entrée, une gestion en temps réel des présences, et une organisation optimale du plan de salle.",
         theme_color: '#ffffff',
         background_color: '#ffffff',
