@@ -26,6 +26,7 @@ import RechercheInvite from "./RechercheInvite";
 import ShowInvite from "./ShowInvite";
 import Connexion from "./Connexion";
 import { Link } from "react-router-dom";
+import InstallPWAButton from "../components/InstallPWAButton";
 
 function Accueil() {
 
@@ -70,6 +71,7 @@ return (
 {/* <BlogRight/> */}
 
 {/* <RechercheInvite/> */}
+ <InstallPWAButton />
 <div className={`flex m-8 items-center gap-4 `}>
         <span className="text-gray-500 mr-6 w-10 h-10">
           {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}

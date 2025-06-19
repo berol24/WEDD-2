@@ -17,6 +17,7 @@ import ModifierReunion from './pages/ModifierReunion.jsx'
 const router = createBrowserRouter (
   createRoutesFromElements (
       <>
+       
         <Route path="/" element={<Accueil />} />
         <Route path="/login-page" element={<Connexion />} />
         <Route path="/register-page" element={<Inscription />} />
