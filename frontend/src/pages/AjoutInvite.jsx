@@ -62,7 +62,7 @@ const handleLogout = async () => {
 
     console.log('Invité ajouté avec succès:', response.data);
     navigate('/dashboard');
-    // window.location.reload();
+    
     if (onClose) onClose();
 
   } catch (error) {

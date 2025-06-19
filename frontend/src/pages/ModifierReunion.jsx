@@ -44,7 +44,7 @@ const handleSubmit = async (e) => {
       setSuccessMessage('');
       onClose(); // Fermer la modale après succès
     }, 2000);
-   // window.location.reload(); // Recharger la page pour mettre à jour la liste des réunions
+     window.location.reload(); // Recharger la page pour mettre à jour la liste des réunions
   } catch (err) {
     console.error(err);
     alert('Erreur lors de la modification');
@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
         </h2>
         {successMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
-            Réunion modifiée avec succès
+            {successMessage}
           </div>
         )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

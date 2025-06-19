@@ -28,7 +28,7 @@ function MesReunions() {
 
   // Définir en haut du composant
   
-  const reunions = async () => {
+const reunions = async () => {
   try {
     const token = localStorage.getItem('token'); // ou sessionStorage
 
@@ -48,18 +48,17 @@ function MesReunions() {
     return [];
   }
 };
-
+    
     const fetchReunions = async () => {
       const data = await reunions();
       setReunionsList(data);
       setFilteredReunions(data);
     };
+
     // Lancer une fois au chargement
     useEffect(() => {
       fetchReunions();
     }, [location.pathname]);
-
-
 
 
 
@@ -254,7 +253,7 @@ const handleLogout = async () => {
             </button>
           </div>
           {showPopupAjoutReunion && (
-            <AjoutReunion onClose={() => setShowPopupAjoutReunion(false)} />
+            <AjoutReunion onClose={() => setShowPopupAjoutReunion(false)}  fetchReunions={fetchReunions}  />
           )}
           {showPopupUpdateReunion && selectedReunion && (
             <ModifierReunion

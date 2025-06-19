@@ -24,6 +24,11 @@ function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
+ // States à ajouter tout en haut du composant Dashboard
+  const [showPopupUpdateInvite, setShowPopupUpdateInvite] = useState(false);
+  const [selectedInvite, setSelectedInvite] = useState(null);
+  const [inviteToDelete, setInviteToDelete] = useState(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
 
 const handleLogout = async () => {
@@ -46,12 +51,7 @@ const handleLogout = async () => {
     }
   }
 
-  // States à ajouter tout en haut du composant Dashboard
-  const [showPopupUpdateInvite, setShowPopupUpdateInvite] = useState(false);
-  const [selectedInvite, setSelectedInvite] = useState(null);
-  const [inviteToDelete, setInviteToDelete] = useState(null);
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-
+ 
   // gestion des invités
 
   const invites = async () => {
@@ -96,6 +96,8 @@ const handleLogout = async () => {
     }
   };
 
+
+
   // Définir en haut du composant
   const fetchInvites = async () => {
     const data = await invites();
@@ -108,6 +110,7 @@ const handleLogout = async () => {
     fetchInvites();
   }, [location.pathname]);
 
+  
   useEffect(() => {
     const fetchReunions = async () => {
       const data = await reunions();
@@ -115,6 +118,9 @@ const handleLogout = async () => {
     };
     fetchReunions();
   }, [location.pathname]);
+
+
+
 
   // Récupération du nom de l'utilisateur depuis le localStorage
   useEffect(() => {

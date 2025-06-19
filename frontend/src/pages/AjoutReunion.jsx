@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import close from '../assets/icons/close-circle.svg';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-function AjoutReunion({ onClose }) {
+function AjoutReunion({ onClose, fetchReunions }) {
   const [titre, setTitre] = useState('');
   const [dateHeure, setDateHeure] = useState('');
-  const [lieu, setLieu] = useState('');
+  const [lieu, setLieu] = useState('');  
+  const [successMessage, setSuccessMessage] = useState('');
   const apiUrl = import.meta.env.VITE_API_URL;
+  
+  
   const navigate = useNavigate();
 
 
@@ -30,9 +33,14 @@ const handleSubmit = async (e) => {
     );
 
     console.log('Réunion créée avec succès:', response.data);
-    navigate('/liste-reunions');
-    // window.location.reload();
-    if (onClose) onClose();
+     setSuccessMessage('Réunion ajoutée avec succès');
+    // Appelle la fonction pour rafraîchir la liste
+      if (fetchReunions) fetchReunions();
+      // Ferme la popup
+      if (onClose) onClose();
+
+      // Redirige vers la page liste
+      navigate("/liste-reunions"); 
   } catch (error) {
     if (error.response) {
       console.error('Erreur lors de la création:', error.response.data.message);
@@ -42,6 +50,7 @@ const handleSubmit = async (e) => {
   }
 };
 
+
   return (
     <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
       <div className="relative p-8 bg-white rounded-lg shadow-md text-center w-[350px]">
@@ -49,6 +58,12 @@ const handleSubmit = async (e) => {
           <img className="w-8 h-8" src={close} alt="close-circle" />
         </button>
         <h2 className="text-black mb-5 font-bold text-lg">Ajouter une réunion</h2>
+        
+           {successMessage && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
+            {successMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"
