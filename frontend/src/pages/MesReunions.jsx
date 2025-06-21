@@ -10,6 +10,7 @@ import logo from "../assets/img/logo.png"
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import PlanifierNotification from './PlanifierNotification';
 function MesReunions() {
   const [reunionsList, setReunionsList] = useState([]);
   const [filteredReunions, setFilteredReunions] = useState([]);
@@ -53,6 +54,11 @@ const reunions = async () => {
       const data = await reunions();
       setReunionsList(data);
       setFilteredReunions(data);
+
+      data.forEach((reunion) => {
+          PlanifierNotification(reunion); 
+      });
+
     };
 
     // Lancer une fois au chargement

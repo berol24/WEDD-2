@@ -33,46 +33,6 @@ function Accueil() {
 
 return (
     <>
- {/* <Input  placeholder = "jane@example.com" type = "text" width="w-96" /> */}
- {/* <Bouton width="w-96" bg="bg-[#016CEC]" color="text-[#fff]" fontSize="text-[18px]"/>  */}
- {/* <Title color="text-[#008000]" fontSize='text-[25px]' fontWeight="font-bold" >Notre Mariage</Title> */}
- {/* <Subtitle fontSize="text-[15px]" fontWeight="font-medium" color="text-[#008000]">Notre Mariage</Subtitle> */}
- {/* <Image src={logo}alt="image" width="w-96" height="h-96"/> */}
-
-{/* <NavLink/> */}
-
-{/* <Table /> */}
-
-{/* <Notification/> */}
-
-{/* <Graphe /> */}
-{/* <Dashboard/> */}
-
-{/* <Informations/> */}
-
-{/* <MesReunions/> */}
-
-{/* <AjoutReunion/> */}
-{/* <ModifierReunion /> */}
-
-{/* <AjoutInvite/> */}
-{/* <ModifierInvite /> */}
-
-{/* <MesReunions/> */}
-
-{/* <Table /> */}
-
-{/* <Graphe /> */}
-
-{/* <NextMeeting/> */}
-
-
-{/* <InfoProfile/> */}
-
-{/* <BlogRight/> */}
-
-{/* <RechercheInvite/> */}
-
 <InstallPWAButton />     
 <div className={`flex m-8 items-center gap-4 `}>
         <span className="text-gray-500 mr-6 w-10 h-10">

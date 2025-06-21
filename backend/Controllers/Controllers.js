@@ -54,7 +54,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   
     const { email, password } = req.body; // Ne prendre que l'email et le mot de passe ici
-    console.log("Body:", req.body); 
     try {
         // Vérification si l'utilisateur existe
         const user = await User.findOne({ email });
@@ -414,30 +413,6 @@ const allInvite = async (req, res) => {
     }
 }
 
-// const oneInvite = async (req, res) => {
-//     const { inviteId } = req.params;
-
-//     try {
-//         const invite = await Invite.findOne({ inviteId: inviteId });
-//         if (!invite) {
-//             return res.status(404).json({
-//                 message: "Invité non trouvé",
-//                 type: "danger"
-//             });
-//         }
-//         res.status(200).json({
-//             message: "Invité récupéré avec succès",
-//             type: "success",
-//             invite
-//         });
-//     } catch (err) {
-//         console.error("Erreur lors de la récupération de l'invité :", err);
-//         res.status(500).json({
-//             message: "Erreur lors de la récupération de l'invité",
-//             type: "danger"
-//         });
-//     }
-// }
 
 
 const oneInvite  = async (req, res) => {
