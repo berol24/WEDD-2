@@ -8,6 +8,7 @@ import help from '../assets/img/help.svg'
 import search from '../assets/icons/search.png'
 import axios  from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+
 import Image from './Image'
 function NavLink() {
   const [activeLink, setActiveLink] = useState('dashboard')
@@ -25,7 +26,7 @@ const handleLogout = async () => {
       });
 
       // Redirection vers la page de connexion
-      navigate('/login-page');
+      navigate('/');
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
       alert("Erreur lors de la déconnexion");
@@ -85,29 +86,13 @@ const handleLogout = async () => {
       </div>
 
 
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6 w-10 h-10">
-          {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
-        </span>
-        <Link to="/login-page" className={`${activeLink === 'login-page' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('login-page')}>
-          Connexion
-        </Link>
-      </div>
+     
 
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6 w-10 h-10">
-          {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
-        </span>
-        <Link to="/register-page" className={`${activeLink === 'register-page' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('register-page')}>
-          Inscription
-        </Link>
-      </div>
-
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'logout' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6 w-10 h-10">
-          {/* <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} /> */}
-        </span>
-        <button  className={`${activeLink === 'logout' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => {setActiveLink('logout'); handleLogout()}}>
+      <div className={`flex justify-center items-center mx-0 gap-4 ${activeLink !== 'logout' ? 'opacity-1' : ''}`}>
+        {/* <span className="text-gray-500 mr-6 w-10 h-10">
+          <FaSignOutAlt className={activeLink === 'logout' ? 'text-gray-900' : 'text-gray-500'} />
+        </span> */}
+        <button  className={`${activeLink === 'logout' ? 'text-red-900' : 'text-red-700'}`} onClick={() => {setActiveLink('logout'); handleLogout()}}>
           Deconnexion
         </button>
       </div>
@@ -120,5 +105,4 @@ const handleLogout = async () => {
     </div>
   )
 }
-
 export default NavLink

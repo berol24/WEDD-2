@@ -33,7 +33,7 @@ const RechercheInvite = () => {
       });
 
       // Redirection vers la page de connexion
-      navigate('/login-page');
+      navigate('/');
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
       alert("Erreur lors de la déconnexion");
