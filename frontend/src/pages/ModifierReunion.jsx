@@ -9,11 +9,23 @@ function ModifierReunion({ onClose, reunion }) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const reunionId = reunion._id;
 
+
+const toLocalDateTimeInputValue = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (`0${date.getMonth() + 1}`).slice(-2); // mois = 0-indexé
+  const day = (`0${date.getDate()}`).slice(-2);
+  const hours = (`0${date.getHours()}`).slice(-2);
+  const minutes = (`0${date.getMinutes()}`).slice(-2);
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+
   useEffect(() => {
     if (reunion) {
       setTitre(reunion.titre || '');
       setLieu(reunion.lieu || '');
-      setDate(new Date(reunion.dateHeure).toISOString().slice(0, 16));
+      setDate(toLocalDateTimeInputValue(reunion.dateHeure));
     }
   }, [reunion]);
 

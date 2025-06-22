@@ -13,11 +13,12 @@ import MesReunions from './pages/MesReunions.jsx'
 import RechercheInvite from './pages/RechercheInvite.jsx'
 import ShowInvite from './pages/ShowInvite.jsx'
 import ModifierReunion from './pages/ModifierReunion.jsx'
+import Root from './components/Root.jsx'
 
 const router = createBrowserRouter (
   createRoutesFromElements (
       <>
-       
+      <Route element={<Root />}>
         <Route path="/" element={<Accueil />} />
         <Route path="/login-page" element={<Connexion />} />
         <Route path="/register-page" element={<Inscription />} />
@@ -28,7 +29,7 @@ const router = createBrowserRouter (
         <Route path="/recherche-invite" element={<RechercheInvite />} />
         <Route path="/invites/:inviteId" element={<ShowInvite />} /> 
         <Route path="*" element={<PageNotFound/>} />
-
+      </Route>
       </>
   )
 )

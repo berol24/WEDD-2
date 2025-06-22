@@ -205,10 +205,10 @@ const handleLogout = async () => {
                         {reunion.titre}
                       </td>
                       <td className="px-4 py-2 border-b text-center">
-                        {new Date(reunion.dateHeure).toLocaleDateString()}
+                        {new Date(reunion.dateHeure).toLocaleDateString('fr-FR')}
                       </td>
                       <td className="px-4 py-2 border-b text-center">
-                        {new Date(reunion.dateHeure).toLocaleTimeString()}
+                        {new Date(reunion.dateHeure).toLocaleTimeString('fr-FR')}
                       </td>
                       <td className="px-4 py-2 border-b text-center">
                         {reunion.lieu}
