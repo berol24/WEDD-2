@@ -6,6 +6,7 @@ import deleteIcon from '../assets/icons/deleteIcon.svg';
 import edit from '../assets/icons/edit.svg';
 import axios from 'axios';
 import whatsapp from "../assets/icons/whatsapp.svg"
+
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
     
@@ -149,8 +150,7 @@ const handleWhatsAppShare = async (invite) => {
                   </div>
                 </td>
               </tr>
-            ))
-          ) : (
+            ))          ) : (
             <tr>
               <td colSpan="8" className="px-4 py-3 text-center">
                 Aucune donnée trouvée

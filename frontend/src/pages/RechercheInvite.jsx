@@ -220,20 +220,12 @@ const handleSubmit = async (e) => {
             📷 Scanner un QR Code
           </button>
 
-          {/* {error && error.text && (
-            <div className="mt-4">
-              <span className={`${error.includes("✅") ? "text-green-600" : "text-red-600"} font-bold`}>
-                {error}
-              </span>
-            </div>
-          )} */}
-
           {error && error.text && (
-  <div className="mt-4">
-    <span className={`font-bold ${error.color === "red" ? "text-red-600" : "text-green-600"}`}>
-      {error.text}
-    </span>
-  </div>
+          <div className="mt-4">
+            <span className={`font-bold ${error.color === "red" ? "text-red-600" : "text-green-600"}`}>
+              {error.text}
+            </span>
+          </div>
 )}
 
 

@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavLink from './../components/NavLink';
 import Table from '../components/Table';
-import myImage from '../assets/img/logo.png';
 import { useState, useEffect } from 'react';
 import Graphe from '../components/Graphe';
 import Bouton from '../components/Bouton';
@@ -10,6 +9,7 @@ import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
 import ModifierInvite from './ModifierInvite';
 import logo from "../assets/img/logo.png"
+
 
 import axios from 'axios';
 function Dashboard() {
