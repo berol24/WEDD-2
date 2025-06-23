@@ -45,6 +45,8 @@ const generatePdf = async (invite) => {
   return pdfBlob;
 };
 
+
+
 const handleWhatsAppShare = async (invite) => {
   try {
     const pdfBlob = await generatePdf(invite);

@@ -4,7 +4,7 @@ const User = require("../Models/User.js");
 // const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite, editReunion, deleteReunion, editInvite, deleteInvite, user, editProfil, editPassword } = require("../Controllers/Controllers.js");
+const { register, login, addReunion, allReunion, addInvite, allInvite, oneInvite, editReunion, deleteReunion, editInvite, deleteInvite, user, editProfil, editPassword, presence } = require("../Controllers/Controllers.js");
 const upload= require("./UploadImage.js"); // Importation du middleware multer pour l'upload d'images
 const authenticate = require("./AuthMiddleware.js").default;
 
@@ -29,6 +29,9 @@ router.get("/invites/:inviteId", authenticate, oneInvite)
 router.put("/edit-invite/:id", authenticate,upload.single('image'), editInvite);
 router.delete('/delete-invite/:id', authenticate, deleteInvite);
 
+// presence invité 
+
+router.post('/invites/:inviteId/presence', authenticate, presence);
 
 //  Routes pour les reunions
 router.post("/reunion", authenticate , addReunion)
