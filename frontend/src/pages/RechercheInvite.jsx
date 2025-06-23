@@ -60,8 +60,6 @@ const RechercheInvite = () => {
 
 
 
-  //  Recherche manuelle
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
