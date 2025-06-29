@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 // Schéma Invité
 const inviteSchema = new mongoose.Schema({
+    
     inviteId: { 
         type: String, 
         required: true, 
@@ -15,6 +16,11 @@ const inviteSchema = new mongoose.Schema({
     prenom: { type: String, required: true },
     telephone: { type: String, required: true },
     nomTable: { type: String },
+    titre: {
+    type: String,
+    enum: ['M', 'Mme', 'Mlle', 'couple'],
+    default: '' 
+    },
     status: { 
         type: String, 
         required: true,

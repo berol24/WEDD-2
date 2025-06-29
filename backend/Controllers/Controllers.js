@@ -360,7 +360,7 @@ const deleteReunion = async (req, res) => {
 
 
 const addInvite = async (req, res) => {
-    const { nom, prenom, telephone, nomTable, status } = req.body;
+    const {titre ,nom, prenom, telephone, nomTable, status} = req.body;
     console.log("Données de l'invité :", req.body);
     try {
         if (!nom || !prenom || !telephone) {
@@ -371,6 +371,7 @@ const addInvite = async (req, res) => {
         }
 
         const newInvite = new Invite({
+            titre,
             nom,
             prenom,
             telephone,
@@ -454,7 +455,7 @@ const oneInvite  = async (req, res) => {
 const editInvite = async (req, res) => {
 
   const { id } = req.params; 
-  const { nom, prenom, telephone, nomTable, status } = req.body;
+  const { titre ,nom, prenom, telephone, nomTable, status } = req.body;
 
   try {
     if (!nom || !prenom || !telephone) {
@@ -465,6 +466,7 @@ const editInvite = async (req, res) => {
     }
 
     const updatedFields = {
+      titre,
       nom,
       prenom,
       telephone,
@@ -529,39 +531,6 @@ const deleteInvite = async (req, res) => {
         });
     }
 }
-
-
-
-// const presence = async (req, res) => {
-//   try {
-//     const inviteId = req.params.inviteId;
-//     const invite = await Invite.findOne({ inviteId });
-
-//     if (!invite) {
-//       return res.status(404).json({ message: "Invité introuvable" });
-//     }
-
-//     if (invite.status === 'P') {
-//       return res.status(200).json({
-//         dejaPresent: true,
-//         message: "❗❗❗ Cet invité était déjà présent",
-//         invite
-//       });
-//     }
-
-//     invite.status = 'P';
-//     await invite.save();
-
-//     return res.status(200).json({
-//       dejaPresent: false,
-//       message: "✅ Présence enregistrée avec succès",
-//       invite
-//     });
-//   } catch (err) {
-//     console.error("Erreur serveur :", err);
-//     return res.status(500).json({ message: "Erreur serveur" });
-//   }
-// };
 
 
 const presence = async (req, res) => {

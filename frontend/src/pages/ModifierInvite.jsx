@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 function ModifierInvite({ invite, onClose }) {
+  const [titre, setTitre] = useState('');
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
   const [telephone, setTelephone] = useState('');
@@ -12,6 +13,7 @@ function ModifierInvite({ invite, onClose }) {
 
   useEffect(() => {
     if (invite) {
+      setTitre(invite.titre || '');
       setNom(invite.nom || '');
       setPrenom(invite.prenom || '');
       setTelephone(invite.telephone || '');
@@ -27,6 +29,7 @@ const handleSubmit = async (e) => {
   try {
     const token = localStorage.getItem('token');
     const formData = new FormData();
+    formData.append('titre', titre);
     formData.append('nom', nom);
     formData.append('prenom', prenom);
     formData.append('telephone', telephone);
@@ -60,6 +63,17 @@ const handleSubmit = async (e) => {
       <div className="p-8 bg-white rounded-lg shadow-md text-center w-[340px]">
         <h2 className="text-black mb-5 font-bold text-lg">Modifier l'invité</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-6">
+          <select
+            value={titre}
+            onChange={(e) => setTitre(e.target.value)}
+            className="w-full p-3 text-base border border-[#C6C6C6] rounded-2xl"
+          >
+            <option value="">Sélectionnez une civilité</option>
+            <option value="M">M.</option>
+            <option value="Mme">Mme</option>
+            <option value="Mlle">Mlle</option>
+            <option value="couple">M. & Mme</option>
+          </select>
           <input
             type="text"
             value={nom}

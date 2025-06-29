@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import QRCode from 'qrcode';
 import deleteIcon from '../assets/icons/deleteIcon.svg';
@@ -7,46 +7,82 @@ import edit from '../assets/icons/edit.svg';
 import axios from 'axios';
 import whatsapp from "../assets/icons/whatsapp.svg"
 
+
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
-    
-
 const generatePdf = async (invite) => {
-  const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
+  const apiUrlFrontend = import.meta.env.FRONTEND_URL;
+  const imageUrl = "/src/assets/img/billet.png" ; // ✔️ mets ici l'image du billet (locale/public)
 
-  if (!apiUrlFrontend) {
-    console.error("⚠️ FRONTEND URL non définie");
-    return null;
-  }
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "A4",
+  });
 
-  const doc = new jsPDF();
+  // ✅ Fonction de chargement sécurisé de l’image
+  const loadImageAsBase64 = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous"; // pour éviter l’erreur CORS
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const dataUrl = canvas.toDataURL("image/png");
+        resolve(dataUrl);
+      };
+      img.onerror = () => reject("❌ Erreur de chargement de l’image");
+      img.src = url;
+    });
+  };
 
-  // 🖊️ Texte
-  doc.setFontSize(16);
-  doc.text("Fiche Invité", 20, 20);
-  doc.setFontSize(12);
-  doc.text(`Nom : ${invite.nom}`, 20, 40);
-  doc.text(`Prénom : ${invite.prenom}`, 20, 50);
-  doc.text(`Téléphone : +237 ${invite.telephone}`, 20, 60);
-  doc.text(`Table : ${invite.nomTable || 'Non attribuée'}`, 20, 70);
-  doc.text(`ID invité : ${invite.inviteId || 'Non attribué'}`, 20, 80);
-  doc.text(`Statut : ${invite.status === 'P' ? 'Présent' : 'Absent'}`, 20, 90);
-
-  // 🔗 Lien QR Code
-  const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
   try {
+    const backgroundBase64 = await loadImageAsBase64(imageUrl);
+    doc.addImage(backgroundBase64, "PNG", 0, 0, 210, 297); // plein format A4
+
+    // 📷 QR Code
+    const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
+    console.log(qrText);
+    
     const qrImage = await QRCode.toDataURL(qrText);
-    doc.addImage(qrImage, 'PNG', 140, 40, 50, 50); // Ajout QR
+    doc.addImage(qrImage, "PNG", 150, 205, 40, 40);
+
+     // 🎯 Construire le titre selon le civilité
+      let titreTexte = "";
+      switch (invite.titre) {
+        case "M":
+          titreTexte = `M. ${invite.prenom} ${invite.nom}`;
+          break;
+        case "Mme":
+          titreTexte = `Mme ${invite.prenom} ${invite.nom}`;
+          break;
+        case "Mlle":
+          titreTexte = `Mlle ${invite.prenom} ${invite.nom}`;
+          break;
+        case "couple":
+          titreTexte = `M. & Mme ${invite.nom}`;
+          break;
+        default:
+          titreTexte = `${invite.prenom} ${invite.nom}`;
+      }
+    // ✍️ Texte nom / prénom
+    doc.setTextColor(208, 108, 56);
+    doc.setFont("times", "bold");
+    doc.setFontSize(28);
+    doc.text(titreTexte, 30, 230);
+    
+    // 🆔 ID
+    doc.setFontSize(12);
+    doc.text(`ID : ${invite.inviteId}`, 170, 250, null, null, "center");
+
+    doc.save(`Billet_${invite.prenom}_${invite.nom}.pdf`);
   } catch (err) {
-    console.error("❌ Erreur génération QR Code :", err);
+    console.error("Erreur génération PDF avec image :", err);
   }
-
-  // ✅ Retourner un Blob (et non sauvegarder directement)
-  const pdfBlob = doc.output('blob');
-  return pdfBlob;
 };
-
-
 
 const handleWhatsAppShare = async (invite) => {
   try {
@@ -89,6 +125,7 @@ const handleWhatsAppShare = async (invite) => {
           <tr>
             <th scope="col" className="px-4 py-3 whitespace-nowrap">Photo</th>
             <th scope="col" className="px-4 py-3 whitespace-nowrap">ID Invité</th>
+            <th scope="col" className="px-4 py-3 whitespace-nowrap">Titre</th>
             <th scope="col" className="px-4 py-3 whitespace-nowrap">Nom et Prénom</th>
             <th scope="col" className="px-4 py-3 whitespace-nowrap">Téléphone</th>
             <th scope="col" className="px-4 py-3 whitespace-nowrap">Table</th>
@@ -105,6 +142,8 @@ const handleWhatsAppShare = async (invite) => {
                   <img className="w-10 h-10 rounded-full" src={`${apiUrl}/uploads/${invite.image}`} alt="Profile" />
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">{invite.inviteId}</td>
+                <td className="px-4 py-3 whitespace-nowrap">{invite.titre || ""}</td>
+
                 <td className="px-4 py-3 whitespace-nowrap">{invite.nom} {invite.prenom}</td>
                 <td className="px-4 py-3 whitespace-nowrap">+237 {invite.telephone}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{invite.nomTable}</td>

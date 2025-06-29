@@ -9,6 +9,7 @@ function AjoutInvite({ onClose }) {
   const [prenom, setPrenom] = useState('');
   const [telephone, setTelephone] = useState('');
   const [nomTable, setNomTable] = useState('');
+  const [titre, setTitre] = useState('');
   const [status, setStatus] = useState('A');
   const [image, setImage] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -41,6 +42,7 @@ const handleLogout = async () => {
 
   try {
     const formData = new FormData();
+    formData.append('titre', titre);
     formData.append('nom', nom);
     formData.append('prenom', prenom);
     formData.append('telephone', telephone);
@@ -114,6 +116,18 @@ const handleLogout = async () => {
           </h2>
 
           <div className="flex flex-col gap-6 mb-8">
+            <select
+                value={titre}
+                onChange={(e) => setTitre(e.target.value)}
+                className="w-full p-3 text-base border border-[#C6C6C6] rounded-2xl"
+              >
+                <option value="">Sélectionnez une civilité</option>
+                <option value="M">M.</option>
+                <option value="Mme">Mme</option>
+                <option value="Mlle">Mlle</option>
+                <option value="couple">M. & Mme</option>
+            </select>
+
             <input
               type="text"
               placeholder="Nom"
