@@ -11,7 +11,7 @@ import whatsapp from "../assets/icons/whatsapp.svg"
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
 const generatePdf = async (invite) => {
-  const apiUrlFrontend = import.meta.env.FRONTEND_URL;
+  const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
   const imageUrl = "/src/assets/img/billet.png" ; // ✔️ mets ici l'image du billet (locale/public)
 
   const doc = new jsPDF({
