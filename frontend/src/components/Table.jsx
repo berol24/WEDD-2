@@ -10,83 +10,6 @@ import whatsapp from "../assets/icons/whatsapp.svg"
 
 function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
-// const generatePdf = async (invite) => {
-//   const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
-//   // const apiUrlFrontend = "http://localhost:5173";
-
-//   const imageUrl = "assets/img/billet.png" ; 
-
-//   const doc = new jsPDF({
-//     orientation: "portrait",
-//     unit: "mm",
-//     format: "A4",
-//   });
-
-//   // ✅ Fonction de chargement sécurisé de l’image
-//   const loadImageAsBase64 = (url) => {
-//     return new Promise((resolve, reject) => {
-//       const img = new Image();
-//       img.crossOrigin = "Anonymous"; // pour éviter l’erreur CORS
-//       img.onload = () => {
-//         const canvas = document.createElement("canvas");
-//         canvas.width = img.width;
-//         canvas.height = img.height;
-//         const ctx = canvas.getContext("2d");
-//         ctx.drawImage(img, 0, 0);
-//         const dataUrl = canvas.toDataURL("image/png");
-//         resolve(dataUrl);
-//       };
-//       img.onerror = () => reject("❌ Erreur de chargement de l’image");
-//       img.src = url;
-//     });
-//   };
-
-//   try {
-//     const backgroundBase64 = await loadImageAsBase64(imageUrl);
-//     doc.addImage(backgroundBase64, "PNG", 0, 0, 210, 297); // plein format A4
-
-//     // 📷 QR Code
-//     const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
-//     console.log(qrText);
-    
-//     const qrImage = await QRCode.toDataURL(qrText);
-//     doc.addImage(qrImage, "PNG", 150, 205, 40, 40);
-
-//      // 🎯 Construire le titre selon le civilité
-//       let titreTexte = "";
-//       switch (invite.titre) {
-//         case "M":
-//           titreTexte = `M. ${invite.prenom} ${invite.nom}`;
-//           break;
-//         case "Mme":
-//           titreTexte = `Mme ${invite.prenom} ${invite.nom}`;
-//           break;
-//         case "Mlle":
-//           titreTexte = `Mlle ${invite.prenom} ${invite.nom}`;
-//           break;
-//         case "couple":
-//           titreTexte = `M. & Mme ${invite.nom}`;
-//           break;
-//         default:
-//           titreTexte = `${invite.prenom} ${invite.nom}`;
-//       }
-//     // ✍️ Texte nom / prénom
-//     doc.setTextColor(208, 108, 56);
-//     doc.setFont("times", "bold");
-//     doc.setFontSize(28);
-//     doc.text(titreTexte, 30, 230);
-    
-//     // 🆔 ID
-//     doc.setFontSize(12);
-//     doc.text(`ID : ${invite.inviteId}`, 170, 250, null, null, "center");
-
-//     doc.save(`Billet_${invite.prenom}_${invite.nom}.pdf`);
-//   } catch (err) {
-//     console.error("Erreur génération PDF avec image :", err);
-//   }
-// };
-
-
 const generatePdf = async (invite) => {
   const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
   const imageUrl = "assets/img/billet.png";
@@ -158,42 +81,6 @@ const generatePdf = async (invite) => {
 };
 
 
-
-// const handleWhatsAppShare = async (invite) => {
-//   try {
-//     const pdfBlob = await generatePdf(invite);
-
-//     if (!pdfBlob) {
-//       alert("PDF non généré.");
-//       return;
-//     }
-
-//     const file = new File([pdfBlob], `Invite-${invite.nom}-${invite.prenom}.pdf`, {
-//       type: 'application/pdf',
-//     });
-
-//     const formData = new FormData();
-//     formData.append('file', file);
-
-//     const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/uploadPDF`, formData, {
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//       },
-//     });
-
-//     const fileUrl = response.data.url;
-
-//     const whatsappMessage = `Bonjour ${invite.prenom}, voici ton billet d'invitation 🎉 : ${fileUrl}`;
-//     const whatsappUrl = `https://wa.me/237${invite.telephone}?text=${encodeURIComponent(whatsappMessage)}`;
-
-//     window.open(whatsappUrl);
-//   } catch (error) {
-//     console.error("❌ Erreur lors du partage WhatsApp:", error);
-//     alert("Une erreur est survenue lors du partage.");
-//   }
-// };
-
-
 const handleWhatsAppShare = async (invite) => {
   try {
     const pdfBlob = await generatePdf(invite);
@@ -217,8 +104,27 @@ const handleWhatsAppShare = async (invite) => {
     });
 
     const fileUrl = response.data.url;
+   
+     let titreTexte = "";
+    switch (invite.titre) {
+      case "M":
+        titreTexte = `M. ${invite.prenom} ${invite.nom}`;
+        break;
+      case "Mme":
+        titreTexte = `Mme ${invite.prenom} ${invite.nom}`;
+        break;
+      case "Mlle":
+        titreTexte = `Mlle ${invite.prenom} ${invite.nom}`;
+        break;
+      case "couple":
+        titreTexte = `M. & Mme ${invite.nom}`;
+        break;
+      default:
+        titreTexte = `${invite.prenom} ${invite.nom}`;
+    }
+    // const whatsappMessage = `Bonjour ${invite.prenom}, voici ton billet d'invitation 🎉 : ${fileUrl}`;
+    const whatsappMessage = `💌 Bonjour ${titreTexte} ${invite.nom} ${invite.prenom},\n\nC’est avec une immense joie que nous vous t’invitons à célébrer notre union 💍.\n\n📩 Clique sur le lien ci-dessous pour télécharger ton billet d’invitation personnalisé 🎟️ :\n ${fileUrl} \n\n Merci de le conserver précieusement et de le présenter à l’entrée le jour du mariage. Ta présence à nos côtés rendra ce moment encore plus beau et inoubliable 💖.\n\nNous avons hâte de partager avec toi cette journée remplie d’amour, de joie et d’émotions ✨.\n\nAvec toute notre affection,\nLes futurs mariés 💐`;
 
-    const whatsappMessage = `Bonjour ${invite.prenom}, voici ton billet d'invitation 🎉 : ${fileUrl}`;
     const whatsappUrl = `https://wa.me/237${invite.telephone}?text=${encodeURIComponent(whatsappMessage)}`;
 
     window.open(whatsappUrl);
