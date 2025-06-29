@@ -14,7 +14,7 @@ const generatePdf = async (invite) => {
   const apiUrlFrontend = "https://wedd-i8ls.onrender.com";
   // const apiUrlFrontend = "http://localhost:5173";
 
-  const imageUrl = "src/assets/img/billet.png" ; // ✔️ mets ici l'image du billet (locale/public)
+  const imageUrl = "assets/img/billet.png" ; // ✔️ mets ici l'image du billet (locale/public)
 
   const doc = new jsPDF({
     orientation: "portrait",
