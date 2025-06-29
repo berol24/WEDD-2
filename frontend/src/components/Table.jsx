@@ -123,7 +123,7 @@ const handleWhatsAppShare = async (invite) => {
         titreTexte = `${invite.prenom} ${invite.nom}`;
     }
     // const whatsappMessage = `Bonjour ${invite.prenom}, voici ton billet d'invitation 🎉 : ${fileUrl}`;
-    const whatsappMessage = `💌 Bonjour ${titreTexte} ${invite.nom} ${invite.prenom},\n\nC’est avec une immense joie que nous vous t’invitons à célébrer notre union 💍.\n\n📩 Clique sur le lien ci-dessous pour télécharger ton billet d’invitation personnalisé 🎟️ :\n ${fileUrl} \n\n Merci de le conserver précieusement et de le présenter à l’entrée le jour du mariage. Ta présence à nos côtés rendra ce moment encore plus beau et inoubliable 💖.\n\nNous avons hâte de partager avec toi cette journée remplie d’amour, de joie et d’émotions ✨.\n\nAvec toute notre affection,\nLes futurs mariés 💐`;
+    const whatsappMessage = `💌 Bonjour ${titreTexte},\n\nC’est avec une immense joie que nous vous t’invitons à célébrer notre union 💍.\n\n📩 Clique sur le lien ci-dessous pour télécharger ton billet d’invitation personnalisé 🎟️ :\n ${fileUrl} \n\n Merci de le conserver précieusement et de le présenter à l’entrée le jour du mariage. Ta présence à nos côtés rendra ce moment encore plus beau et inoubliable 💖.\n\nNous avons hâte de partager avec toi cette journée remplie d’amour, de joie et d’émotions ✨.\n\nAvec toute notre affection,\nLes futurs mariés 💐`;
 
     const whatsappUrl = `https://wa.me/237${invite.telephone}?text=${encodeURIComponent(whatsappMessage)}`;
 
