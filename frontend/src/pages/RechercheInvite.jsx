@@ -101,7 +101,66 @@ const handleSubmit = async (e) => {
   }
 };
 
-  const startScanner = () => {
+//   const startScanner = () => {
+//   setError(null);
+//   setIsScanning(true);
+
+//   const html5QrCode = new Html5Qrcode("scanner");
+
+//   html5QrCode
+//     .start(
+//       { facingMode: "environment" },
+//       { fps: 10, qrbox: 250 },
+//       async (decodedText) => {
+//         console.log("QR Code détecté :", decodedText);
+//         html5QrCode.stop().then(async () => {
+//           setIsScanning(false);
+//           try {
+//             const url = new URL(decodedText);
+//             const inviteId = url.pathname.split("/").pop();
+
+//             const token = localStorage.getItem("token");
+//             const response = await axios.post(
+//               `${apiUrl}/api/invites/${inviteId}/presence`,
+//               {},
+//               {
+//                 headers: {
+//                   Authorization: `Bearer ${token}`,
+//                   "Content-Type": "application/json",
+//                 },
+//                 withCredentials: true,
+//               }
+//             );
+
+//             const { dejaPresent, message, invite } = response.data;
+
+//             navigate(`/invites/${inviteId}`, {
+//               state: {
+//                 invite,
+//                 message,
+//                 color: dejaPresent ? "red" : "green",
+//               },
+//             });
+
+//           } catch (err) {
+//             console.error("❌ Erreur lors du scan :", err);
+//             setError({ text: "QR Code invalide ou erreur serveur", color: "red" });
+//           }
+//         });
+//       },
+//       (errorMessage) => {
+//         console.warn("Erreur scan :", errorMessage);
+//       }
+//     )
+//     .catch((err) => {
+//       console.error("Erreur démarrage scanner :", err);
+//       setIsScanning(false);
+//     });
+// };
+
+
+
+const startScanner = () => {
   setError(null);
   setIsScanning(true);
 
@@ -118,8 +177,20 @@ const handleSubmit = async (e) => {
           try {
             const url = new URL(decodedText);
             const inviteId = url.pathname.split("/").pop();
-
             const token = localStorage.getItem("token");
+
+            // 🔐 Étape 1 : Vérifier que l'invité appartient bien à l'utilisateur
+            const getInviteResponse = await axios.get(`${apiUrl}/api/invites/${inviteId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            });
+
+            const invite = getInviteResponse.data.invite;
+
+            // ✅ Étape 2 : Marquer comme présent
             const response = await axios.post(
               `${apiUrl}/api/invites/${inviteId}/presence`,
               {},
@@ -132,8 +203,9 @@ const handleSubmit = async (e) => {
               }
             );
 
-            const { dejaPresent, message, invite } = response.data;
+            const { dejaPresent, message } = response.data;
 
+            // ✅ Redirection
             navigate(`/invites/${inviteId}`, {
               state: {
                 invite,
@@ -144,7 +216,14 @@ const handleSubmit = async (e) => {
 
           } catch (err) {
             console.error("❌ Erreur lors du scan :", err);
-            setError({ text: "QR Code invalide ou erreur serveur", color: "red" });
+
+            if (err.response?.status === 403) {
+              setError({ text: "⛔ Ce QR Code ne vous appartient pas.", color: "red" });
+            } else if (err.response?.status === 401) {
+              setError({ text: "🔐 Vous devez être connecté pour scanner.", color: "red" });
+            } else {
+              setError({ text: "❌ QR Code invalide ou erreur serveur", color: "red" });
+            }
           }
         });
       },
@@ -157,7 +236,6 @@ const handleSubmit = async (e) => {
       setIsScanning(false);
     });
 };
-
 
 
   return (

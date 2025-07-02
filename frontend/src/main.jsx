@@ -14,12 +14,14 @@ import RechercheInvite from './pages/RechercheInvite.jsx'
 import ShowInvite from './pages/ShowInvite.jsx'
 import ModifierReunion from './pages/ModifierReunion.jsx'
 import Root from './components/Root.jsx'
+import Salle from './components/Salle.jsx';
 
 const router = createBrowserRouter (
   createRoutesFromElements (
       <>
       <Route element={<Root />}>
         <Route path="/" element={<Accueil />} />
+        <Route path="/salle" element={<Salle />} />
         <Route path="/login-page" element={<Connexion />} />
         <Route path="/register-page" element={<Inscription />} />
         <Route path="/dashboard" element={<Dashboard />} />
