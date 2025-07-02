@@ -3,7 +3,10 @@ import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useNavigate } from "react-router-dom";
-
+import couple1 from '../assets/img/stephane_illana1.png'
+import couple2 from '../assets/img/stephane_illana2.png'
+import couple3 from '../assets/img/stephane_illana3.png'
+import couple4 from '../assets/img/stephane_illana4.png'
 // Fonction pour créer une étiquette de texte en 3D
 function createLabel(text) {
   const canvas = document.createElement("canvas");
@@ -67,10 +70,10 @@ export default function Salle({
       // Création du sol avec plusieurs textures d'images
       const textureLoader = new THREE.TextureLoader();
       const floorTextures = [
-        textureLoader.load('/src/assets/img/stephane_illana1.png'),
-        textureLoader.load('/src/assets/img/stephane_illana2.png'),
-        textureLoader.load('/src/assets/img/stephane_illana3.png'),
-        textureLoader.load('/src/assets/img/stephane_illana4.png')
+        textureLoader.load(couple1),
+        textureLoader.load(couple2),
+        textureLoader.load(couple3),
+        textureLoader.load(couple4)
       ];
     
       // Création de plusieurs sections de sol avec différentes textures
