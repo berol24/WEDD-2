@@ -64,6 +64,41 @@ export default function Salle({
     scene.add(new THREE.AmbientLight(0xffffff, 0.9));
     scene.add(new THREE.DirectionalLight(0xffffff, 0.4));
 
+      // Création du sol avec plusieurs textures d'images
+      const textureLoader = new THREE.TextureLoader();
+      const floorTextures = [
+        textureLoader.load('/src/assets/img/stephane_illana1.png'),
+        textureLoader.load('/src/assets/img/stephane_illana2.png'),
+        textureLoader.load('/src/assets/img/stephane_illana3.png'),
+        textureLoader.load('/src/assets/img/stephane_illana4.png')
+      ];
+    
+      // Création de plusieurs sections de sol avec différentes textures
+      const sectionSize = 25;
+      const sections = [
+        { x: -12.5, z: -12.5 },
+        { x: 12.5, z: -12.5 },
+        { x: -12.5, z: 12.5 },
+        { x: 12.5, z: 12.5 }
+      ];
+
+      sections.forEach((section, index) => {
+        const texture = floorTextures[index];
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(2, 2);
+      
+        const floorGeometry = new THREE.PlaneGeometry(sectionSize, sectionSize);
+        const floorMaterial = new THREE.MeshStandardMaterial({
+          map: texture,
+          side: THREE.DoubleSide
+        });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.set(section.x, 0, section.z);
+        scene.add(floor);
+      });
+
     // Création du groupe principal
     const group = new THREE.Group();
     scene.add(group);
@@ -77,13 +112,28 @@ export default function Salle({
     group.add(mainTable);
 
     // Création des étiquettes de bienvenue
-    const welcomeLabel = createLabel("Stephane et Illana");
+    const welcomeLabel = createLabel("Stephane & Illana");
     welcomeLabel.position.set(0, 4, -12);
     group.add(welcomeLabel);
 
-    const mainLabel = createLabel(tablePrincipaleNom);
-    mainLabel.position.set(0, 2, -12);
-    group.add(mainLabel);
+      const mainLabel = createLabel(tablePrincipaleNom);
+      mainLabel.position.set(0, 2, -12);
+      group.add(mainLabel);
+
+      // Ajout de deux chaises derrière la table principale
+      const chair1 = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 2, 0.5),
+        new THREE.MeshPhongMaterial({ color: 0x405433 })
+      );
+      chair1.position.set(-0.75, 0.5, -13);
+      group.add(chair1);
+
+      const chair2 = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 2, 0.5),
+        new THREE.MeshPhongMaterial({ color: 0x405433 })
+      );
+      chair2.position.set(0.75, 0.5, -13);
+      group.add(chair2);
 
     // Création des tables d'invités
     const tablesParCote = Math.floor(nbTables / 2);
@@ -102,7 +152,7 @@ export default function Salle({
       // Création de la table
       const table = new THREE.Mesh(
         new THREE.BoxGeometry(2, 1, 1),
-        new THREE.MeshPhongMaterial({ color: 0xd06c38 })
+        new THREE.MeshPhongMaterial({ color: 0xFFA500 })
       );
       table.position.set(x, 0.5, z);
       group.add(table);
@@ -156,7 +206,7 @@ export default function Salle({
         blinkFrame++;
         if (blinkFrame < 100000000) {
           if (Math.floor(blinkFrame / 10) % 2 === 0) {
-            blinkTarget.material.color.set(0xf9d923);
+            blinkTarget.material.color.set(0xffffff);
           } else {
             blinkTarget.material.color.set(blinkOrigColor);
           }
