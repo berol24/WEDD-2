@@ -125,7 +125,7 @@
                 <p className="text-gray-800 text-sm sm:text-base md:text-lg font-semibold">
                   {invite.nom} {invite.prenom}
                 </p>
-                <p className="text-pink-700 text-sm sm:text-base md:text-lg font-bold">
+                <p className="text-pink-700 text-lg sm:text-base md:text-lg font-bold">
                   {invite.nomTable}
                 </p>
 
@@ -140,7 +140,7 @@
             {invite?.nomTable && (
               <button
                 onClick={handleVoirTable}
-                className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded"
+                className="w-full py-3 px-6 text-white font-bold rounded-lg bg-blue-600 hover:bg-blue-700 mt-6"
               >
                 Voir Table
               </button>
@@ -160,7 +160,7 @@
 
                 <button
                   onClick={handleRetour}
-                  className="mt-6 bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="w-full py-3 px-6 text-white font-bold rounded-lg bg-green-600 hover:bg-green-700 mt-4"
                 >
                   Retour à la recherche
                 </button>
