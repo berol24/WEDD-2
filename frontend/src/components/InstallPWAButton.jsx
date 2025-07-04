@@ -25,11 +25,11 @@ function InstallPWAButton() {
     };
   }, []);
 
-  // Masquer le bouton après 5 secondes
+  // Masquer le bouton après 10 secondes
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(false);
-    }, 5000);
+    }, 10000);
     return () => clearTimeout(timer);
   }, []);
 

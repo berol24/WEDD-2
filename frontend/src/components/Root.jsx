@@ -1,6 +1,7 @@
 // src/Root.jsx
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import InstallPWAButton from './InstallPWAButton';
 
 function Root() {
   useEffect(() => {
@@ -11,7 +12,12 @@ function Root() {
     }
   }, []);
 
-  return <Outlet />;
+return (
+    <>
+      <Outlet />
+      <InstallPWAButton />
+    </>
+  );
 }
 
 export default Root;
