@@ -4,7 +4,6 @@ import logo from '../assets/img/logo.png';
 import Input from '../components/Input';
 import Image from '../components/Image';
 import Title from '../components/Title';
-import BiometricAuth from "./BiometricAuth"
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function Connexion() {
