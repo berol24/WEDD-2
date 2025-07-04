@@ -202,7 +202,7 @@ const handleLogout = async () => {
         </nav>
       )}
       
-        <div>
+        <div className="flex-1 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center p-4 gap-4">
             <div className="text-center md:text-left mb-4 md:mb-0">
               Salut <b>{nom + ' ' + prenom}</b>
