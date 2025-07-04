@@ -213,7 +213,7 @@ const handleWhatsAppShare = async (invite) => {
                       onClick={() => handleWhatsAppShare(invite)}
                       className="bg-green-500 text-white  px-3 py-1 rounded hover:bg-green-700 text-sm"
                     >
-                     <img src={whatsapp} className='size-15 m-auto text-white' alt="whatsapp" />
+                     <img src={whatsapp} className='size-5 m-auto text-white' alt="whatsapp" />
                     </button>
                   </div>
                 </td>
