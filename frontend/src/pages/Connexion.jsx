@@ -56,7 +56,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="w-full md:w-1/2 h-96 md:h-full">
+      <div className="hidden md:block w-full md:w-1/2 h-96 md:h-full">
         <Image
           src={image_couple}
           alt="image_couple"
