@@ -62,7 +62,7 @@ const handleLogout = async () => {
       withCredentials: true
     });
 
-    console.log('Invité ajouté avec succès:', response.data);
+    //console.log('Invité ajouté avec succès:', response.data);
     navigate('/dashboard');
     
     if (onClose) onClose();
@@ -185,7 +185,7 @@ const handleLogout = async () => {
       </div>
 
       {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
-      <div className="hidden md:block md:w-64">
+      <div className="hidden md:block md:w-80">
         <BlogRight />
       </div>
     </div>

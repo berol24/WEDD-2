@@ -33,7 +33,8 @@ const generatePdf = async (invite) => {
         const dataUrl = canvas.toDataURL("image/png");
         resolve(dataUrl);
       };
-      img.onerror = () => reject("❌ Erreur de chargement de l’image");
+
+      img.onerror = () => reject("❌ Erreur de chargement de l'image");
       img.src = url;
     });
   };
@@ -67,7 +68,18 @@ const generatePdf = async (invite) => {
     doc.setTextColor(208, 108, 56);
     doc.setFont("times", "bold");
     doc.setFontSize(28);
-    doc.text(titreTexte, 30, 230);
+    
+    const textWidth = doc.getStringUnitWidth(titreTexte) * doc.getFontSize() / doc.internal.scaleFactor;
+    const maxWidth = 110; // Maximum width before QR code (150 - 40)
+    
+    if (textWidth > maxWidth) {
+      doc.text(titreTexte, 30, 220, {
+        maxWidth: maxWidth,
+        align: "left"
+      });
+    } else {
+      doc.text(titreTexte, 30, 230);
+    }
 
     doc.setFontSize(12);
     doc.text(`ID : ${invite.inviteId}`, 170, 250, null, null, "center");
@@ -161,7 +173,7 @@ const handleWhatsAppShare = async (invite) => {
                 <td className="px-4 py-3 whitespace-nowrap">{invite.inviteId}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{invite.titre || ""}</td>
 
-                <td className="px-4 py-3 whitespace-nowrap">{invite.nom} {invite.prenom}</td>
+                <td className="px-4 py-3 break-words">{invite.nom} {invite.prenom}</td>
                 <td className="px-4 py-3 whitespace-nowrap">+237 {invite.telephone}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{invite.nomTable}</td>
                 <td className="px-4 py-3">
@@ -201,7 +213,7 @@ const handleWhatsAppShare = async (invite) => {
                       onClick={() => handleWhatsAppShare(invite)}
                       className="bg-green-500 text-white  px-3 py-1 rounded hover:bg-green-700 text-sm"
                     >
-                     <img src={whatsapp} className='size-5 m-auto text-white' alt="whatsapp" />
+                     <img src={whatsapp} className='size-15 m-auto text-white' alt="whatsapp" />
                     </button>
                   </div>
                 </td>

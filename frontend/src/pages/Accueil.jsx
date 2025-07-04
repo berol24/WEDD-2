@@ -86,7 +86,7 @@ function Accueil() {
       <div className="flex flex-col justify-center items-center gap-6 order-1 sm:order-2">
         {/* Email / Téléphone */}
         <div className="w-44 flex gap-6 justify-between text-gray-600 text-xl">
-          <a href="#" aria-label="Email" className="hover:text-[#016CEC] transition">
+          <a  href="mailto:berolbertindjomo@gmail.com" aria-label="Email" className="hover:text-[#016CEC] transition">
             <FaEnvelope />
           </a>
           <a href="#" aria-label="Téléphone" className="hover:text-[#016CEC] transition">
@@ -102,7 +102,7 @@ function Accueil() {
           <a href="#" aria-label="Instagram" className="hover:text-[#016CEC] transition">
             <FaInstagram />
           </a>
-          <a href="#" aria-label="WhatsApp" className="hover:text-[#016CEC] transition">
+          <a  href="https://wa.me/237659545017" aria-label="WhatsApp" className="hover:text-[#016CEC] transition">
             <FaWhatsapp />
           </a>
         </div>

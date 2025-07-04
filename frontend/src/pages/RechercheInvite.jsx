@@ -171,7 +171,7 @@ const startScanner = () => {
       { facingMode: "environment" },
       { fps: 10, qrbox: 250 },
       async (decodedText) => {
-        console.log("QR Code détecté :", decodedText);
+        //console.log("QR Code détecté :", decodedText);
         html5QrCode.stop().then(async () => {
           setIsScanning(false);
           try {
@@ -314,7 +314,7 @@ const startScanner = () => {
       </div>
 
       {/* ---- NAV DROIT ---- */}
-      <div className="hidden md:block md:w-64">
+      <div className="hidden md:block md:w-80">
         <BlogRight />
       </div>
     </div>

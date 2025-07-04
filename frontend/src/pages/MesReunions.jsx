@@ -42,7 +42,7 @@ const reunions = async () => {
     });
 
     const data = response.data.reunions || [];
-    console.log('Réunions récupérées:', data);
+    //console.log('Réunions récupérées:', data);
     return data;
   } catch (error) {
     console.error('Erreur lors de la récupération des réunions:', error);
@@ -272,7 +272,7 @@ const handleLogout = async () => {
           )}
         </div>
         {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
-      <div className="hidden md:block md:w-64">
+      <div className="hidden md:block md:w-80">
         <BlogRight />
       </div>
     </div>

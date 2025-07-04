@@ -23,7 +23,7 @@ function Notification() {
 
       const reunions = await response.json();
       const data = reunions.reunions || []; // Assurez-vous que la structure de la réponse est correcte
-      console.log('Réunions récupérées:', data);
+      //console.log('Réunions récupérées:', data);
       return data;
     } catch (error) {
       console.error('Erreur lors de la récupération des réunions:', error);

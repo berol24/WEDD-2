@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
       }
     );
 
-    console.log('Réunion créée avec succès:', response.data);
+    //console.log('Réunion créée avec succès:', response.data);
      setSuccessMessage('Réunion ajoutée avec succès');
     // Appelle la fonction pour rafraîchir la liste
       if (fetchReunions) fetchReunions();

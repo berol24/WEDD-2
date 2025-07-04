@@ -10,7 +10,7 @@ import Invite from '../Models/Invite.js';
 const register = async (req, res) => {
     const { nom, prenom, email, telephone, password, confirmPassword, dateMariage, lieuMariage, couleurSite, themeMariage } = req.body;
 
-    console.log("Donnees", req.body);
+    // console.log("Donnees", req.body);
 
     try {
         if (password !== confirmPassword) {
@@ -36,7 +36,7 @@ const register = async (req, res) => {
         });
 
         await user.save();
-        console.log("Utilisateur enregistré :", user);
+        // console.log("Utilisateur enregistré :", user);
         res.status(201).json({
             message: "Utilisateur créé avec succès!",
             type: "success",
@@ -79,7 +79,7 @@ const login = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '24h'} // Le token expire après 24h 
         );
-       console.log("Token généré :", token);
+      //  console.log("Token généré :", token);
         // Envoi du token et des informations utilisateur
         res.status(200).json({
             message: "Connexion réussie!",
@@ -254,7 +254,7 @@ const addReunion = async (req, res) => {
 
 
         await newReunion.save();
-        console.log("Réunion enregistrée :", newReunion);
+        //console.log("Réunion enregistrée :", newReunion);
         res.status(201).json({
             message: "Réunion créée avec succès!",
             type: "success",
@@ -361,7 +361,7 @@ const deleteReunion = async (req, res) => {
 
 const addInvite = async (req, res) => {
     const {titre ,nom, prenom, telephone, nomTable, status} = req.body;
-    console.log("Données de l'invité :", req.body);
+    //console.log("Données de l'invité :", req.body);
     try {
         if (!nom || !prenom || !telephone) {
             return res.status(400).json({

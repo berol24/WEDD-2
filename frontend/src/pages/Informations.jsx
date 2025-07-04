@@ -503,7 +503,7 @@ const handleLogout = async () => {
         </div>
       </div>
   {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
-      <div className="hidden md:block md:w-64">
+      <div className="hidden md:block md:w-80">
         <BlogRight />
       </div>    </div>
   );

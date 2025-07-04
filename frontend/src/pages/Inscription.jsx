@@ -32,7 +32,7 @@ const [formData, setFormData] = useState({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Données envoyées au backend :', formData);
+    //console.log('Données envoyées au backend :', formData);
 
     try {
       const response = await axios.post(`${apiUrl}/api/register`, formData, {

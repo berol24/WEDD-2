@@ -67,7 +67,7 @@ const handleLogout = async () => {
       });
 
       const data = response.data.invites || [];
-      console.log('Invités récupérées:', data);
+     // console.log('Invités récupérées:', data);
       return data;
     } catch (error) {
       console.error('Erreur lors de la récupération des Invités:', error);
@@ -89,7 +89,7 @@ const handleLogout = async () => {
       });
 
       const data = response.data.reunions || [];
-      console.log('Réunions récupérées:', data);
+      //console.log('Réunions récupérées:', data);
       return data;
     } catch (error) {
       console.error('Erreur lors de la récupération des réunions:', error);
@@ -202,7 +202,8 @@ const handleLogout = async () => {
         </nav>
       )}
       
-        <div className="flex-1 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 px-4 sm:px-6 lg:px-8">
+        {/* <div> */}
           <div className="flex flex-col md:flex-row justify-between items-center p-4 gap-4">
             <div className="text-center md:text-left mb-4 md:mb-0">
               Salut <b>{nom + ' ' + prenom}</b>
@@ -247,7 +248,7 @@ const handleLogout = async () => {
               {successMessage}
             </div>
           )}
-          <div className="p-4">
+          <div className="p-2">
             <Table
               handleDeleteInvite={(id) => {
                 setInviteToDelete(id);
@@ -276,7 +277,7 @@ const handleLogout = async () => {
           </div>
         </div>
           {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
-      <div className="hidden md:block md:w-64">
+      <div className="hidden md:block md:w-80">
         <BlogRight />
       </div>
     </div>

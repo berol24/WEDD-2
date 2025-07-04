@@ -7,7 +7,7 @@ function Root() {
   useEffect(() => {
     if ('Notification' in window && Notification.permission !== 'granted') {
       Notification.requestPermission().then((permission) => {
-        console.log('Permission de notification :', permission);
+       // console.log('Permission de notification :', permission);
       });
     }
   }, []);

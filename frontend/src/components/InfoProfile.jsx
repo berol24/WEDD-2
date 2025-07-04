@@ -20,7 +20,7 @@ function InfoProfile() {
     }, []);
 
   return (
-    <div className="max-w-[300px] border-2 border-black-700 ">
+    <div className="max-w-[200px] border-2 border-black-700 ">
       <div className="max-w-[100px] border-2 border-black-700 rounded-full p-2 d-flex items-center justify-center text-center m-auto">
         <Image src={emoji} className="w-20 h-20 rounded-full" />
       </div>
