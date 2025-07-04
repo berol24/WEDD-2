@@ -50,6 +50,8 @@ app.use('/uploadPDF', express.static(path.join(__dirname, 'uploadPDF')));
 
 app.use('/api/uploadPDF', uploadRoutes);
 
+
+
 // Lancement du serveur
 app.listen(PORT, () => {
   console.log("Serveur à l'écoute sur le port", PORT);

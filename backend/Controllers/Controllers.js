@@ -107,6 +107,24 @@ const login = async (req, res) => {
     }
 }
 
+const logout = (req, res) => {
+    try {
+        // Comme nous utilisons JWT, il n'y a pas besoin de session à détruire côté serveur
+        // Le client doit simplement supprimer le token de son stockage
+        
+        res.status(200).json({
+            message: "Déconnexion réussie!",
+            type: "success"
+        });
+    } catch (err) {
+        console.error("Erreur lors de la déconnexion :", err);
+        res.status(500).json({
+            message: "Erreur lors de la déconnexion",
+            type: "danger"
+        });
+    }
+}
+
 const user = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
@@ -568,6 +586,7 @@ const presence = async (req, res) => {
 export {
     register,
     login,
+    logout,
     user,
     editProfil,
     editPassword,
