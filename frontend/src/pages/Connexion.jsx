@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import image_couple from '../assets/img/image_couple.jpg';
 import logo from '../assets/img/logo.png';
+import loadingImage from '../assets/img/load.png'; // Remplace par le chemin de ton image de chargement
 import Input from '../components/Input';
 import Image from '../components/Image';
 import Title from '../components/Title';
@@ -10,13 +11,14 @@ function Connexion() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // État pour gérer le chargement
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
 const handleSubmit = async (e) => {
   e.preventDefault();
   setError('');
-
+  setLoading(true); // On commence le chargement
   try {
     const response = await axios.post(`${apiUrl}/api/login`, {
       email,
@@ -51,6 +53,10 @@ const handleSubmit = async (e) => {
       setError('Une erreur est survenue lors de la connexion');
     }
   }
+finally {
+      setLoading(false); // Fin du chargement
+    }
+
 };
 
 
@@ -128,6 +134,19 @@ const handleSubmit = async (e) => {
               </button>
             </div>
           </form>
+
+{/* Affichage du loader si la requête est en cours */}
+          {loading && (
+            <div className="flex justify-center mt-4">
+              <img
+                src={loadingImage}
+                alt="Chargement..."
+                className="w-16 h-16 animate-spin"
+              />
+            </div>
+          )}
+
+          
           <p className="mt-8 md:mt-10 text-center text-sm text-black">
             Vous n'avez pas de compte ?
             <Link
