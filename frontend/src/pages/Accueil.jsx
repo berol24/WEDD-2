@@ -17,8 +17,6 @@ function Accueil() {
       <AboutAccueil />
 
       <Footer />
-
-      
     </div>  
   );
 }

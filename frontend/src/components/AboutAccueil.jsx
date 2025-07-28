@@ -1,18 +1,24 @@
 import { motion } from 'framer-motion';
-import developerGif from '../assets/img/about.jpg'; // Remplacez par votre propre image
+import developerGif from '../assets/img/about.jpg';
 
 const AboutAccueil = () => {
   return (
-    <section className="py-16 px-4 sm:px-6 bg-gradient-to-r from-indigo-50 to-purple-50">
+    <section className="py-16 px-4 sm:px-6 bg-gradient-to-r from-indigo-50 to-purple-50 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Partie Texte */}
           <motion.div 
             className="lg:w-1/2"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: "easeOut"
+            }}
+            viewport={{ 
+              once: true,
+              margin: "0px 0px -100px 0px" // Détecte l'élément un peu plus tôt
+            }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
               <span className="text-indigo-600">Deux passionnés</span> du web à votre service
@@ -58,9 +64,12 @@ const AboutAccueil = () => {
             
             <motion.div 
               className="mt-8 flex flex-wrap gap-4"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ 
+                delay: 0.2,
+                duration: 0.6
+              }}
               viewport={{ once: true }}
             >
               <button className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full transition-all shadow-lg">
@@ -75,10 +84,17 @@ const AboutAccueil = () => {
           {/* Partie Image */}
           <motion.div 
             className="lg:w-1/2"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              delay: 0.1,
+              ease: "easeOut"
+            }}
+            viewport={{ 
+              once: true,
+              margin: "0px 0px -100px 0px"
+            }}
           >
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <img 
@@ -88,17 +104,19 @@ const AboutAccueil = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/30 to-indigo-600/20"></div>
               
-              {/* Badge animé */}
               <motion.div 
                 className="absolute bottom-6 left-6 bg-white px-4 py-2 rounded-full shadow-lg flex items-center"
+                initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ 
                   scale: [1, 1.05, 1],
+                  opacity: 1,
                   boxShadow: ["0 10px 15px -3px rgba(0,0,0,0.1)", "0 20px 25px -5px rgba(79, 70, 229, 0.2)", "0 10px 15px -3px rgba(0,0,0,0.1)"]
                 }}
                 transition={{ 
                   duration: 3,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: "easeInOut",
+                  opacity: { duration: 0.5, delay: 0.8 }
                 }}
               >
                 <div className="w-3 h-3 bg-green-400 rounded-full mr-2 animate-pulse"></div>
