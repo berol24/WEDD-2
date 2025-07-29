@@ -1,63 +1,115 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import Image from './Image';
 import map from '../assets/icons/map.png';
 import calendar from '../assets/icons/calendar.png';
 import clock from '../assets/icons/clock.png';
 import notification from '../assets/icons/notification.png';
-import Image from './Image';
-function NextMeeting({lastMeeting}) {
 
-if (!lastMeeting || lastMeeting.length === 0) {
+function NextMeeting({ lastMeeting }) {
+  if (!lastMeeting || lastMeeting.length === 0) {
     return (
-      <div className="w-96 border-4 border-solid border-blue-400 rounded-lg p-4">
-        <div className="flex items-center gap-2 mb-4">
-          <Image
-            src={notification}
-            className="w-10 h-10"
-            alt="notification_icon"
-          />
-          <h2 className="text-2xl font-bold">Aucun évènement à venir</h2>
+      <motion.div 
+        className="w-full max-w-md border-2 border-blue-200 rounded-xl p-6 bg-white shadow-sm"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 bg-blue-100 rounded-full">
+            <Image
+              src={notification}
+              className="w-6 h-6"
+              alt="notification_icon"
+            />
+          </div>
+          <h2 className="text-xl font-semibold text-gray-800">Aucun évènement à venir</h2>
         </div>
-        <p className="text-gray-600">Aucune réunion planifiée pour le moment.</p>
-      </div>
+        <p className="text-gray-500 pl-12">Aucune réunion planifiée pour le moment.</p>
+      </motion.div>
     );
   }
 
   const reunion = lastMeeting[0];
-  const titre = reunion.titre;
-  const lieu = reunion.lieu;
-  const date = reunion.dateHeure?.split('T')[0];
-  const heure = reunion.dateHeure?.split('T')[1]?.split(':')[0] + ':' + reunion.dateHeure?.split('T')[1]?.split(':')[1];
+  const dateObj = new Date(reunion.dateHeure);
+  const date = dateObj.toLocaleDateString('fr-FR', { 
+    weekday: 'long', 
+    day: 'numeric', 
+    month: 'long' 
+  });
+  const heure = dateObj.toLocaleTimeString('fr-FR', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
 
   return (
-    <div className="w-full md:w-96 border-4 border-solid border-blue-400 rounded-lg p-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Image
-          src={notification}
-          className="w-8 h-8 md:w-10 md:h-10"
-          alt="notification_icon"
-        />
-        <h2 className="text-xl md:text-2xl font-bold">Evènement à venir</h2>
+    <motion.div
+      className="w-full max-w-md rounded-xl bg-white shadow-sm"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-blue-100 rounded-full">
+          <Image
+            src={notification}
+            className="w-6 h-6"
+            alt="notification_icon"
+          />
+        </div>
+        <h2 className="text-xl font-semibold text-gray-800">Prochain rendez-vous</h2>
       </div>
-      <div className="bg-white rounded-lg">
-        <h1 className="text-lg md:text-xl font-bold mb-4">
-          <span className="text-blue-600">{titre}</span>
-        </h1>
-        <p className="flex justify-between items-center mb-4">
-          <Image src={calendar} className="w-8 h-8 md:w-10 md:h-10" alt="calendar_icon" />
-          <span className="font-bold text-lg md:text-xl text-gray-700">{date}</span>
-        </p>
-        <p className="flex justify-between items-center mb-4">
-          <Image src={clock} className="w-8 h-8 md:w-10 md:h-10" alt="clock_icon" />
-          <span className="font-bold text-lg md:text-xl text-blue-700">{heure}</span>
-        </p>
-        <p className="flex justify-between items-center">
-          <Image src={map} className="w-8 h-8 md:w-10 md:h-10" alt="map_icon" />
-          <span className="font-bold text-lg md:text-xl break-words text-right max-w-[70%]">
-           {lieu}
-          </span>
-        </p>
-      </div>
-    </div>
+
+      <motion.div 
+        className="space-y-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h3 className="text-lg font-bold text-blue-600 mb-4">{reunion.titre}</h3>
+        
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-blue-50 rounded-lg">
+            <Image src={calendar} className="w-5 h-5" alt="calendar_icon" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Date</p>
+            <p className="font-medium text-gray-800">{date}</p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-blue-50 rounded-lg">
+            <Image src={clock} className="w-5 h-5" alt="clock_icon" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Heure</p>
+            <p className="font-medium text-blue-600">{heure}</p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-blue-50 rounded-lg">
+            <Image src={map} className="w-5 h-5" alt="map_icon" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Lieu</p>
+            <p className="font-medium text-gray-800 break-words">{reunion.lieu}</p>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="mt-6 pt-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+          Voir tous les rendez-vous →
+        </button>
+      </motion.div>
+    </motion.div>
   );
 }
 

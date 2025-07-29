@@ -14,7 +14,7 @@ const HeroAccueil = () => {
 
   function calculateTimeLeft() {
     // Vous pouvez remplacer cette date par la date du mariage
-    const weddingDate = new Date('2025-09-25T00:00:00');
+    const weddingDate = new Date('2025-09-20T00:00:00');
     const now = new Date();
     const difference = weddingDate - now;
 

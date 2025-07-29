@@ -1,31 +1,33 @@
-import React from 'react'
-import { useState } from 'react'
-import home from '../assets/icons/home.svg'
-import edit from '../assets/icons/edit.svg'
-import invite from '../assets/icons/invite.svg'
-import reunion from '../assets/icons/reunion.svg'
-import help from '../assets/img/help.svg'
-import search from '../assets/icons/search.png'
-import axios  from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import home from '../assets/icons/home.svg';
+import edit from '../assets/icons/edit.svg';
+import invite from '../assets/icons/invite.svg';
+import reunion from '../assets/icons/reunion.svg';
+import help from '../assets/img/help.svg';
+import search from '../assets/icons/search.png';
+import Image from './Image';
 
-import Image from './Image'
 function NavLink() {
-  const [activeLink, setActiveLink] = useState('dashboard')
+  const [activeLink, setActiveLink] = useState('dashboard');
+  const [isHovered, setIsHovered] = useState(null);
   const navigate = useNavigate();
-const handleLogout = async () => {
+  const location = useLocation();
+
+  // Synchronisation de l'état actif avec l'URL
+  useEffect(() => {
+    const path = location.pathname.split('/')[1];
+    setActiveLink(path || 'dashboard');
+  }, [location]);
+
+  const handleLogout = async () => {
     try {
-      // Supprimer le token (localStorage ou sessionStorage selon ton app)
       localStorage.removeItem('token');
-
-      // Appel de l'API de déconnexion (pas strictement nécessaire, mais bon pour les logs côté serveur)
       await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       });
-
-      // Redirection vers la page de connexion
       navigate('/');
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
@@ -33,76 +35,93 @@ const handleLogout = async () => {
     }
   }
 
+  const navItems = [
+    { id: 'dashboard', icon: home, label: 'Dashboard', path: '/dashboard' },
+    { id: 'liste-reunions', icon: reunion, label: 'Réunions', path: '/liste-reunions' },
+    { id: 'ajout-invite', icon: invite, label: 'Ajouter un invité', path: '/ajout-invite' },
+    { id: 'profil', icon: edit, label: 'Profil', path: '/profil' },
+    { id: 'recherche-invite', icon: search, label: 'Recherche invité', path: '/recherche-invite' }
+  ];
+
   return (
-    <div className="w-64 flex flex-col gap-4 border border-gray-300">
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'dashboard' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-900 mr-6">
-          <img src={home} alt="home" className={activeLink === 'dashboard' ? 'text-gray-900' : 'text-gray-500'} />
-        </span>
-        <Link to="/dashboard" className={`font-semibold ${activeLink === 'dashboard' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('dashboard')}>
-          Dashboard
-        </Link>
+    <motion.div 
+      className="w-64 h-screen flex flex-col gap-2 border-r border-gray-200 bg-white shadow-sm fixed left-0 top-0 z-10"
+      initial={{ x: -20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="p-6 border-b border-gray-100">
+        <h1 className="text-xl font-bold text-blue-700">WEDD</h1>
       </div>
 
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'reunions' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6">
-          <img src={reunion} alt="reunion" className={activeLink === 'reunions' ? 'text-gray-900' : 'text-gray-500'} />
-        </span>
-        <Link to='/liste-reunions'  className={`${activeLink === 'reunions' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('reunions')}>
-          Réunions
-        </Link>
+      <div className="flex-1 flex flex-col justify-between overflow-y-auto">
+        <div className="space-y-2 p-4">
+          {navItems.map((item) => (
+            <motion.div
+              key={item.id}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onHoverStart={() => setIsHovered(item.id)}
+              onHoverEnd={() => setIsHovered(null)}
+            >
+              <Link
+                to={item.path}
+                className={`flex items-center gap-4 p-3 rounded-lg transition-all ${
+                  activeLink === item.id 
+                    ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500' 
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <motion.span 
+                  animate={{
+                    color: activeLink === item.id || isHovered === item.id ? '#be185d' : '#4b5563'
+                  }}
+                >
+                  <img 
+                    src={item.icon} 
+                    alt={item.label} 
+                    className="w-5 h-5" 
+                  />
+                </motion.span>
+                <span className="font-medium">{item.label}</span>
+                {activeLink === item.id && (
+                  <motion.div 
+                    className="ml-auto w-2 h-2 bg-blue-500 rounded-full"
+                    layoutId="activeIndicator"
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="p-4 border-t border-gray-100 space-y-4">
+          <div className="flex flex-col items-center p-4 bg-blue-50 rounded-lg">
+            <Image src={help} className="w-48 mb-2" />
+            <Link 
+              to="/help-page" 
+              className="text-sm text-blue-600 hover:text-blue-800 hover:underline underline-offset-4"
+            >
+              Avez-vous besoin d'aide ?
+            </Link>
+          </div>
+
+          <motion.button
+            onClick={() => { setActiveLink('logout'); handleLogout(); }}
+            className="w-full flex items-center justify-center gap-2 p-3 text-red-600 hover:text-red-800 rounded-lg hover:bg-blue-50 transition-colors"
+            whileHover={{ x: 2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            <span>Déconnexion</span>
+          </motion.button>
+        </div>
       </div>
-
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'invite' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6">
-          <img src={invite} alt="invite" className={activeLink === 'invite' ? 'text-gray-900' : 'text-gray-500'} />
-        </span>
-         {/* <Link to="/ajout-invite" onClick={() => setActiveLink('invite'); setShowPopupAjoutInvite(true)} className={`${activeLink === 'invite' ? 'text-gray-900' : 'text-gray-700'}`} >
-          Ajouter un invité
-        </Link> */}
-        <Link  to="/ajout-invite" className={`${activeLink === 'invite' ? 'text-gray-900' : 'text-gray-700'}`}
->
-  Ajouter un invité
-</Link>
-
-      </div>
-
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'profil' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6">
-          <img src={edit} alt="profil" className={activeLink === 'profil' ? 'text-gray-900' : 'text-gray-500'} />
-        </span>
-        <Link to="/profil" className={`${activeLink === 'profil' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('profil')}>
-          Profil
-        </Link>
-      </div>
-
-      <div className={`flex m-8 items-center gap-4 ${activeLink !== 'recherche-invite' ? 'opacity-50' : ''}`}>
-        <span className="text-gray-500 mr-6 w-10 h-10">
-          <img src={search} alt="recherche-invite" className={activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-500'} />
-        </span>
-        <Link to="/recherche-invite" className={`${activeLink === 'recherche-invite' ? 'text-gray-900' : 'text-gray-700'}`} onClick={() => setActiveLink('recherche-invite')}>
-          Recherche invité
-        </Link>
-      </div>
-
-
-     
-
-      <div className={`flex justify-center items-center mx-0 gap-4 ${activeLink !== 'logout' ? 'opacity-1' : ''}`}>
-        {/* <span className="text-gray-500 mr-6 w-10 h-10">
-          <FaSignOutAlt className={activeLink === 'logout' ? 'text-gray-900' : 'text-gray-500'} />
-        </span> */}
-        <button  className={`${activeLink === 'logout' ? 'text-red-900' : 'text-red-700'}`} onClick={() => {setActiveLink('logout'); handleLogout()}}>
-          Deconnexion
-        </button>
-      </div>
-
-      <div className='d-flex flex-col m-8 items-center'>
-        <Image src={help} className=" w-56" />
-        <Link href="/help-page" className=' underline underline-offset-8 '>Avez vous besoin d'aide ?</Link>
-      </div>
-
-    </div>
-  )
+    </motion.div>
+  );
 }
-export default NavLink
+
+export default NavLink;

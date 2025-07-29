@@ -149,7 +149,7 @@ function Inscription() {
             <Image
               alt="Logo"
               src={logo}
-              className="mx-auto h-40 md:h-32 w-auto rounded-full mt-24 mb-5"
+              className="mx-auto h-40 md:h-32 w-auto rounded-full mt-32 mb-5"
             />
           </motion.div>
           

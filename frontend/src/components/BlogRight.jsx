@@ -4,8 +4,9 @@ import Notification from './Notification'
 
 function BlogRight() {
   return (
-    <div className='p-2'>
+    <div className='max-w-xs bg-white overflow-hidden p-6'>
       <InfoProfile/>
+      <hr className='my-12'/>
       <Notification />
     </div>
   )
