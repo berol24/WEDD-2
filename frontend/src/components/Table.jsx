@@ -107,9 +107,17 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
     try {
       const pdfBlob = await generatePdf(invite);
       if (!pdfBlob) throw new Error('PDF non généré');
+      
+      const file = new File(
+        [pdfBlob],
+        `Billet_${invite.nom}_${invite.prenom}.pdf`,
+        {
+          type: 'application/pdf',
+        },
+      );
 
       const formData = new FormData();
-      formData.append('file', pdfBlob, `Invitation_${invite.nom}_${invite.prenom}.pdf`);
+      formData.append('file', file);
 
       const response = await axios.post(`${apiUrl}/api/uploadPDF`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
