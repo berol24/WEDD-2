@@ -239,6 +239,7 @@ function Dashboard() {
                   setInviteToDelete(id);
                   setShowConfirmDelete(true);
                 }}
+                apiUrl={apiUrl}
                 invites={filteredInvites}
                 onEditInvite={(invite) => {
                   setSelectedInvite(invite);

@@ -13,6 +13,7 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
 
   const generatePdf = async (invite) => {
     const apiUrlFrontend = 'https://wedd-i8ls.onrender.com';
+    const imageUrl = 'assets/img/billet.png';
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -86,6 +87,19 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
       console.error('Erreur génération PDF avec image :', err);
       return null;
     }
+  };
+
+  const handleDownload = async (inviteId) => {
+    setLoadingStates(prev => ({ ...prev, [inviteId]: 'pdf' }));
+    const invite = invites.find(i => i._id === inviteId);
+    const pdfBlob = await generatePdf(invite);
+    if (pdfBlob) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(pdfBlob);
+      link.download = `Invitation_${invite.nom}_${invite.prenom}.pdf`;
+      link.click();
+    }
+    setLoadingStates(prev => ({ ...prev, [inviteId]: null }));
   };
 
   const handleWhatsAppShare = async (invite) => {
