@@ -5,6 +5,7 @@ import map from '../assets/icons/map.png';
 import calendar from '../assets/icons/calendar.png';
 import clock from '../assets/icons/clock.png';
 import notification from '../assets/icons/notification.png';
+import { Link } from 'react-router-dom';
 
 function NextMeeting({ lastMeeting }) {
   if (!lastMeeting || lastMeeting.length === 0) {
@@ -105,9 +106,9 @@ function NextMeeting({ lastMeeting }) {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
       >
-        <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+        <Link to="/liste-reunions" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
           Voir tous les rendez-vous →
-        </button>
+        </Link>
       </motion.div>
     </motion.div>
   );

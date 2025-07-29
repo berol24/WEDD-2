@@ -16,62 +16,76 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
-      format: 'a5',
+      format: 'A4',
     });
 
-    try {
-      // Background
-      doc.setFillColor(240, 240, 240);
-      doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+    const loadImageAsBase64 = (url) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const dataUrl = canvas.toDataURL('image/png');
+          resolve(dataUrl);
+        };
+        img.onerror = () => reject("❌ Erreur de chargement de l'image");
+        img.src = url;
+      });
+    };
 
-      // QR Code
+    try {
+      const backgroundBase64 = await loadImageAsBase64(imageUrl);
+      doc.addImage(backgroundBase64, 'PNG', 0, 0, 210, 297);
       const qrText = `${apiUrlFrontend}/invites/${invite.inviteId}`;
       const qrImage = await QRCode.toDataURL(qrText);
-      doc.addImage(qrImage, 'PNG', 15, 15, 40, 40);
+      doc.addImage(qrImage, 'PNG', 150, 205, 40, 40);
 
-      // Guest Info
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(50, 50, 50);
-      doc.setFontSize(20);
+      let titreTexte = '';
+      switch (invite.titre) {
+        case 'M':
+          titreTexte = `M. ${invite.prenom} ${invite.nom}`;
+          break;
+        case 'Mme':
+          titreTexte = `Mme ${invite.prenom} ${invite.nom}`;
+          break;
+        case 'Mlle':
+          titreTexte = `Mlle ${invite.prenom} ${invite.nom}`;
+          break;
+        case 'couple':
+          titreTexte = `M. & Mme ${invite.nom}`;
+          break;
+        default:
+          titreTexte = `${invite.prenom} ${invite.nom}`;
+      }
 
-      const titleMap = {
-        'M': `M. ${invite.prenom} ${invite.nom}`,
-        'Mme': `Mme ${invite.prenom} ${invite.nom}`,
-        'Mlle': `Mlle ${invite.prenom} ${invite.nom}`,
-        'couple': `M. & Mme ${invite.nom}`
-      };
+      doc.setTextColor(208, 108, 56);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(28);
+      const textWidth =
+        (doc.getStringUnitWidth(titreTexte) * doc.getFontSize()) /
+        doc.internal.scaleFactor;
+      const maxWidth = 110;
 
-      const titleText = titleMap[invite.titre] || `${invite.prenom} ${invite.nom}`;
-      doc.text(titleText, 15, 70);
-
-      // Additional Info
+      if (textWidth > maxWidth) {
+        doc.text(titreTexte, 30, 220, {
+          maxWidth: maxWidth,
+          align: 'left',
+        });
+      } else {
+        doc.text(titreTexte, 30, 230);
+      }
       doc.setFontSize(12);
-      doc.text(`Table: ${invite.nomTable || 'À définir'}`, 15, 80);
-      doc.text(`ID: ${invite.inviteId}`, 15, 90);
-
-      // Decorative elements
-      doc.setDrawColor(100, 149, 237);
-      doc.setLineWidth(0.5);
-      doc.line(15, 95, 80, 95);
+      doc.text(`ID : ${invite.inviteId}`, 170, 250, null, null, 'center');
 
       return doc.output('blob');
     } catch (err) {
-      console.error('Erreur génération PDF:', err);
+      console.error('Erreur génération PDF avec image :', err);
       return null;
     }
-  };
-
-  const handleDownload = async (inviteId) => {
-    setLoadingStates(prev => ({ ...prev, [inviteId]: 'pdf' }));
-    const invite = invites.find(i => i._id === inviteId);
-    const pdfBlob = await generatePdf(invite);
-    if (pdfBlob) {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(pdfBlob);
-      link.download = `Invitation_${invite.nom}_${invite.prenom}.pdf`;
-      link.click();
-    }
-    setLoadingStates(prev => ({ ...prev, [inviteId]: null }));
   };
 
   const handleWhatsAppShare = async (invite) => {
@@ -93,9 +107,10 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
         'Mlle': `Mlle ${invite.prenom} ${invite.nom}`,
         'couple': `M. & Mme ${invite.nom}`
       };
-
-      const titleText = titleMap[invite.titre] || `${invite.prenom} ${invite.nom}`;
-      const message = `💌 Cher(e) ${titleText},\n\nNous avons le plaisir de vous inviter à notre mariage!\n\n📩 Téléchargez votre invitation ici: ${response.data.url}\n\nMerci de confirmer votre présence.`;
+      
+      const fileUrl = response.data.url;
+      const titreTexte = titleMap[invite.titre] || `${invite.prenom} ${invite.nom}`;
+      const message = `💌 Bonjour ${titreTexte},\n\nC'est avec une immense joie que nous vous t'invitons à célébrer notre union 💍.\n\n📩 Clique sur le lien ci-dessous pour télécharger ton billet d'invitation personnalisé 🎟️ :\n ${fileUrl} \n\n Merci de le conserver précieusement et de le présenter à l'entrée le jour du mariage. Ta présence à nos côtés rendra ce moment encore plus beau et inoubliable 💖.\n\nNous avons hâte de partager avec toi cette journée remplie d'amour, de joie et d'émotions ✨.\n\nAvec toute notre affection,\nLes futurs mariés 💐`;
 
       window.open(`https://wa.me/237${invite.telephone}?text=${encodeURIComponent(message)}`, '_blank');
     } catch (error) {
@@ -149,7 +164,7 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
                             src={`${apiUrl}/uploads/${invite.image}`}
                             alt={`${invite.nom} ${invite.prenom}`}
                             onError={(e) => {
-                              e.target.src = `https://ui-avatars.com/api/?name=${invite.nom}${invite.prenom}&background=random`;
+                              e.target.src = `https://ui-avatars.com/api/?name=${invite.nom} ${invite.prenom}&background=random`;
                             }}
                           />
                         </div>
