@@ -35,6 +35,7 @@ function Graphe({ invites }) {
     ],
     colors: ['#16a34a', '#dc2626', '#3b82f6'],
     legend: {
+      show:false,
       position: 'bottom',
       fontSize: '14px',
       fontFamily: 'Inter, sans-serif',
@@ -90,7 +91,8 @@ function Graphe({ invites }) {
         },
         legend: {
           position: 'bottom',
-          horizontalAlign: 'center'
+          horizontalAlign: 'center',
+         
         }
       }
     }],
