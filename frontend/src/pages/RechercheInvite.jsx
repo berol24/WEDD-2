@@ -102,62 +102,6 @@ const handleSubmit = async (e) => {
   }
 };
 
-//   const startScanner = () => {
-//   setError(null);
-//   setIsScanning(true);
-
-//   const html5QrCode = new Html5Qrcode("scanner");
-
-//   html5QrCode
-//     .start(
-//       { facingMode: "environment" },
-//       { fps: 10, qrbox: 250 },
-//       async (decodedText) => {
-//         console.log("QR Code détecté :", decodedText);
-//         html5QrCode.stop().then(async () => {
-//           setIsScanning(false);
-//           try {
-//             const url = new URL(decodedText);
-//             const inviteId = url.pathname.split("/").pop();
-
-//             const token = localStorage.getItem("token");
-//             const response = await axios.post(
-//               `${apiUrl}/api/invites/${inviteId}/presence`,
-//               {},
-//               {
-//                 headers: {
-//                   Authorization: `Bearer ${token}`,
-//                   "Content-Type": "application/json",
-//                 },
-//                 withCredentials: true,
-//               }
-//             );
-
-//             const { dejaPresent, message, invite } = response.data;
-
-//             navigate(`/invites/${inviteId}`, {
-//               state: {
-//                 invite,
-//                 message,
-//                 color: dejaPresent ? "red" : "green",
-//               },
-//             });
-
-//           } catch (err) {
-//             console.error("❌ Erreur lors du scan :", err);
-//             setError({ text: "QR Code invalide ou erreur serveur", color: "red" });
-//           }
-//         });
-//       },
-//       (errorMessage) => {
-//         console.warn("Erreur scan :", errorMessage);
-//       }
-//     )
-//     .catch((err) => {
-//       console.error("Erreur démarrage scanner :", err);
-//       setIsScanning(false);
-//     });
-// };
 
 
 
@@ -247,7 +191,7 @@ const startScanner = () => {
         </div>
 
         {/* ---- MOBILE HEADER + NAVIGATION ---- */}
-        <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
+        <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center  md:hidden">
           <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
           <button
             className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
@@ -272,7 +216,7 @@ const startScanner = () => {
             <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Ajouter un invité</Link>
             <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Recherche invité</Link>
             <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Profil</Link>
-            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-300 hover:text-red-200 text-left transition-colors">
+            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-700 hover:text-red-700 text-left transition-colors">
               Déconnexion
             </button>
           </motion.nav>

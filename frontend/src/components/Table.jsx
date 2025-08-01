@@ -258,6 +258,7 @@ function Table({ invites, apiUrl, onEditInvite, handleDeleteInvite }) {
                             <div className="text-sm text-gray-500 space-y-1">
                               <p><span className="font-medium">Titre:</span> {invite.titre || 'Non spécifié'}</p>
                               <p><span className="font-medium">Nom complet:</span> {invite.prenom} {invite.nom}</p>
+                              <p><span className="font-medium">ID:</span> {invite.inviteId}</p>
                               <p><span className="font-medium">Téléphone:</span> +237 {invite.telephone}</p>
                               <p><span className="font-medium">Table:</span> {invite.nomTable || 'À définir'}</p>
                             </div>

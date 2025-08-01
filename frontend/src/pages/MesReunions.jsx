@@ -164,7 +164,7 @@ const handleLogout = async () => {
             <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Ajouter un invité</Link>
             <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Recherche invité</Link>
             <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Profil</Link>
-            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-300 hover:text-red-200 text-left transition-colors">
+            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-700 hover:text-red-700 text-left transition-colors">
               Déconnexion
             </button>
           </motion.nav>
