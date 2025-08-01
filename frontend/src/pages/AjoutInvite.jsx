@@ -4,6 +4,8 @@ import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import logo from "../assets/img/logo.png"
 import axios from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
+
 function AjoutInvite({ onClose }) {
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
@@ -82,31 +84,43 @@ const handleLogout = async () => {
 <div className="flex flex-col md:flex-row min-h-screen">
       
         <div className="hidden md:block md:w-64">
-        <NavLink />
-      </div>
+          <NavLink />
+        </div>
 
-      {/* ---- MOBILE HEADER + NAVIGATION ---- */}
-      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <h1 className="text-xl font-bold size-12"><img src={logo} className='w-max' alt="logo-wedd" /></h1>
-        <button
-          className="bg-gray-700 px-3 py-1 rounded"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰ 
-        </button>
-      </div>
+        {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+        <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
+          <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
+          <button
+            className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+          ☰
+          </button>
+        </header>
 
-      {menuOpen && (
-        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
-          <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Dashboard</Link>
-          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Réunions</Link>
-          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Ajouter un invité</Link>
-          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Recherche invité</Link>
-          <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-400">Profil</Link>
-          <Link onClick={() =>{ setMenuOpen(false); handleLogout()}} className="text-red-400 hover:text-red-300">Déconnexion</Link>
-        </nav>      )}
+        {/* Mobile Navigation */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav 
+            className="bg-gray-200 text-dark flex flex-col gap-4 p-4 w-full md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Dashboard</Link>
+            <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Réunions</Link>
+            <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Ajouter un invité</Link>
+            <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Recherche invité</Link>
+            <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Profil</Link>
+            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-300 hover:text-red-200 text-left transition-colors">
+              Déconnexion
+            </button>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
-      <div className="flex-1 bg-[#717171] flex items-center justify-center p-8">
+      <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-8">
         <form
           onSubmit={handleSubmitInvite}
           className="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl"

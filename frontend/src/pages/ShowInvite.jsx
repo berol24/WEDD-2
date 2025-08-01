@@ -95,7 +95,7 @@
 
 
     return (
-      <div className="flex flex-col md:flex-row min-h-screen w-full bg-[#717171]">
+      <div className="flex flex-col md:flex-row min-h-screen w-full bg-[#FAFAFA]">
         {/* Menu gauche */}
         <div className="hidden md:block w-1/5">
           <NavLink />

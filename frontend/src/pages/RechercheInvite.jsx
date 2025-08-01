@@ -6,6 +6,7 @@ import NavLink from "../components/NavLink";
 import logo from "../assets/img/logo.png";
 import axios from "axios";
 import { Html5Qrcode } from "html5-qrcode";
+import { AnimatePresence, motion } from "framer-motion";
 
 const RechercheInvite = () => {
   const [invitesList, setInvitesList] = useState([]);
@@ -240,32 +241,46 @@ const startScanner = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      {/* ---- NAV GAUCHE ---- */}
-      <div className="hidden md:block md:w-64">
-        <NavLink />
-      </div>
+      
+        <div className="hidden md:block md:w-64">
+          <NavLink />
+        </div>
 
-      {/* ---- ENTÊTE MOBILE ---- */}
-      <div className="bg-gray-800 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <h1 className="text-xl font-bold size-12"><img src={logo} className="w-max" alt="logo-wedd" /></h1>
-        <button className="bg-gray-700 px-3 py-1 rounded" onClick={() => setMenuOpen(!menuOpen)}>
+        {/* ---- MOBILE HEADER + NAVIGATION ---- */}
+        <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
+          <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
+          <button
+            className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
           ☰
-        </button>
-      </div>
+          </button>
+        </header>
 
-      {menuOpen && (
-        <nav className="bg-gray-800 text-white flex flex-col gap-3 p-4 w-full md:hidden">
-          <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-          <Link to="/liste-reunions" onClick={() => setMenuOpen(false)}>Réunions</Link>
-          <Link to="/ajout-invite" onClick={() => setMenuOpen(false)}>Ajouter un invité</Link>
-          <Link to="/recherche-invite" onClick={() => setMenuOpen(false)}>Recherche invité</Link>
-          <Link to="/profil" onClick={() => setMenuOpen(false)}>Profil</Link>
-          <Link onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-400">Déconnexion</Link>
-        </nav>
-      )}
+        {/* Mobile Navigation */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav 
+            className="bg-gray-200 text-dark flex flex-col gap-4 p-4 w-full md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Dashboard</Link>
+            <Link to="/liste-reunions" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Réunions</Link>
+            <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Ajouter un invité</Link>
+            <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Recherche invité</Link>
+            <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Profil</Link>
+            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-300 hover:text-red-200 text-left transition-colors">
+              Déconnexion
+            </button>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* ---- CONTENU PRINCIPAL ---- */}
-      <div className="flex-1 bg-[#717171] flex items-center justify-center p-4">
+      <div className="flex-1 bg-[#FAFAFA] flex items-center justify-center p-4">
         <div className="bg-white shadow-lg p-6 md:p-8 rounded-2xl w-full max-w-md flex flex-col items-center text-center">
           <h2 className="text-xl font-bold mb-6 text-black">Entrer l'identifiant de l'invité</h2>
 

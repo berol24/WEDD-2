@@ -28,6 +28,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
+  
 
   const handleLogout = async () => {
     try {
@@ -122,7 +123,7 @@ function Dashboard() {
       <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
         <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
         <button
-          className="py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+          className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           ☰
@@ -167,10 +168,11 @@ function Dashboard() {
               </h1>
               <p className="text-gray-600">Un mariage inoubliable vous attend 🎉</p>
             </div>
+
             <Link to="/ajout-invite" className="w-full md:w-auto">
               <Bouton
                 width="w-full md:w-48"
-                height="h-12"
+                height="h-auto"
                 bg="bg-blue-600 hover:bg-blue-700"
                 color="text-white"
                 fontSize="text-base"
@@ -254,7 +256,7 @@ function Dashboard() {
             <Link to="/ajout-invite">
               <Bouton
                 width="w-full md:w-48"
-                height="h-12"
+                height="h-auto"
                 bg="bg-blue-600 hover:bg-blue-700"
                 color="text-white"
                 fontSize="text-base"
