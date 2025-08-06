@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
 function Countdown() {
-    
+
+      const [formData, setFormData] = useState({ dateMariage: '' });   
       const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-    
+      const apiUrl = import.meta.env.VITE_API_URL;
+
       useEffect(() => {
         const timer = setTimeout(() => {
           setTimeLeft(calculateTimeLeft());
@@ -12,10 +15,42 @@ function Countdown() {
     
         return () => clearTimeout(timer);
       });
+
+
+      const getUser = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.get(`${apiUrl}/api/profil`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data.user || {};
+    } catch (error) {
+      console.error(
+        'Erreur lors de la récupération des infos utilisateur :',
+        error,
+      );
+      return {};
+    }
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await getUser();
+      setFormData((prev) => ({
+        ...prev,
+        ...data,
+      }));
+    };
+    fetchUser();
+  }, []);
     
       function calculateTimeLeft() {
         // Vous pouvez remplacer cette date par la date du mariage
-        const weddingDate = new Date('2025-09-20T20:00:00');
+        const weddingDate = new Date(formData.dateMariage);
         const now = new Date();
         const difference = weddingDate - now;
     
