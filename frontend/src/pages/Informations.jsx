@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Countdown from '../components/Countdown';
-import { AnimatePresence, motion } from 'framer-motion';
 
 function Informations() {
   const [isEditing, setIsEditing] = useState(false);
@@ -213,6 +212,7 @@ const handleLogout = async () => {
         {/* ---- MOBILE HEADER + NAVIGATION ---- */}
         <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
           <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
+          <Countdown />
           <button
             className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
