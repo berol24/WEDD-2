@@ -6,7 +6,8 @@ import logo from "../assets/img/logo.png"
 import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Countdown from '../components/Countdown';
+
+
 
 function Informations() {
   const [isEditing, setIsEditing] = useState(false);
