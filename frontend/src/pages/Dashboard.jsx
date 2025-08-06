@@ -11,8 +11,6 @@ import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
 import ModifierInvite from './ModifierInvite';
 import logo from "../assets/img/logo.png";
-import Countdown from '../components/Countdown';
-
 function Dashboard() {
   const [invitesList, setInvitesList] = useState([]);
   const [reunionsList, setReunionsList] = useState([]);
@@ -29,6 +27,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
+  
 
   const handleLogout = async () => {
     try {
@@ -121,8 +120,8 @@ function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       {/* Mobile Header */}
       <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />   
-        <Countdown />                  
+        <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
+    
         <button
           className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -146,13 +145,13 @@ function Dashboard() {
             <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Ajouter un invité</Link>
             <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Recherche invité</Link>
             <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Profil</Link>
-            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-300 hover:text-red-200 text-left transition-colors">
+            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-700 hover:text-red-700 text-left transition-colors">
               Déconnexion
             </button>
           </motion.nav>
         )}
       </AnimatePresence>
-
+    
       <div className="flex flex-col md:flex-row">
         {/* Desktop Navigation */}
         <div className="hidden md:block md:w-64">

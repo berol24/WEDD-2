@@ -3,7 +3,7 @@ import Input from '../components/Input';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import logo from "../assets/img/logo.png"
-
+import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Countdown from '../components/Countdown';
@@ -17,6 +17,8 @@ function Informations() {
   const [isEditSuccess, setIsEditSuccess] = useState(false);
   const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nom: '',
@@ -59,6 +61,7 @@ const handleEditClick = async () => {
       }));
       setIsEditing(false);
       setIsEditSuccess('Profil mis à jour avec succès');
+      window.location.reload(); 
     } catch (error) {
       console.error('Erreur lors de la mise à jour du profil:', error);
     }
@@ -137,7 +140,8 @@ const getUser = async () => {
         'Content-Type': 'application/json',
       },
     });
-
+    console.log('User data fetched:', response.data.user);
+    
     return response.data.user || {};
   } catch (error) {
     console.error(
@@ -200,15 +204,15 @@ const handleLogout = async () => {
 
   return (
   <div className="flex flex-col md:flex-row min-h-screen">
-      
-      <div className="hidden md:block md:w-64">
-        <NavLink />
-      </div>
+
+    {/* Mobile Navigation */}
+  <div className="hidden md:block md:w-64">
+          <NavLink />
+        </div>
 
         {/* ---- MOBILE HEADER + NAVIGATION ---- */}
         <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
           <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
-          <Countdown />   
           <button
             className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -232,12 +236,13 @@ const handleLogout = async () => {
             <Link to="/ajout-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Ajouter un invité</Link>
             <Link to="/recherche-invite" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Recherche invité</Link>
             <Link to="/profil" onClick={() => setMenuOpen(false)} className="hover:text-blue-200 transition-colors">Profil</Link>
-            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-300 hover:text-red-200 text-left transition-colors">
+            <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="text-red-700 hover:text-red-700 text-left transition-colors">
               Déconnexion
             </button>
           </motion.nav>
         )}
       </AnimatePresence>
+      
 
       <div className="flex flex-col items-center  min-h-screen max-w-4xl mx-auto py-4 px-4 mt-20">
         <h1 className="text-2xl font-bold mb-6">
