@@ -173,122 +173,189 @@ const handleLogout = async () => {
         )}
       </AnimatePresence>
 
-        <div className="flex-1 px-4 sm:px-6 lg:px-8 bg-[#FAFAFA]">
-          <h1 className="text-2xl sm:text-3xl font-bold mt-10 sm:mt-20 mb-10 sm:mb-20 text-center">
-            Gestion des différentes réunions
-          </h1>
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-8 mt-8">
-            <button className="p-2 mb-4 sm:mb-0">
-              <img src={tri} alt="Trier" className="w-6 h-6" />
-            </button>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <input
-                type="text"
-                className="border border-gray-200 rounded px-4 py-2 w-full sm:w-auto"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Rechercher par titre"
-              />
-              <button
-                className="text-blue-500 font-bold border border-blue-500 rounded px-4 py-2 w-full sm:w-auto"
-                onClick={handleSearch}
-              >
-                Rechercher
-              </button>
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            {successMessage && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 text-center">
-                {successMessage}
-              </div>
-            )}
-            <table className="table-auto w-full">
-              <thead className="bg-blue-500 text-white">
-                <tr>
-                  <th className="px-4 py-2">TITRE REUNION</th>
-                  <th className="px-4 py-2">DATE</th>
-                  <th className="px-4 py-2">HEURE</th>
-                  <th className="px-4 py-2">LIEU</th>
-                  <th className="px-4 py-2">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredReunions && filteredReunions.length > 0 ? (
-                  filteredReunions.map((reunion) => (
-                    <tr key={reunion._id}>
-                      <td className="px-4 py-2 border-b text-center">
-                        {reunion.titre}
-                      </td>
-                      <td className="px-4 py-2 border-b text-center">
-                        {new Date(reunion.dateHeure).toLocaleDateString('fr-FR')}
-                      </td>
-                      <td className="px-4 py-2 border-b text-center">
-                        {new Date(reunion.dateHeure).toLocaleTimeString('fr-FR')}
-                      </td>
-                      <td className="px-4 py-2 border-b text-center">
-                        {reunion.lieu}
-                      </td>
-                      <td className="px-4 py-2 border-b text-center">
-                        <button
-                          onClick={() => {
-                            setSelectedReunion(reunion);
-                            setShowPopupUpdateReunion(true);
-                          }}
-                          className="px-2"
-                        >
-                          <img src={edit} alt="Editer" className="w-5 h-5" />
-                        </button>
+        <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
+  <motion.div 
+    className="max-w-7xl mx-auto"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="text-center mb-12">
+      <h1 className="text-3xl font-bold text-gray-800 mb-2">Gestion des réunions</h1>
+      <p className="text-gray-600">Planifiez et organisez vos réunions pré-matrimoniales</p>
+    </div>
 
-                        <button
-                          onClick={() => {
-                            setReunionToDelete(reunion._id);
-                            setShowConfirmDelete(true);
-                          }}
-                          className="px-2"
-                        >
-                          <img
-                            src={deleteIcon}
-                            alt="Supprimer"
-                            className="w-5 h-5"
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="px-4 py-2 border-b text-center">
-                      Aucune réunion trouvée
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-center mt-6">
-            <button
-              onClick={() => setShowPopupAjoutReunion(true)}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-            >
-              Ajouter une réunion
-            </button>
-          </div>
-          {showPopupAjoutReunion && (
-            <AjoutReunion onClose={() => setShowPopupAjoutReunion(false)}  fetchReunions={fetchReunions}  />
-          )}
-          {showPopupUpdateReunion && selectedReunion && (
-            <ModifierReunion
-              reunion={selectedReunion}
-              onClose={() => {
-                setShowPopupUpdateReunion(false);
-                setSelectedReunion(null);
-              }}
-            />
-          )}
+    {/* Search and Filter Section */}
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 p-4 bg-white rounded-lg shadow-sm">
+      <div className="flex items-center gap-2">
+        <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+          </svg>
+          <span className="sr-only">Trier</span>
+        </button>
+      </div>
+      
+      <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Rechercher une réunion..."
+          />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
         </div>
+        <button
+          onClick={handleSearch}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Rechercher
+        </button>
+      </div>
+    </div>
+
+    {/* Success Message */}
+    <AnimatePresence>
+      {successMessage && (
+        <motion.div 
+          className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-lg"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <p>{successMessage}</p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Meetings Table */}
+    <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-blue-600 text-white">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Titre
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Date
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Heure
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Lieu
+              </th>
+              <th scope="col" className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {filteredReunions && filteredReunions.length > 0 ? (
+              filteredReunions.map((reunion) => (
+                <tr key={reunion._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="font-medium text-gray-900">{reunion.titre}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                    {new Date(reunion.dateHeure).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                    {new Date(reunion.dateHeure).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">
+                    <div className="max-w-xs truncate">{reunion.lieu}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div className="flex justify-end space-x-2">
+                      <button
+                        onClick={() => {
+                          setSelectedReunion(reunion);
+                          setShowPopupUpdateReunion(true);
+                        }}
+                        className="text-blue-600 hover:text-blue-900 p-1"
+                        title="Modifier"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setReunionToDelete(reunion._id);
+                          setShowConfirmDelete(true);
+                        }}
+                        className="text-red-600 hover:text-red-900 p-1"
+                        title="Supprimer"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                  Aucune réunion trouvée
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {/* Add Meeting Button */}
+    <div className="mt-8 flex justify-center">
+      <motion.button
+        onClick={() => setShowPopupAjoutReunion(true)}
+        className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-colors"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        Ajouter une réunion
+      </motion.button>
+    </div>
+
+    {/* Popups */}
+    {showPopupAjoutReunion && (
+      <AjoutReunion 
+        onClose={() => setShowPopupAjoutReunion(false)}  
+        fetchReunions={fetchReunions}  
+      />
+    )}
+    {showPopupUpdateReunion && selectedReunion && (
+      <ModifierReunion
+        reunion={selectedReunion}
+        onClose={() => {
+          setShowPopupUpdateReunion(false);
+          setSelectedReunion(null);
+        }}
+      />
+    )}
+  </motion.div>
+</div>
         {/* ---- BLOGRIGHT (droite, desktop seulement) ---- */}
-      <div className="hidden md:block md:w-80">
+      <div className="hidden xl:block border-l border-gray-200 w-100">
         <BlogRight />
       </div>
     </div>

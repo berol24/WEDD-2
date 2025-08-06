@@ -11,6 +11,7 @@ import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
 import ModifierInvite from './ModifierInvite';
 import logo from "../assets/img/logo.png";
+import Countdown from '../components/Countdown';
 function Dashboard() {
   const [invitesList, setInvitesList] = useState([]);
   const [reunionsList, setReunionsList] = useState([]);
@@ -121,7 +122,7 @@ function Dashboard() {
       {/* Mobile Header */}
       <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
         <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
-    
+        <Countdown />
         <button
           className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -270,7 +271,7 @@ function Dashboard() {
         </main>
 
         {/* Right Sidebar (Desktop only) */}
-        <aside className="hidden lg:block lg:w-80 border-l border-gray-200">
+        <aside className="hidden xl:block border-l border-gray-200 w-100">
           <BlogRight />
         </aside>
       </div>

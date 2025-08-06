@@ -117,7 +117,7 @@ function Graphe({ invites }) {
         <p className="text-sm text-gray-500">{totalInvites} invités au total</p>
       </div>
       
-      <div className="w-full h-[300px]">
+      <div className="w-full h-[200px]">
         <ReactApexChart
           options={options}
           series={series}

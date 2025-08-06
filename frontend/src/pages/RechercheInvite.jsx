@@ -275,7 +275,7 @@ const startScanner = () => {
       </div>
 
       {/* ---- NAV DROIT ---- */}
-      <div className="hidden md:block md:w-80">
+      <div className="hidden xl:block border-l border-gray-200 w-100">
         <BlogRight />
       </div>
     </div>
