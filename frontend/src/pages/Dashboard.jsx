@@ -11,6 +11,7 @@ import NextMeeting from '../components/NextMeeting';
 import BlogRight from '../components/BlogRight';
 import ModifierInvite from './ModifierInvite';
 import logo from "../assets/img/logo.png";
+import Countdown from '../components/Countdown';
 
 function Dashboard() {
   const [invitesList, setInvitesList] = useState([]);
@@ -28,7 +29,6 @@ function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
-  
 
   const handleLogout = async () => {
     try {
@@ -121,7 +121,8 @@ function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       {/* Mobile Header */}
       <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
-        <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
+        <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />   
+        <Countdown />                  
         <button
           className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}

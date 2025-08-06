@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavLink from '../components/NavLink';
 import BlogRight from '../components/BlogRight';
 import logo from "../assets/img/logo.png"
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
+import Countdown from '../components/Countdown';
 
 function AjoutInvite({ onClose }) {
   const [nom, setNom] = useState('');
@@ -90,6 +91,7 @@ const handleLogout = async () => {
         {/* ---- MOBILE HEADER + NAVIGATION ---- */}
         <header className="bg-gray-100 text-white w-full p-4 flex justify-between items-center md:hidden">
           <img src={logo} className="h-16 rounded-full" alt="logo-wedd" />
+          <Countdown />   
           <button
             className="py-2 px-4 rounded-md bg-blue-700 hover:bg-blue-900 transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
