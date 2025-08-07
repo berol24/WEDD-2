@@ -101,7 +101,7 @@ function Countdown() {
           </motion.div>
         ) : (
           <motion.div 
-            className="text-2xl text-blue-800"
+            className="text-xl font-bold text-pink-500"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
