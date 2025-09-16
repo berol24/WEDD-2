@@ -69,11 +69,15 @@ function ShowInvite() {
   const [showSalle, setShowSalle] = useState(false);
 
   const nomsTables = [
-    "Tulipe", "Lys", "Orchidée", "Matthieu", "Jasmin", "Violette", "Iris", "Camélia",
-    "Dahlia", "Magnolia", "Lavande", "Glycine", "Hortensia", "Azalée", "Fuchsia", "Anémone", "Bleuet",
-    "Rose", "Lilas", "Marguerite", "Pensée", "Chrysanthème", "Pivoine", "Jonquille", "Muguet", "Œillet", "Jacinthe",
-    "Tournesol", "Gerbera", "Pétunia"
-  ];
+  "CRJ 1000", "A330", "A320", "B707",
+  "CRJ 700", "A380", "A310", "B727",
+  "B747", "A350", "A300", "CONCORDE",
+  "BUFFET 2", "LOGE DES MARIES", "PISTE DE DANSE",
+  "B777", "A340", "B767", "A320 NEO",
+  "B787", "TUPOLEV 144", "BUFFET 1",
+  "AN 225", "EMBRAER 190", "B717", "EMBRAER 170",
+  "AN 124", "B737"
+];
 
   const handleVoirTable = () => {
     setClignoter(true);
@@ -193,7 +197,7 @@ function ShowInvite() {
 
                 {showSalle && (
                   <Salle
-                    nbTables={30}
+                    nbTables={24}
                     nbInvitesParTable={10}
                     nomsTables={nomsTables}
                     tableAClignoter={invite?.nomTable}

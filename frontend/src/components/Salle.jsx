@@ -1,12 +1,12 @@
-// Import des dépendances React et Three.js
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useNavigate } from "react-router-dom";
-import couple1 from '../assets/img/stephane_illana1.png'
-import couple2 from '../assets/img/stephane_illana2.png'
-import couple3 from '../assets/img/stephane_illana3.png'
-import couple4 from '../assets/img/stephane_illana4.png'
+import couple1 from '../assets/img/stephane_illana1.png';
+import couple2 from '../assets/img/stephane_illana2.png';
+import couple3 from '../assets/img/stephane_illana3.png';
+import couple4 from '../assets/img/stephane_illana4.png';
+
 // Fonction pour créer une étiquette de texte en 3D
 function createLabel(text) {
   const canvas = document.createElement("canvas");
@@ -26,152 +26,131 @@ function createLabel(text) {
   return sprite;
 }
 
-// Composant principal Salle
+// Liste des tables / zones avec position et dimensions
+const planTables = [
+  { nom: "TABLE MARIES", x: -16, z: 0, w: 1.5, h: 5, rotation: Math.PI / 2 },
+  { nom: "B737", x: 15, z: 20 },
+  { nom: "EMBRAER170", x: 15, z: 15 },
+  { nom: "AN124", x: 10, z: 20 },
+  { nom: "EMBRAER190", x: 15, z: 10 },
+  { nom: "A340", x: -5, z: 6 },
+  { nom: "B717", x: 10, z: 15 },
+  { nom: "AN225", x: 15, z: 5 },
+  { nom: "BUFFET 2", x: -16, z: 20 },
+  { nom: "B777", x: -10, z: 6 },
+  { nom: "B747", x: -10, z: -6 },
+  { nom: "A350", x: -5, z: -6 },
+  { nom: "A320NEO", x: -5, z: 13 },
+  { nom: "A380", x: -5, z: -13 },
+  { nom: "A300", x: 0, z: -6 },
+  { nom: "B787", x: -10, z: 20 },
+  { nom: "CJR1000", x: -10, z: -20 },
+  { nom: "B767", x: -10, z: 13 },
+  { nom: "CJR700", x: -10, z: -13 },
+  { nom: "BUFFET 1", x: 15, z: -6 },
+  { nom: "A320", x: 0, z: -20 },
+  { nom: "B707", x: 5, z: -20 },
+  { nom: "A310", x: 0, z: -13 },
+  { nom: "B727", x: 5, z: -13 },
+  { nom: "TUPOLEV144", x: -5, z: 20 },
+  { nom: "A330", x: -5, z: -20 },
+  { nom: "CONCORDE", x: 5, z: -6 },
+];
+
 export default function Salle({
-  nbTables = 10, // Nombre total de tables
-  nbInvitesParTable = 30, // Nombre d'invités par table
-  nomsTables = [], // Noms des tables
-  espaceTables = 4, // Espacement entre les tables
-  tablePrincipaleNom = "Table Mariés", // Nom de la table principale
-  tableAClignoter = null, // Table à faire clignoter
-  clignoter = false, // État du clignotement
-  onClignotementFini = () => {}, // Callback à la fin du clignotement
-  nbColonnesParCote = 2, // Nombre de colonnes de tables de chaque côté
+  clignoter = false,
+  tableAClignoter = null,
+  onClignotementFini = () => {},
 }) {
   const navigate = useNavigate();
-  // Références pour le montage du composant et les tables
   const mountRef = useRef();
   const tableRefs = useRef({});
 
-  // Effect principal pour la création et la gestion de la scène 3D
   useEffect(() => {
-    // Fonction pour mettre à jour la taille du rendu
-    const updateSize = () => {
-      const width = Math.min(window.innerWidth, 1200);
-      const height = Math.min(window.innerHeight * 0.8, 800);
-      return { width, height };
-    };
+    const width = Math.min(window.innerWidth, 1200);
+    const height = Math.min(window.innerHeight * 0.8, 800);
 
-    const { width, height } = updateSize();
-    
-    // Création de la scène
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xd06c38);
 
-    // Configuration de la caméra
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
     camera.position.set(0, 14, 32);
     camera.lookAt(0, 0, 0);
 
-    // Ajout des lumières
     scene.add(new THREE.AmbientLight(0xffffff, 0.9));
     scene.add(new THREE.DirectionalLight(0xffffff, 0.4));
 
-      // Création du sol avec plusieurs textures d'images
-      const textureLoader = new THREE.TextureLoader();
-      const floorTextures = [
-        textureLoader.load(couple1),
-        textureLoader.load(couple2),
-        textureLoader.load(couple3),
-        textureLoader.load(couple4)
-      ];
-    
-      // Création de plusieurs sections de sol avec différentes textures
-      const sectionSize = 25;
-      const sections = [
-        { x: -12.5, z: -12.5 },
-        { x: 12.5, z: -12.5 },
-        { x: -12.5, z: 12.5 },
-        { x: 12.5, z: 12.5 }
-      ];
+    const textureLoader = new THREE.TextureLoader();
+    const floorTextures = [
+      textureLoader.load(couple1),
+      textureLoader.load(couple2),
+      textureLoader.load(couple3),
+      textureLoader.load(couple4),
+    ];
 
-      sections.forEach((section, index) => {
-        const texture = floorTextures[index];
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(2, 2);
-      
-        const floorGeometry = new THREE.PlaneGeometry(sectionSize, sectionSize);
-        const floorMaterial = new THREE.MeshStandardMaterial({
-          map: texture,
-          side: THREE.DoubleSide
-        });
-        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.rotation.x = -Math.PI / 2;
-        floor.position.set(section.x, 0, section.z);
-        scene.add(floor);
+    const sectionSize = 25;
+    const sections = [
+      { x: -12.5, z: -12.5 },
+      { x: 12.5, z: -12.5 },
+      { x: -12.5, z: 12.5 },
+      { x: 12.5, z: 12.5 },
+    ];
+
+    sections.forEach((section, index) => {
+      const texture = floorTextures[index];
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(2, 2);
+
+      const floorGeometry = new THREE.PlaneGeometry(sectionSize, sectionSize);
+      const floorMaterial = new THREE.MeshStandardMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
       });
+      const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.set(section.x, 0, section.z);
+      scene.add(floor);
+    });
 
-    // Création du groupe principal
+
+
+
+
     const group = new THREE.Group();
     scene.add(group);
 
-    // Création de la table principale
-    const mainTable = new THREE.Mesh(
-      new THREE.BoxGeometry(4, 1, 2),
-      new THREE.MeshPhongMaterial({ color: 0xffffff })
-    );
-    mainTable.position.set(0, 0.5, -12);
-    group.add(mainTable);
+// Flèche de direction au centre (pointant vers négatif Z)
+const direction = new THREE.Vector3(0, 0, -1);
+direction.normalize();
 
-    // Création des étiquettes de bienvenue
-    const welcomeLabel = createLabel("Stephane & Illana");
-    welcomeLabel.position.set(0, 4, -12);
-    group.add(welcomeLabel);
+const origin = new THREE.Vector3(0, 0.1, 25); // léger décalage en Y au-dessus du sol
+const length = 10;
+const color = 0xff0000;
+const headLength = 1; // longueur de la tête un peu plus grande
+const headWidth = 1;  // largeur plus grande (épaisseur)
+const arrowHelper = new THREE.ArrowHelper(direction, origin, length, color,headLength,headWidth);
+group.add(arrowHelper);
 
-      const mainLabel = createLabel(tablePrincipaleNom);
-      mainLabel.position.set(0, 2, -12);
-      group.add(mainLabel);
 
-      // Ajout de deux chaises derrière la table principale
-      const chair1 = new THREE.Mesh(
-        new THREE.BoxGeometry(0.5, 2, 0.5),
-        new THREE.MeshPhongMaterial({ color: 0x405433 })
-      );
-      chair1.position.set(-0.75, 0.5, -13);
-      group.add(chair1);
-
-      const chair2 = new THREE.Mesh(
-        new THREE.BoxGeometry(0.5, 2, 0.5),
-        new THREE.MeshPhongMaterial({ color: 0x405433 })
-      );
-      chair2.position.set(0.75, 0.5, -13);
-      group.add(chair2);
-
-    // Création des tables d'invités
-    const tablesParCote = Math.floor(nbTables / 2);
-    const tablesParColonne = Math.ceil(tablesParCote / nbColonnesParCote);
-
-    tableRefs.current = {};
-    for (let i = 0; i < nbTables; i++) {
-      const isLeft = i < tablesParCote;
-      const colonneIndex = Math.floor((isLeft ? i : i - tablesParCote) / tablesParColonne);
-      const rangDansColonne = (isLeft ? i : i - tablesParCote) % tablesParColonne;
-      
-      const baseX = isLeft ? -8 : 8;
-      const x = baseX + (colonneIndex * 4) * (isLeft ? -1 : 1);
-      const z = -8 + rangDansColonne * espaceTables;
-
-      // Création de la table
+    planTables.forEach(({ nom, x, z, rotation = 0 }) => {
       const table = new THREE.Mesh(
-        new THREE.BoxGeometry(2, 1, 1),
+        new THREE.CylinderGeometry(1.5, 1.5, 1, 32),
         new THREE.MeshPhongMaterial({ color: 0xFFA500 })
       );
       table.position.set(x, 0.5, z);
+      table.rotation.y = rotation;
+      tableRefs.current[nom] = table;
       group.add(table);
 
-      const nomTable = nomsTables[i] || `Table ${i + 1}`;
-      tableRefs.current[nomTable] = table;
+      const label = createLabel(nom);
+      label.position.set(x, 2, z);
+      group.add(label);
 
-      // Création de l'étiquette de la table
-      const tableLabel = createLabel(nomTable);
-      tableLabel.position.set(x, 2, z);
-      group.add(tableLabel);
-
-      // Création des chaises autour de la table
-      for (let j = 0; j < nbInvitesParTable; j++) {
-        const angle = (j / nbInvitesParTable) * Math.PI * 2;
-        const radius = 1.5;
+      const nbChaises = 10;
+      const radius = 1.8;
+      for (let i = 0; i < nbChaises; i++) {
+        const angle = (i / nbChaises) * Math.PI * 2;
         const cx = x + Math.cos(angle) * radius;
         const cz = z + Math.sin(angle) * radius;
         const chair = new THREE.Mesh(
@@ -181,33 +160,39 @@ export default function Salle({
         chair.position.set(cx, 0.5, cz);
         group.add(chair);
       }
-    }
+    });
 
-    // Configuration du renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Configuration des contrôles de la caméra
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.09;
 
-    // Variables pour l'animation du clignotement
     let frameId;
     let blinkFrame = 0;
     let blinking = false;
     let blinkTarget = null;
     let blinkOrigColor = null;
 
-    // Fonction d'animation
+    if (
+      clignoter &&
+      tableAClignoter &&
+      tableRefs.current[tableAClignoter]
+    ) {
+      blinking = true;
+      blinkTarget = tableRefs.current[tableAClignoter];
+      blinkOrigColor = blinkTarget.material.color.getHex();
+      blinkFrame = 0;
+    }
+
     const animate = () => {
       frameId = requestAnimationFrame(animate);
 
-      // Gestion du clignotement
       if (blinking && blinkTarget) {
         blinkFrame++;
-        if (blinkFrame < 100000000) {
+        if (blinkFrame < Math.exp(99999)) {
           if (Math.floor(blinkFrame / 10) % 2 === 0) {
             blinkTarget.material.color.set(0xffffff);
           } else {
@@ -228,73 +213,63 @@ export default function Salle({
     };
     animate();
 
-    // Initialisation du clignotement si nécessaire
-    if (clignoter && tableAClignoter && tableRefs.current[tableAClignoter]) {
-      blinking = true;
-      blinkTarget = tableRefs.current[tableAClignoter];
-      blinkOrigColor = blinkTarget.material.color.getHex();
-      blinkFrame = 0;
-    }
-
-    // Gestion du redimensionnement
     const handleResize = () => {
-      const { width, height } = updateSize();
-      camera.aspect = width / height;
+      const newWidth = Math.min(window.innerWidth, 1200);
+      const newHeight = Math.min(window.innerHeight * 0.8, 800);
+      camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      renderer.setSize(newWidth, newHeight);
     };
+    window.addEventListener("resize", handleResize);
 
-    window.addEventListener('resize', handleResize);
+    // Sauvegarde la référence pour éviter problème null dans cleanup
+    const currentMount = mountRef.current;
 
-    // Nettoyage
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(frameId);
       renderer.dispose();
-      mountRef.current?.removeChild(renderer.domElement);
+      if (currentMount) {
+        currentMount.removeChild(renderer.domElement);
+      }
     };
-  }, [nbTables, nbInvitesParTable, nomsTables, espaceTables, tablePrincipaleNom, nbColonnesParCote]);
+  }, [clignoter, tableAClignoter, onClignotementFini]);
 
-  // Effect pour gérer le clignotement
-  useEffect(() => {
-    if (clignoter && tableAClignoter && tableRefs.current[tableAClignoter]) {
-    }
-  }, [clignoter, tableAClignoter]);
-
-  // Rendu du composant
   return (
-    <div style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: '90vw',
-      height: '80vh',
-      maxWidth: '1200px',
-      maxHeight: '800px',
-      backgroundColor: '#fff',
-      borderRadius: '10px',
-      boxShadow: '0 0 20px rgba(0,0,0,0.2)',
-      overflow: 'hidden'
-    }}>
-      <button 
+    <div
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "90vw",
+        height: "80vh",
+        maxWidth: "1200px",
+        maxHeight: "800px",
+        backgroundColor: "#fff",
+        borderRadius: "10px",
+        boxShadow: "0 0 20px rgba(0,0,0,0.2)",
+        overflow: "hidden",
+      }}
+    >
+      <button
         onClick={() => navigate(-1)}
         style={{
-          position: 'absolute',
-          top: '20px',
-          left: '20px',
-          padding: '10px 20px',
-          backgroundColor: '#405433',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          zIndex: 1000
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          padding: "10px 20px",
+          backgroundColor: "#405433",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          zIndex: 1000,
         }}
       >
         Retour
       </button>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <div ref={mountRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 }

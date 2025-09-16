@@ -72,7 +72,7 @@ function Countdown() {
         if (!timeLeft[interval]) {
           return null;
         }
-    
+   
         return (
           <div key={interval} className="flex flex-col items-center mx-2">
             <motion.span 
