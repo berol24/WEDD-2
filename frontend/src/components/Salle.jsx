@@ -913,6 +913,15 @@ export default function Salle({
       const newTables = tablesData.filter(t => t.nom !== tableName);
       setTablesData(newTables);
       await saveRoomLayout(newTables, colors);
+
+      if (selectedTableRef.current === tableName) {
+        selectedTableRef.current = null;
+      }
+      setMobileSelectedTable((current) => (current === tableName ? null : current));
+      setEditingTable((current) => (current === tableName ? null : current));
+      setShowTableForm(false);
+      setTableFormData({ nom: "", nbChaises: 10 });
+      setTableFormErrors({});
     }
   };
 
