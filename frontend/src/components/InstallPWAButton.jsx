@@ -36,9 +36,9 @@ function InstallPWAButton() {
     >
       <div className="pointer-events-auto w-[92%] max-w-lg animate-[slideDown_0.35s_ease-out] rounded-b-xl bg-white px-3 py-2 shadow-lg sm:w-auto">
         <div className="flex items-center gap-2">
-          <img src={logo} alt="Wedd" className="h-8 w-8 shrink-0 rounded-full object-cover" />
+          <img src={logo} alt="WEDD 2" className="h-8 w-8 shrink-0 rounded-full object-cover" />
           <p className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">
-            Installer Wedd
+            Installer WEDD 2
           </p>
           <button
             type="button"

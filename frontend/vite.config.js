@@ -10,8 +10,8 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'images/logo.png'],
       manifest: {
-        name: 'Wedd',
-        short_name: 'Wedd',
+        name: 'WEDD 2',
+        short_name: 'WEDD 2',
         start_url: '/',
         scope: '/',
         id: '/',
