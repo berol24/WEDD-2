@@ -1,13 +1,29 @@
 import jsPDF from 'jspdf';
 import QRCode from 'qrcode';
 import { getBilletCivility, getBilletLineText, MAX_BILLET_LINE_CHARS } from './invitePeople';
-import billetImg from '../assets/img/billet.jpg';
 
-const IMG_W = 1024;
-const IMG_H = 768;
-const PAGE_W = 280;
-const PAGE_H = 210;
-const API_URL_FRONTEND = 'https://wedd-i8ls.onrender.com';
+const billetImg = '/assets/img/billet.jpeg';
+
+const API_URL_FRONTEND =
+  typeof window !== 'undefined' ? window.location.origin : '';
+
+const QR_SIZE = 120;
+const QR_CREAM_W = 146;
+const QR_CREAM_H = 145;
+const ID_RECT_W = 146;
+const ID_RECT_H = 50;
+const QR_INSET_X = 10;
+const QR_INSET_Y = 14;
+
+const QR_POS = {
+  x: 0.093,
+  y: 0.85,
+};
+
+const ID_POS = {
+  x: 0.084,
+  y: 0.938,
+};
 
 const loadImage = (url) =>
   new Promise((resolve, reject) => {
@@ -18,7 +34,20 @@ const loadImage = (url) =>
     img.src = url;
   });
 
-const fitCanvasText = (ctx, text, maxWidth, maxFont = 17, minFont = 11) => {
+const getInviteLabel = (titre) => {
+  switch (titre) {
+    case 'Mme':
+    case 'Mlle':
+      return 'Invitée';
+    case 'couple':
+      return 'Invités';
+    case 'M':
+    default:
+      return 'Invité';
+  }
+};
+
+const fitCanvasText = (ctx, text, maxWidth, maxFont = 22, minFont = 11) => {
   let size = maxFont;
   let output = text;
   ctx.font = `italic ${size}px "Times New Roman", Times, serif`;
@@ -42,43 +71,43 @@ const drawBilletCanvas = async (invite) => {
       await QRCode.toDataURL(`${API_URL_FRONTEND}/invites/${invite.inviteId}`, {
         margin: 1,
         width: 512,
-        color: { dark: '#3b1d12', light: '#f3e8d6' },
+        color: { dark: '#2a1c0f', light: '#f3e8d6' },
       })
     ),
   ]);
 
+  const imgW = background.naturalWidth || background.width;
+  const imgH = background.naturalHeight || background.height;
+
   const canvas = document.createElement('canvas');
-  canvas.width = IMG_W;
-  canvas.height = IMG_H;
+  canvas.width = imgW;
+  canvas.height = imgH;
   const ctx = canvas.getContext('2d');
 
-  ctx.drawImage(background, 0, 0, IMG_W, IMG_H);
+  ctx.drawImage(background, 0, 0, imgW, imgH);
+
+  const qrX = Math.round(imgW * QR_POS.x);
+  const qrY = Math.round(imgH * QR_POS.y);
+  const creamX = qrX - QR_INSET_X;
+  const creamY = qrY - QR_INSET_Y;
+  const idX = Math.round(imgW * ID_POS.x);
+  const idY = Math.round(imgH * ID_POS.y);
 
   ctx.fillStyle = 'rgb(243, 232, 214)';
-  ctx.fillRect(138, 414, 128, 148);
-  ctx.drawImage(qrImage, 142, 420, 120, 120);
+  ctx.fillRect(creamX, creamY, QR_CREAM_W, QR_CREAM_H);
+  ctx.drawImage(qrImage, qrX, qrY, QR_SIZE, QR_SIZE);
 
   ctx.fillStyle = 'rgb(243, 232, 214)';
-  ctx.fillRect(138, 388, 128, 26);
+  ctx.fillRect(idX, idY, ID_RECT_W, ID_RECT_H);
   const inviteIdText = String(invite.inviteId || '').trim();
   if (inviteIdText) {
     ctx.fillStyle = 'rgb(92, 51, 23)';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = 'bold 13px "Times New Roman", Times, serif';
-    ctx.fillText(inviteIdText, 202, 400);
+    ctx.font = 'bold 30px "Times New Roman", Times, serif';
+    ctx.fillText(inviteIdText, idX + ID_RECT_W / 2, idY + ID_RECT_H / 2);
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
-  }
-
-  ctx.fillStyle = 'rgb(229, 214, 201)';
-  ctx.fillRect(318, 342, 478, 18);
-
-  ctx.fillStyle = 'rgb(130, 95, 70)';
-  for (let x = 322; x <= 790; x += 7) {
-    ctx.beginPath();
-    ctx.arc(x + 1.5, 355.5, 1.5, 0, Math.PI * 2);
-    ctx.fill();
   }
 
   const civility = getBilletCivility(invite.titre);
@@ -87,10 +116,23 @@ const drawBilletCanvas = async (invite) => {
   const fullLine = [civility, nameOnLine].filter(Boolean).join(' ');
 
   if (fullLine) {
-    ctx.fillStyle = 'rgb(92, 51, 23)';
+    const nameLeft = Math.round(imgW * 0.50);
+    const nameRight = Math.round(imgW * 0.96);
+    const nameMaxWidth = nameRight - nameLeft;
+    const nameCenterX = (nameLeft + nameRight) / 2;
+    const nameY = Math.round(imgH * 0.775);
+
+    ctx.fillStyle = 'rgb(184, 134, 70)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'italic 22px "Times New Roman", Times, serif';
+    ctx.fillText(getInviteLabel(invite.titre), nameCenterX, nameY - 28);
+
+    ctx.fillStyle = 'rgb(61, 38, 20)';
+    const fitted = fitCanvasText(ctx, fullLine, nameMaxWidth, 24, 11);
+    ctx.fillText(fitted, nameCenterX, nameY);
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
-    const fitted = fitCanvasText(ctx, fullLine, 460);
-    ctx.fillText(fitted, 322, 351);
   }
 
   return canvas;
@@ -107,15 +149,16 @@ export const generateBilletPreviewUrl = async (invite) => {
 };
 
 export const generatePdf = async (invite) => {
-  const doc = new jsPDF({
-    orientation: 'landscape',
-    unit: 'mm',
-    format: [PAGE_W, PAGE_H],
-  });
-
   try {
     const canvas = await drawBilletCanvas(invite);
-    doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, PAGE_W, PAGE_H);
+    const pageHeight = 210;
+    const pageWidth = pageHeight * (canvas.width / canvas.height);
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: [pageWidth, pageHeight],
+    });
+    doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pageWidth, pageHeight);
     return doc.output('blob');
   } catch (err) {
     console.error('Erreur génération PDF avec image :', err);

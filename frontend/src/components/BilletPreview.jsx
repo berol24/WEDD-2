@@ -68,7 +68,7 @@ function BilletPreview({ invite, onClose, onDownload, downloading }) {
             <img
               src={url}
               alt="Aperçu du billet d’invitation"
-              className="mx-auto h-auto w-full max-w-full rounded shadow"
+              className="mx-auto h-auto w-auto max-h-[70vh] max-w-full object-contain rounded shadow"
             />
           )}
         </div>
