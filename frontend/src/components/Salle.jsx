@@ -35,6 +35,7 @@ export default function Salle({
   tableAClignoter = null,
   onClignotementFini = () => {},
   editable = false,
+  onClose = null,
 }) {
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -1098,6 +1099,11 @@ export default function Salle({
     );
   }
 
+  const leaveRoom = () => {
+    if (typeof onClose === 'function') onClose();
+    else navigate(-1);
+  };
+
   return (
     <div
       style={{
@@ -1115,6 +1121,30 @@ export default function Salle({
         overflow: "hidden",
       }}
     >
+      <button
+        type="button"
+        onClick={leaveRoom}
+        aria-label={t("guest.close")}
+        title={t("guest.close")}
+        style={{
+          position: "absolute",
+          top: isMobile ? "8px" : "10px",
+          right: isMobile ? "8px" : "12px",
+          zIndex: 1300,
+          width: "36px",
+          height: "36px",
+          borderRadius: "999px",
+          border: "1px solid #e2e8f0",
+          backgroundColor: "#fff",
+          color: "#1f2937",
+          fontSize: "22px",
+          lineHeight: 1,
+          cursor: "pointer",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
+        }}
+      >
+        ×
+      </button>
       {/* Barre d'outils supérieure */}
       <div style={{
         position: "absolute",
@@ -1127,7 +1157,7 @@ export default function Salle({
         alignItems: "center",
         justifyContent: "space-between",
         gap: isMobile ? "8px" : "12px",
-        padding: isMobile ? "10px" : "12px 16px",
+        padding: isMobile ? "10px 52px 10px 10px" : "12px 56px 12px 16px",
         backgroundColor: "rgba(255,255,255,0.96)",
         borderBottom: "1px solid #e2e8f0",
         boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
@@ -1139,7 +1169,7 @@ export default function Salle({
           alignItems: "center",
         }}>
           <button
-            onClick={() => navigate(-1)}
+            onClick={leaveRoom}
             style={{
               padding: isMobile ? "8px 12px" : "9px 16px",
               fontSize: isMobile ? "12px" : "14px",
